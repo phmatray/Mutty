@@ -4,9 +4,9 @@ namespace Mutty.Generator.CodeHelpers;
 
 public interface ICodeBuilder
 {
-    void AppendLine(string line);
-    void AppendEmptyLine();
+    void Line(string line);
+    void EmptyLine();
     IDisposable Indent();
-    void AppendOpenBrace();
-    void AppendCloseBrace();
+    void OpenBrace();
+    void CloseBrace();
 }

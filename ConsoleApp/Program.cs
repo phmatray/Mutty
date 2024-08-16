@@ -1,29 +1,24 @@
-﻿using Mutty.ConsoleApp;
+﻿using Mutty.ConsoleApp.Abstractions;
+using Mutty.ConsoleApp.Examples;
+using Spectre.Console;
 
-var address = new Address("123 Main St", "Wonderland");
-var company = new Company("Acme", address);
-var person = new Person("Alice", 30, company);
+var examples = new Dictionary<string, ExampleBase>
+{
+    { "Basic Example (Manual Mutation)", new ExampleBasic() },
+    { "Produce Example (Fluent Mutation)", new ExampleProduce() },
+    { "ImmutableArray Example", new ExampleImmutableArray() }
+};
 
-var mutablePerson = new MutablePerson(person);
-mutablePerson.Name = "Bob";
-mutablePerson.Age = 35;
-mutablePerson.Company.Address.Street = "456 Elm St";
-var updatedPerson = mutablePerson.Build();
+var selectedExample = AnsiConsole.Prompt(
+    new SelectionPrompt<string>()
+        .Title("[bold yellow]Select an example to run:[/]")
+        .PageSize(10)
+        .AddChoices(examples.Keys.ToArray()));
 
-// Output: Person {
-//   Name = Alice,
-//   Age = 30,
-//   Company = Company {
-//     Name = Acme,
-//     Address = Address { Street = 123 Main St, City = Wonderland }
-//   }
-Console.WriteLine(person);
+AnsiConsole.MarkupLine($"[bold cyan]Running:[/] {selectedExample}");
+AnsiConsole.WriteLine();
 
-// Output: Person {
-//   Name = Bob,
-//   Age = 35,
-//   Company = Company {
-//     Name = Acme,
-//     Address = Address { Street = 456 Elm St, City = Wonderland }
-//   }
-Console.WriteLine(updatedPerson);
+examples[selectedExample].Run();
+
+AnsiConsole.MarkupLine("\n[bold green]Example finished. Press any key to exit...[/]");
+Console.ReadKey(true);

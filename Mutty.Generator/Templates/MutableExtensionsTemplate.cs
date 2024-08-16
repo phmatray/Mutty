@@ -9,27 +9,22 @@ public class MutableExtensionsTemplate : IndentedCodeBuilder
     {
         var recordName = tokens.RecordName;
 
-        AppendLine($"namespace {tokens.NamespaceName}");
-        AppendOpenBrace();
-        using (Indent())
+        Line($"namespace {tokens.NamespaceName}");
+        Braces(() =>
         {
-            AppendLine($"public static class {recordName}Extensions");
-            AppendOpenBrace();
-            using (Indent())
+            Line($"public static class {recordName}Extensions");
+            Braces(() =>
             {
-                AppendLine($"public static {recordName} Produce(this {recordName} record, Action<Mutable{recordName}> mutator)");
-                AppendOpenBrace();
-                using (Indent())
+                Line($"public static {recordName} Produce(this {recordName} baseState, Action<Mutable{recordName}> recipe)");
+                Braces(() =>
                 {
-                    AppendLine($"var mutable = new Mutable{recordName}(record);");
-                    AppendLine("mutator(mutable);");
-                    AppendLine("return mutable.Build();");
-                }
-                AppendCloseBrace();
-            }
-            AppendCloseBrace();
-        }
-        AppendCloseBrace();
+                    Line($"var draftState = new Mutable{recordName}(baseState);");
+                    Line("recipe(draftState);");
+                    Line("var resultState = draftState.Build();");
+                    Line("return resultState;");
+                });
+            });
+        });
 
         return ToString();
     }

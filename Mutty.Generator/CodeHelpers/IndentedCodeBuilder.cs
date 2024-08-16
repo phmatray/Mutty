@@ -4,22 +4,32 @@ namespace Mutty.Generator.CodeHelpers;
 
 public class IndentedCodeBuilder : ICodeBuilder
 {
-    private readonly IndentedStringBuilder _stringBuilder = new();
+    private readonly IndentedStringBuilder _stringBuilder = new(0, 4);
 
-    public void AppendLine(string line) 
+    public void Line(string line) 
         => _stringBuilder.AppendLine(line);
 
-    public void AppendEmptyLine()
+    public void EmptyLine()
         => _stringBuilder.AppendLine(string.Empty);
 
     public IDisposable Indent()
         => _stringBuilder.Indent();
 
-    public void AppendOpenBrace()
+    public void OpenBrace()
         => _stringBuilder.AppendLine("{");
 
-    public void AppendCloseBrace()
+    public void CloseBrace()
         => _stringBuilder.AppendLine("}");
+    
+    public void Braces(Action action)
+    {
+        OpenBrace();
+        using (Indent())
+        {
+            action();
+        }
+        CloseBrace();
+    }
 
     public override string ToString()
         => _stringBuilder.ToString();

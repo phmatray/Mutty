@@ -1,8 +1,11 @@
 namespace Mutty.Generator.Models;
 
-public class Property(string name, string type, bool isRecord = false)
+public class Property(
+    string name,
+    string type,
+    PropertyType propertyType)
 {
     public string Name { get; } = name;
     public string Type { get; } = type;
-    public bool IsRecord { get; } = isRecord;
+    public PropertyType PropertyType { get; } = propertyType;
 }

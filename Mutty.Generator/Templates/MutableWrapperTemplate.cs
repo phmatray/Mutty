@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Mutty.Generator.CodeHelpers;
@@ -13,96 +14,90 @@ public class MutableWrapperTemplate : IndentedCodeBuilder
         var recordName = tokens.RecordName;
         var properties = tokens.Properties;
             
-        AppendLine($"namespace {namespaceName}");
-        AppendOpenBrace();
-        using (Indent())
+        Line("using System.Collections.Immutable;");
+        EmptyLine();
+        Line($"namespace {namespaceName}");
+        Braces(() =>
         {
-            AppendLine($"public class Mutable{recordName}");
-            AppendOpenBrace();
-            using (Indent())
+            Line($"public class Mutable{recordName}");
+            Braces(() =>
             {
-                AppendLine($"private {recordName} _record;");
+                Line($"private {recordName} _record;");
                 GenerateConstructor(recordName);
                 GenerateBuilderMethod(recordName, properties);
                 GenerateImplicitOperatorToMutable(recordName);
                 GenerateImplicitOperatorToRecord(recordName);
                 GenerateProperties(properties);
-            }
-
-            AppendCloseBrace();
-        }
-
-        AppendCloseBrace();
+            });
+        });
 
         return ToString();
     }
 
     private void GenerateConstructor(string recordName)
     {
-        AppendEmptyLine();
-        AppendLine($"public Mutable{recordName}({recordName} record)");
-        AppendOpenBrace();
-        using (Indent())
+        EmptyLine();
+        Line($"public Mutable{recordName}({recordName} record)");
+        Braces(() =>
         {
-            AppendLine("_record = record;");
-        }
-
-        AppendCloseBrace();
+            Line("_record = record;");
+        });
     }
     
     private void GenerateBuilderMethod(string recordName, IEnumerable<Property> properties)
     {
-        AppendEmptyLine();
-        AppendLine($"public {recordName} Build()");
-        AppendOpenBrace();
-        using (Indent())
+        EmptyLine();
+        Line($"public {recordName} Build()");
+        Braces(() =>
         {
-            foreach (var property in properties.Where(p => p.IsRecord))
+            foreach (var property in properties.Where(p => p.PropertyType == PropertyType.Record))
             {
                 var propertyName = property.Name;
-                AppendLine($"if (_{propertyName.ToLowerInvariant()} != null)");
-                AppendOpenBrace();
-                using (Indent())
+                Line($"if (_{propertyName.ToLowerInvariant()} != null)");
+                Braces(() =>
                 {
-                    AppendLine($"_record = _record with {{ {propertyName} = _{propertyName.ToLowerInvariant()}.Build() }};");
-                }
-                AppendCloseBrace();
+                    Line($"_record = _record with {{ {propertyName} = _{propertyName.ToLowerInvariant()}.Build() }};");
+                });
             }
-            AppendLine("return _record;");
-        }
-        AppendCloseBrace();
+            Line("return _record;");
+        });
     }
 
     private void GenerateProperties(IEnumerable<Property> properties)
     {
         foreach (var property in properties)
         {
-            if (property.IsRecord)
+            EmptyLine();
+            Line($"// {property.PropertyType}");
+            
+            switch (property.PropertyType)
             {
-                GenerateNestedMutableProperty(property);
-            }
-            else
-            {
-                GenerateProperty(property);
+                case PropertyType.Record:
+                    GenerateNestedMutableProperty(property);
+                    break;
+                case PropertyType.ImmutableCollection:
+                    GenerateCollectionProperty(property);
+                    break;
+                case PropertyType.Other:
+                    GenerateSimpleProperty(property);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
     }
 
-    private void GenerateProperty(Property property)
+    private void GenerateSimpleProperty(Property property)
     {
         var propertyName = property.Name;
         var propertyType = property.Type;
 
-        AppendEmptyLine();
-        AppendLine($"public {propertyType} {propertyName}");
-        AppendOpenBrace();
-        using (Indent())
+        Line($"public {propertyType} {propertyName}");
+        Braces(() =>
         {
-            AppendLine($"get => _record.{propertyName};");
-            AppendLine($"set => _record = _record with {{ {propertyName} = value }};");
-        }
-
-        AppendCloseBrace();
+            Line($"get => _record.{propertyName};");
+            Line($"set => _record = _record with {{ {propertyName} = value }};");
+        });
     }
 
     private void GenerateNestedMutableProperty(Property property)
@@ -111,42 +106,73 @@ public class MutableWrapperTemplate : IndentedCodeBuilder
         var propertyType = property.Type;
         var mutableTypeName = $"Mutable{propertyType.Split('.').Last()}";
 
-        AppendEmptyLine();
-        AppendLine($"private {mutableTypeName} _{propertyName.ToLowerInvariant()};");
+        Line($"private {mutableTypeName} _{propertyName.ToLowerInvariant()};");
     
-        AppendLine($"public {mutableTypeName} {propertyName}");
-        AppendOpenBrace();
-        using (Indent())
+        Line($"public {mutableTypeName} {propertyName}");
+        Braces(() =>
         {
-            AppendLine($"get => _{propertyName.ToLowerInvariant()} ??= new {mutableTypeName}(_record.{propertyName});");
-            AppendLine($"set => _record = _record with {{ {propertyName} = value.Build() }};");
+            Line($"get => _{propertyName.ToLowerInvariant()} ??= new {mutableTypeName}(_record.{propertyName});");
+            Line($"set => _record = _record with {{ {propertyName} = value.Build() }};");
+        });
+    }
+
+    private void GenerateCollectionProperty(Property property)
+    {
+        var propertyName = property.Name;
+        var immutableType = property.Type;
+        var mutableType = ConvertImmutableToMutable(immutableType);
+        var mutableItemType = GetMutableItemType(immutableType);
+
+        Line($"public {mutableType}<Mutable{mutableItemType}> {propertyName}");
+        Braces(() =>
+        {
+            Line($"get => _record.{propertyName}.Select(e => new Mutable{mutableItemType}(e)).ToList();");
+            Line($"set => _record = _record with {{ {propertyName} = value.Select(e => e.Build()).ToImmutableList() }};");
+        });
+    }
+
+    private string ConvertImmutableToMutable(string immutableType)
+    {
+        if (immutableType.StartsWith("System.Collections.Immutable.ImmutableList"))
+        {
+            return "List";
         }
-        AppendCloseBrace();
+        else if (immutableType.StartsWith("System.Collections.Immutable.ImmutableArray"))
+        {
+            return "List"; // Use List for array conversions in this context
+        }
+        // Handle other types as needed
+        return immutableType;
+    }
+
+    private string GetMutableItemType(string immutableType)
+    {
+        var genericTypeIndex = immutableType.IndexOf('<');
+        if (genericTypeIndex > 0)
+        {
+            var itemType = immutableType.Substring(genericTypeIndex + 1, immutableType.Length - genericTypeIndex - 2);
+            return itemType.Split('.').Last();
+        }
+        return immutableType;
     }
 
     private void GenerateImplicitOperatorToMutable(string recordName)
     {
-        AppendEmptyLine();
-        AppendLine($"public static implicit operator Mutable{recordName}({recordName} record)");
-        AppendOpenBrace();
-        using (Indent())
+        EmptyLine();
+        Line($"public static implicit operator Mutable{recordName}({recordName} record)");
+        Braces(() =>
         {
-            AppendLine($"return new Mutable{recordName}(record);");
-        }
-
-        AppendCloseBrace();
-    }
+            Line($"return new Mutable{recordName}(record);");
+        });
+    } 
 
     private void GenerateImplicitOperatorToRecord(string recordName)
     {
-        AppendEmptyLine();
-        AppendLine($"public static implicit operator {recordName}(Mutable{recordName} mutable)");
-        AppendOpenBrace();
-        using (Indent())
+        EmptyLine();
+        Line($"public static implicit operator {recordName}(Mutable{recordName} mutable)");
+        Braces(() =>
         {
-            AppendLine("return mutable.Build();");
-        }
-
-        AppendCloseBrace();
+            Line("return mutable.Build();");
+        });
     }
 }

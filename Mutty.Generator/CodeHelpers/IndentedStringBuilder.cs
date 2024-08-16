@@ -18,10 +18,8 @@ namespace Mutty.Generator.CodeHelpers;
 ///     See <see href="https://aka.ms/efcore-docs-providers">Implementation of database providers and extensions</see>
 ///     for more information and examples.
 /// </remarks>
-public sealed class IndentedStringBuilder(byte indent = 0)
+public sealed class IndentedStringBuilder(byte indent = 0, byte indentSize = 2)
 {
-    private const byte IndentSize = 2;
-
     private readonly StringBuilder _stringBuilder = new();
 
     private byte _indent = indent;
@@ -262,7 +260,7 @@ public sealed class IndentedStringBuilder(byte indent = 0)
     {
         if (_indentPending && _indent > 0)
         {
-            _stringBuilder.Append(' ', _indent * IndentSize);
+            _stringBuilder.Append(' ', _indent * indentSize);
         }
 
         _indentPending = false;

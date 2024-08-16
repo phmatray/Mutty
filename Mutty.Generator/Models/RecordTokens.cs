@@ -28,14 +28,32 @@ public class RecordTokens
                 .Select(p => new Property(
                     p.Name,
                     p.Type.ToDisplayString(),
-                    IsRecordType(p.Type))
+                    GetPropertyType(p.Type))
                 )
         ];
     }
-
-    private bool IsRecordType(ITypeSymbol type)
+    
+    private PropertyType GetPropertyType(ITypeSymbol type)
     {
-        return type.TypeKind == TypeKind.Class && 
-               type.DeclaringSyntaxReferences.FirstOrDefault()?.GetSyntax() is RecordDeclarationSyntax;
+        if (type.TypeKind == TypeKind.Class && 
+            type.DeclaringSyntaxReferences.FirstOrDefault()?.GetSyntax() is RecordDeclarationSyntax)
+        {
+            return PropertyType.Record;
+        }
+        
+        // Detect immutable collections
+        if (type.OriginalDefinition.ToDisplayString().StartsWith("System.Collections.Immutable."))
+        {
+            return PropertyType.ImmutableCollection;
+        }
+
+        return PropertyType.Other;
     }
+}
+
+public enum PropertyType
+{
+    Record,
+    ImmutableCollection,
+    Other
 }
