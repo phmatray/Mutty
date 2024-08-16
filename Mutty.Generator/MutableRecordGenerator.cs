@@ -1,11 +1,8 @@
 using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
-using Mutty.Generator.CodeHelpers;
 using Mutty.Generator.Models;
 using Mutty.Generator.Templates;
 
@@ -28,44 +25,36 @@ public class MutableRecordGenerator : ISourceGenerator
         foreach (var recordSyntax in receiver.RecordDeclarations)
         {
             var model = context.Compilation.GetSemanticModel(recordSyntax.SyntaxTree);
-            var recordSymbol = model.GetDeclaredSymbol(recordSyntax) as INamedTypeSymbol;
+            
+            if (model.GetDeclaredSymbol(recordSyntax) is not INamedTypeSymbol recordSymbol)
+                continue;
+            
+            var recordTokens = new RecordTokens(recordSymbol);
+            var recordName = recordTokens.RecordName;
 
-            if (recordSymbol is not null)
-            {
-                var generatedSource = GenerateMutableWrapper(recordSymbol);
-                context.AddSource($"{recordSymbol.Name}.Mutable.g.cs", SourceText.From(generatedSource, Encoding.UTF8));
-            }
+            // Generate mutable wrapper
+            var mutableWrapperSource = GenerateMutableWrapper(recordTokens);
+            AddSource(context, $"{recordName}.Mutable.g.cs", mutableWrapperSource);
+
+            // Generate extension method
+            var extensionSource = GenerateProduceExtension(recordTokens);
+            AddSource(context, $"{recordName}.Extensions.g.cs", extensionSource);
         }
     }
-
-    private string GenerateMutableWrapper(INamedTypeSymbol recordSymbol)
+    
+    private static void AddSource(GeneratorExecutionContext context, string name, string source)
     {
-        // Collect record information
-        var recordName = recordSymbol.Name;
-        var namespaceName = recordSymbol.ContainingNamespace.ToDisplayString();
-
-        var properties = recordSymbol
-            .GetMembers()
-            .OfType<IPropertySymbol>()
-            .Where(p =>
-                !p.IsReadOnly &&
-                !p.IsImplicitlyDeclared &&
-                p.DeclaredAccessibility == Accessibility.Public)
-            .Select(p => new Property(
-                p.Name,
-                p.Type.ToDisplayString(),
-                IsRecordType(p.Type))
-            )
-            .ToImmutableArray();
-        
-        // Generate mutable wrapper
-        var template = new MutableWrapperTemplate();
-        return template.Generate(namespaceName, recordName, properties);
+        context.AddSource(name, SourceText.From(source, Encoding.UTF8));
     }
 
-    private bool IsRecordType(ITypeSymbol type)
+    private static string GenerateMutableWrapper(RecordTokens tokens)
     {
-        return type.TypeKind == TypeKind.Class && type.DeclaringSyntaxReferences.FirstOrDefault()?.GetSyntax() is RecordDeclarationSyntax;
+        return new MutableWrapperTemplate().Generate(tokens);
+    }
+
+    private static string GenerateProduceExtension(RecordTokens tokens)
+    {
+        return new MutableExtensionsTemplate().Generate(tokens);
     }
 
     private class RecordSyntaxReceiver : ISyntaxReceiver

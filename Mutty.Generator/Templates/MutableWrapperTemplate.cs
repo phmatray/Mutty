@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using Mutty.Generator.CodeHelpers;
 using Mutty.Generator.Models;
@@ -8,8 +7,12 @@ namespace Mutty.Generator.Templates;
 
 public class MutableWrapperTemplate : IndentedCodeBuilder
 {
-    public string Generate(string namespaceName, string recordName, ImmutableArray<Property> properties)
+    public string Generate(RecordTokens tokens)
     {
+        var namespaceName = tokens.NamespaceName;
+        var recordName = tokens.RecordName;
+        var properties = tokens.Properties;
+            
         AppendLine($"namespace {namespaceName}");
         AppendOpenBrace();
         using (Indent())
