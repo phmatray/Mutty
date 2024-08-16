@@ -9,7 +9,7 @@ public sealed class ExampleProduce : ExampleBase
         DisplayHeader("Produce Example: Fluent Mutation");
 
         // Initialize original immutable objects
-        Student student = CreateITStudent("John Doe", 35);
+        Student student = Factories.CreateJohnDoe();
 
         // Use the Produce method to create an updated person object with mutations
         Student updatedStudent = student.Produce(mutable =>

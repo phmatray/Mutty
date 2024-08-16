@@ -1,4 +1,3 @@
-using System.Collections.Immutable;
 using Spectre.Console;
 
 namespace Mutty.ConsoleApp.Abstractions;
@@ -7,51 +6,6 @@ public abstract class ExampleBase
 {
     // Abstract method that each derived class must implement
     public abstract void Run();
-
-    // Factory method to create a student with IT courses
-    protected Student CreateITStudent(string studentName, int age)
-    {
-        // Define the lessons
-        var programmingBasicsLessons = ImmutableList.Create(
-            new Lesson("Introduction to Programming", "Learn the basics of programming."),
-            new Lesson("Control Structures", "Learn about if-statements, loops, etc."),
-            new Lesson("Functions", "Learn how to write and use functions.")
-        );
-
-        var dataStructuresLessons = ImmutableList.Create(
-            new Lesson("Arrays and Lists", "Learn about arrays and lists."),
-            new Lesson("Stacks and Queues", "Understand the concepts of stacks and queues."),
-            new Lesson("Trees and Graphs", "Introduction to trees and graphs.")
-        );
-
-        var algorithmsLessons = ImmutableList.Create(
-            new Lesson("Sorting Algorithms", "Learn about various sorting algorithms."),
-            new Lesson("Searching Algorithms", "Learn about searching techniques."),
-            new Lesson("Algorithm Complexity", "Understand time and space complexity.")
-        );
-
-        // Define the modules
-        var programmingModule = new Module("Programming Basics", programmingBasicsLessons);
-        var dataStructuresModule = new Module("Data Structures", dataStructuresLessons);
-        var algorithmsModule = new Module("Algorithms", algorithmsLessons);
-
-        // Define the courses
-        var introToITCourse = new Course(
-            "Introduction to IT",
-            "A comprehensive introduction to Information Technology.",
-            ImmutableList.Create(programmingModule, dataStructuresModule, algorithmsModule)
-        );
-
-        // Define the enrollments
-        var enrollments = ImmutableList.Create(
-            new Enrollment(introToITCourse, DateTime.Now)
-        );
-
-        // Create and return the student
-        var email = $"{studentName.Replace(" ", "-").ToLower()}@example.com";
-        var details = new StudentDetails(studentName, age);
-        return new Student(email, details, enrollments);
-    }
 
     // Common method to display a header for the example
     protected void DisplayHeader(string header)

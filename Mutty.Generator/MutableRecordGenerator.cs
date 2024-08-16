@@ -34,11 +34,11 @@ public class MutableRecordGenerator : ISourceGenerator
 
             // Generate mutable wrapper
             var mutableWrapperSource = GenerateMutableWrapper(recordTokens);
-            AddSource(context, $"{recordName}.Mutable.g.cs", mutableWrapperSource);
+            AddSource(context, $"Mutable{recordName}.g.cs", mutableWrapperSource);
 
-            // Generate extension method
-            var extensionSource = GenerateProduceExtension(recordTokens);
-            AddSource(context, $"{recordName}.Extensions.g.cs", extensionSource);
+            // Generate extension methods
+            var mutableExtensionSource = GenerateMutableExtensions(recordTokens);
+            AddSource(context, $"Extensions{recordName}.g.cs", mutableExtensionSource);
         }
     }
     
@@ -49,12 +49,12 @@ public class MutableRecordGenerator : ISourceGenerator
 
     private static string GenerateMutableWrapper(RecordTokens tokens)
     {
-        return new MutableWrapperTemplate().Generate(tokens);
+        return new MutableWrapperTemplate(tokens).Generate();
     }
 
-    private static string GenerateProduceExtension(RecordTokens tokens)
+    private static string GenerateMutableExtensions(RecordTokens tokens)
     {
-        return new MutableExtensionsTemplate().Generate(tokens);
+        return new MutableExtensionsTemplate(tokens).Generate();
     }
 
     private class RecordSyntaxReceiver : ISyntaxReceiver

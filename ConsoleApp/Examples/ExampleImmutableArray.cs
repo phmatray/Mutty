@@ -9,13 +9,13 @@ public sealed class ExampleImmutableArray : ExampleBase
         DisplayHeader("ImmutableArray Example");
         
         // Initialize original immutable objects
-        Student student = CreateITStudent("John Doe", 35);
+        Student student = Factories.CreateJohnDoe();
         
         // Use the Produce method to create an updated person object with mutations
         Student updatedStudent = student.Produce(mutable =>
         {
             // You can use the Add, Insert, Remove, and RemoveAt methods to mutate the immutable list
-            mutable.Enrollments[0].Course.Modules[0].Lessons[0].Title = "New Title";
+            mutable.Enrollments[0].Course.Modules[0].Lessons[0].Title = "=== NEW TITLE ===";
         });
 
         // Display the original and updated person objects

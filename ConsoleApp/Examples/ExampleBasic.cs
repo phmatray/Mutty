@@ -9,7 +9,7 @@ public sealed class ExampleBasic : ExampleBase
         DisplayHeader("Basic Example: Manual Mutation");
         
         // Initialize original immutable objects
-        Student student = CreateITStudent("John Doe", 35);
+        Student student = Factories.CreateJohnDoe();
 
         // Create a mutable version of the person object
         var mutable = new MutableStudent(student);
