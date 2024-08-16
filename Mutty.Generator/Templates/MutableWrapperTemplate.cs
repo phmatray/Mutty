@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using Mutty.Generator.CodeHelpers;
 using Mutty.Generator.Models;
@@ -7,7 +8,7 @@ namespace Mutty.Generator.Templates;
 
 public class MutableWrapperTemplate : IndentedCodeBuilder
 {
-    public string Generate(string namespaceName, string recordName, IEnumerable<Property> properties)
+    public string Generate(string namespaceName, string recordName, ImmutableArray<Property> properties)
     {
         AppendLine($"namespace {namespaceName}");
         AppendOpenBrace();
@@ -18,11 +19,8 @@ public class MutableWrapperTemplate : IndentedCodeBuilder
             using (Indent())
             {
                 AppendLine($"private {recordName} _record;");
-
                 GenerateConstructor(recordName);
-                AppendEmptyLine();
-                AppendLine($"public {recordName} Build() => _record;");
-
+                GenerateBuilderMethod(recordName, properties);
                 GenerateImplicitOperatorToMutable(recordName);
                 GenerateImplicitOperatorToRecord(recordName);
                 GenerateProperties(properties);
@@ -46,6 +44,29 @@ public class MutableWrapperTemplate : IndentedCodeBuilder
             AppendLine("_record = record;");
         }
 
+        AppendCloseBrace();
+    }
+    
+    private void GenerateBuilderMethod(string recordName, IEnumerable<Property> properties)
+    {
+        AppendEmptyLine();
+        AppendLine($"public {recordName} Build()");
+        AppendOpenBrace();
+        using (Indent())
+        {
+            foreach (var property in properties.Where(p => p.IsRecord))
+            {
+                var propertyName = property.Name;
+                AppendLine($"if (_{propertyName.ToLowerInvariant()} != null)");
+                AppendOpenBrace();
+                using (Indent())
+                {
+                    AppendLine($"_record = _record with {{ {propertyName} = _{propertyName.ToLowerInvariant()}.Build() }};");
+                }
+                AppendCloseBrace();
+            }
+            AppendLine("return _record;");
+        }
         AppendCloseBrace();
     }
 
@@ -88,11 +109,13 @@ public class MutableWrapperTemplate : IndentedCodeBuilder
         var mutableTypeName = $"Mutable{propertyType.Split('.').Last()}";
 
         AppendEmptyLine();
+        AppendLine($"private {mutableTypeName} _{propertyName.ToLowerInvariant()};");
+    
         AppendLine($"public {mutableTypeName} {propertyName}");
         AppendOpenBrace();
         using (Indent())
         {
-            AppendLine($"get => new {mutableTypeName}(_record.{propertyName});");
+            AppendLine($"get => _{propertyName.ToLowerInvariant()} ??= new {mutableTypeName}(_record.{propertyName});");
             AppendLine($"set => _record = _record with {{ {propertyName} = value.Build() }};");
         }
         AppendCloseBrace();
