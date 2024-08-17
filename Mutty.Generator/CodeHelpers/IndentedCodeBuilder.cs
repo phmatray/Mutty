@@ -32,6 +32,13 @@ public class IndentedCodeBuilder
         }
         _stringBuilder.AppendLine("}" + suffix);
     }
+    
+    public void Summary(string summary)
+    {
+        Line("/// <summary>");
+        Line($"/// {summary}");
+        Line("/// </summary>");
+    }
 
     public override string ToString()
         => _stringBuilder.ToString();

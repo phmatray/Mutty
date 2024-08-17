@@ -7,6 +7,7 @@ namespace Mutty.Generator.Models;
 public class RecordTokens
 {
     public string RecordName { get; }
+    public string MutableRecordName => $"Mutable{RecordName}";
     public string? NamespaceName { get; }
     public ImmutableArray<Property> Properties { get; }
 

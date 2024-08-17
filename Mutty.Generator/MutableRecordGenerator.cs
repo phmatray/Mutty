@@ -17,7 +17,7 @@ public class MutableRecordGenerator : IIncrementalGenerator
         var recordTypesWithAttribute = context.SyntaxProvider
             .CreateSyntaxProvider(
                 predicate: static (syntaxNode, _) => CouldBeMutableGenerationAttribute(syntaxNode),
-                transform: static (ctx, _) => GetRecordTypeWithAttribute(ctx))
+                transform: static (ctx, _) => GetRecordTypeWithAttribute(ctx)!)
             .Where(static type => type is not null)! // Filter out nulls
             .Collect(); // Collect all relevant types
 

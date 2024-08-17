@@ -8,6 +8,7 @@ public class MutableWrapperTemplate(RecordTokens tokens) : IndentedCodeBuilder
 {
     private readonly string? _namespaceName = tokens.NamespaceName;
     private readonly string _recordName = tokens.RecordName;
+    private readonly string _mutableRecordName = tokens.MutableRecordName;
     private readonly ImmutableArray<Property> _properties = tokens.Properties;
 
     public string Generate()
@@ -29,10 +30,8 @@ public class MutableWrapperTemplate(RecordTokens tokens) : IndentedCodeBuilder
 
     private void GenerateClass()
     {
-        Line("/// <summary>");
-        Line($"/// The mutable wrapper for the <see cref=\"{_recordName}\"/> record.");
-        Line("/// </summary>");
-        Line($"public class Mutable{_recordName}");
+        Summary($"The mutable wrapper for the <see cref=\"{_recordName}\"/> record.");
+        Line($"public class {_mutableRecordName}");
         Braces(() =>
         {
             Line($"private {_recordName} _record;");
@@ -47,11 +46,9 @@ public class MutableWrapperTemplate(RecordTokens tokens) : IndentedCodeBuilder
     private void GenerateConstructor()
     {
         EmptyLine();
-        Line("/// <summary>");
-        Line($"/// Initializes a new instance of the <see cref=\"Mutable{_recordName}\"/> class.");
-        Line("/// </summary>");
+        Summary($"Initializes a new instance of the <see cref=\"{_mutableRecordName}\"/> class.");
         Line($"/// <param name=\"record\">The record to wrap.</param>");
-        Line($"public Mutable{_recordName}({_recordName} record)");
+        Line($"public {_mutableRecordName}({_recordName} record)");
         Braces(() =>
         {
             Line("_record = record;");
@@ -76,9 +73,7 @@ public class MutableWrapperTemplate(RecordTokens tokens) : IndentedCodeBuilder
     private void GenerateBuilderMethod()
     {
         EmptyLine();
-        Line("/// <summary>");
-        Line($"/// Builds a new instance of the <see cref=\"{_recordName}\"/> class.");
-        Line("/// </summary>");
+        Summary($"Builds a new instance of the <see cref=\"{_recordName}\"/> class.");
         Line($"public {_recordName} Build()");
         Braces(() =>
         {
@@ -111,7 +106,6 @@ public class MutableWrapperTemplate(RecordTokens tokens) : IndentedCodeBuilder
         foreach (var property in _properties)
         {
             EmptyLine();
-            Comment($"{property.PropertyType}");
             
             switch (property.PropertyType)
             {
@@ -132,29 +126,25 @@ public class MutableWrapperTemplate(RecordTokens tokens) : IndentedCodeBuilder
 
     private void GenerateSimpleProperty(Property property)
     {
-        var propertyType = property.Type;
-        var propertyName = property.Name;
-
-        Line($"public {propertyType} {propertyName} {{ get; set; }}");
+        Summary($"Gets or sets the {property.Name}.");
+        Line($"public {property.Type} {property.Name} {{ get; set; }}");
     }
 
     private void GenerateNestedMutableProperty(Property property)
     {
-        var propertyType = property.Type;
-        var propertyName = property.Name;
-        var mutableTypeName = $"Mutable{propertyType.Split('.').Last()}";
-
-        Line($"public {mutableTypeName} {propertyName} {{ get; set; }}");
+        var mutableTypeName = $"Mutable{property.Type.Split('.').Last()}";
+        
+        Summary($"Gets or sets the {property.PropertyType} {property.Name}.");
+        Line($"public {mutableTypeName} {property.Name} {{ get; set; }}");
     }
 
     private void GenerateCollectionProperty(Property property)
     {
-        var propertyName = property.Name;
-        var immutableType = property.Type;
-        var mutableType = ConvertImmutableToMutable(immutableType);
-        var mutableItemType = GetMutableItemType(immutableType);
+        var mutableType = ConvertImmutableToMutable(property.Type);
+        var mutableItemType = GetMutableItemType(property.Type);
 
-        Line($"public {mutableType}<Mutable{mutableItemType}> {propertyName} {{ get; set; }}");
+        Summary($"Gets or sets the {property.PropertyType} {property.Name}.");
+        Line($"public {mutableType}<Mutable{mutableItemType}> {property.Name} {{ get; set; }}");
     }
 
     private string ConvertImmutableToMutable(string immutableType)
@@ -187,17 +177,19 @@ public class MutableWrapperTemplate(RecordTokens tokens) : IndentedCodeBuilder
     private void GenerateImplicitOperatorToMutable()
     {
         EmptyLine();
-        Line($"public static implicit operator Mutable{_recordName}({_recordName} record)");
+        Summary($"Performs an implicit conversion from <see cref=\"{_recordName}\"/> to <see cref=\"{_mutableRecordName}\"/>.");
+        Line($"public static implicit operator {_mutableRecordName}({_recordName} record)");
         Braces(() =>
         {
-            Line($"return new Mutable{_recordName}(record);");
+            Line($"return new {_mutableRecordName}(record);");
         });
     } 
 
     private void GenerateImplicitOperatorToRecord()
     {
         EmptyLine();
-        Line($"public static implicit operator {_recordName}(Mutable{_recordName} mutable)");
+        Summary($"Performs an implicit conversion from <see cref=\"{_mutableRecordName}\"/> to <see cref=\"{_recordName}\"/>.");
+        Line($"public static implicit operator {_recordName}({_mutableRecordName} mutable)");
         Braces(() =>
         {
             Line("return mutable.Build();");

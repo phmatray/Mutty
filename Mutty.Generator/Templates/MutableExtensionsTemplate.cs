@@ -6,6 +6,7 @@ namespace Mutty.Generator.Templates;
 public class MutableExtensionsTemplate(RecordTokens tokens) : IndentedCodeBuilder
 {
     private readonly string _recordName = tokens.RecordName;
+    private readonly string _mutableRecordName = tokens.MutableRecordName;
 
     public string Generate()
     {
@@ -26,28 +27,34 @@ public class MutableExtensionsTemplate(RecordTokens tokens) : IndentedCodeBuilde
 
     private void GenerateClass()
     {
+        Summary($"The mutable extensions for the <see cref=\"{_recordName}\"/> record.");
         Line($"public static class {_recordName}Extensions");
         Braces(() =>
         {
             // Produce method
-            Line($"public static {_recordName} Produce(this {_recordName} baseState, Action<Mutable{_recordName}> recipe)");
+            Summary($"Produces a new instance of the <see cref=\"{_recordName}\"/> record.");
+            Line($"public static {_recordName} Produce(this {_recordName} baseState, Action<{_mutableRecordName}> recipe)");
             Braces(() =>
             {
-                Line($"var draftState = new Mutable{_recordName}(baseState);");
+                Line($"var draftState = new {_mutableRecordName}(baseState);");
                 Line("recipe(draftState);");
                 Line("var resultState = draftState.Build();");
                 Line("return resultState;");
             });
 
-            // AsMutable method
             EmptyLine();
-            Line($"public static List<Mutable{_recordName}> AsMutable(this IEnumerable<{_recordName}> baseStates)");
-            Braces(() => { Line($"return baseStates.Select(e => new Mutable{_recordName}(e)).ToList();"); });
+
+            // AsMutable method
+            Summary($"Converts a collection of <see cref=\"{_recordName}\"/> records to mutable.");
+            Line($"public static List<{_mutableRecordName}> AsMutable(this IEnumerable<{_recordName}> baseStates)");
+            Braces(() => Line($"return baseStates.Select(e => new {_mutableRecordName}(e)).ToList();"));
+
+            EmptyLine();
 
             // ToImmutable method
-            EmptyLine();
-            Line($"public static ImmutableList<{_recordName}> ToImmutable(this IEnumerable<Mutable{_recordName}> mutableStates)");
-            Braces(() => { Line($"return mutableStates.Select(x => x.Build()).ToImmutableList();"); });
+            Summary($"Converts a collection of <see cref=\"{_mutableRecordName}\"/> records to immutable.");
+            Line($"public static ImmutableList<{_recordName}> ToImmutable(this IEnumerable<{_mutableRecordName}> mutableStates)");
+            Braces(() => Line("return mutableStates.Select(x => x.Build()).ToImmutableList();"));
         });
     }
 }
