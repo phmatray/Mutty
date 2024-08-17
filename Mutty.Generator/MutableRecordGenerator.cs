@@ -35,14 +35,21 @@ public class MutableRecordGenerator : IIncrementalGenerator
         {
             var recordTokens = new RecordTokens(record);
             var recordName = recordTokens.RecordName;
+            var namespaceName = recordTokens.NamespaceName;
 
             // Generate mutable wrapper
             var mutableWrapperSource = new MutableWrapperTemplate(recordTokens).GenerateCode();
-            AddSource(context, $"Mutable{recordName}.g.cs", mutableWrapperSource);
+            var mutableFileName = namespaceName is not null
+                ? $"{namespaceName}.Mutable{recordName}.g.cs"
+                : $"Mutable{recordName}.g.cs";
+            AddSource(context, mutableFileName, mutableWrapperSource);
 
             // Generate extension methods
             var mutableExtensionSource = new MutableExtensionsTemplate(recordTokens).GenerateCode();
-            AddSource(context, $"Extensions{recordName}.g.cs", mutableExtensionSource);
+            var extensionFileName = namespaceName is not null
+                ? $"{namespaceName}.Extensions{recordName}.g.cs"
+                : $"Extensions{recordName}.g.cs";
+            AddSource(context, extensionFileName, mutableExtensionSource);
         }
     }
 
