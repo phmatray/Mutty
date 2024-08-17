@@ -31,7 +31,7 @@ public class MutableWrapperTemplate(RecordTokens tokens) : IndentedCodeBuilder
     private void GenerateClass()
     {
         Summary($"The mutable wrapper for the <see cref=\"{_recordName}\"/> record.");
-        Line($"public class {_mutableRecordName}");
+        Line($"public partial class {_mutableRecordName}");
         Braces(() =>
         {
             Line($"private {_recordName} _record;");
