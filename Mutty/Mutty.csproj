@@ -7,4 +7,11 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference
+        Include="..\Mutty.Generator\Mutty.Generator.csproj"
+        PrivateAssets="contentfiles;build"
+        SetTargetFramework="TargetFramework=netstandard2.0" />
+  </ItemGroup>
+
 </Project>
