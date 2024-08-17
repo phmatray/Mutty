@@ -1,6 +1,6 @@
-using System.Collections.Generic;
 using System.Text;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using Mutty.Generator.Models;
@@ -9,40 +9,50 @@ using Mutty.Generator.Templates;
 namespace Mutty.Generator;
 
 [Generator]
-public class MutableRecordGenerator : ISourceGenerator
+public class MutableRecordGenerator : IIncrementalGenerator
 {
-    public void Initialize(GeneratorInitializationContext context)
+    public void Initialize(IncrementalGeneratorInitializationContext context)
     {
-        // Register a syntax receiver to look for record declarations
-        context.RegisterForSyntaxNotifications(() => new RecordSyntaxReceiver());
-    }
+        // Create a provider that finds all record declarations in the syntax tree
+        IncrementalValuesProvider<RecordDeclarationSyntax> recordDeclarations =
+            context
+                .SyntaxProvider
+                .CreateSyntaxProvider(
+                    predicate: static (s, _) => s is RecordDeclarationSyntax,
+                    transform: static (ctx, _) => (RecordDeclarationSyntax)ctx.Node)
+                .Where(static recordSyntax => recordSyntax is not null);
 
-    public void Execute(GeneratorExecutionContext context)
-    {
-        if (context.SyntaxReceiver is not RecordSyntaxReceiver receiver)
-            return;
+        // Combine the record declarations with the semantic model
+        IncrementalValuesProvider<(RecordDeclarationSyntax Syntax, INamedTypeSymbol Symbol)> recordsWithSymbols =
+            recordDeclarations
+                .Select((syntax, _) => syntax)
+                .Combine(context.CompilationProvider)
+                .Select((pair, _) =>
+                {
+                    var (syntax, compilation) = pair;
+                    var model = compilation.GetSemanticModel(syntax.SyntaxTree);
+                    var symbol = model.GetDeclaredSymbol(syntax);
+                    return (Syntax: syntax, Symbol: symbol as INamedTypeSymbol);
+                })
+                .Where(static record => record.Symbol is not null)!;
 
-        foreach (var recordSyntax in receiver.RecordDeclarations)
+        // Register the generation action
+        context.RegisterSourceOutput(recordsWithSymbols, (spc, record) =>
         {
-            var model = context.Compilation.GetSemanticModel(recordSyntax.SyntaxTree);
-            
-            if (model.GetDeclaredSymbol(recordSyntax) is not INamedTypeSymbol recordSymbol)
-                continue;
-            
-            var recordTokens = new RecordTokens(recordSymbol);
+            var recordTokens = new RecordTokens(record.Symbol);
             var recordName = recordTokens.RecordName;
 
             // Generate mutable wrapper
             var mutableWrapperSource = GenerateMutableWrapper(recordTokens);
-            AddSource(context, $"Mutable{recordName}.g.cs", mutableWrapperSource);
+            AddSource(spc, $"Mutable{recordName}.g.cs", mutableWrapperSource);
 
             // Generate extension methods
             var mutableExtensionSource = GenerateMutableExtensions(recordTokens);
-            AddSource(context, $"Extensions{recordName}.g.cs", mutableExtensionSource);
-        }
+            AddSource(spc, $"Extensions{recordName}.g.cs", mutableExtensionSource);
+        });
     }
-    
-    private static void AddSource(GeneratorExecutionContext context, string name, string source)
+
+    private static void AddSource(SourceProductionContext context, string name, string source)
     {
         context.AddSource(name, SourceText.From(source, Encoding.UTF8));
     }
@@ -55,18 +65,5 @@ public class MutableRecordGenerator : ISourceGenerator
     private static string GenerateMutableExtensions(RecordTokens tokens)
     {
         return new MutableExtensionsTemplate(tokens).Generate();
-    }
-
-    private class RecordSyntaxReceiver : ISyntaxReceiver
-    {
-        public List<RecordDeclarationSyntax> RecordDeclarations { get; } = [];
-
-        public void OnVisitSyntaxNode(SyntaxNode syntaxNode)
-        {
-            if (syntaxNode is RecordDeclarationSyntax recordDeclaration)
-            {
-                RecordDeclarations.Add(recordDeclaration);
-            }
-        }
     }
 }

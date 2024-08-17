@@ -1,5 +1,3 @@
-using System;
-
 namespace Mutty.Generator.CodeHelpers;
 
 public class IndentedCodeBuilder
