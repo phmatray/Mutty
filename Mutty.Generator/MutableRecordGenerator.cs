@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -22,22 +23,27 @@ public class MutableRecordGenerator : IIncrementalGenerator
             .Collect(); // Collect all relevant types
 
         // Register the generation action
-        context.RegisterSourceOutput(recordTypesWithAttribute, (spc, recordTypes) =>
+        context.RegisterSourceOutput(recordTypesWithAttribute, GenerateCode);
+    }
+    
+    private static void GenerateCode(SourceProductionContext context, ImmutableArray<INamedTypeSymbol> recordTypes)
+    {
+        if (recordTypes.IsDefaultOrEmpty)
+            return;
+        
+        foreach (var record in recordTypes)
         {
-            foreach (var record in recordTypes)
-            {
-                var recordTokens = new RecordTokens(record);
-                var recordName = recordTokens.RecordName;
+            var recordTokens = new RecordTokens(record);
+            var recordName = recordTokens.RecordName;
 
-                // Generate mutable wrapper
-                var mutableWrapperSource = GenerateMutableWrapper(recordTokens);
-                AddSource(spc, $"Mutable{recordName}.g.cs", mutableWrapperSource);
+            // Generate mutable wrapper
+            var mutableWrapperSource = new MutableWrapperTemplate(recordTokens).GenerateCode();
+            AddSource(context, $"Mutable{recordName}.g.cs", mutableWrapperSource);
 
-                // Generate extension methods
-                var mutableExtensionSource = GenerateMutableExtensions(recordTokens);
-                AddSource(spc, $"Extensions{recordName}.g.cs", mutableExtensionSource);
-            }
-        });
+            // Generate extension methods
+            var mutableExtensionSource = new MutableExtensionsTemplate(recordTokens).GenerateCode();
+            AddSource(context, $"Extensions{recordName}.g.cs", mutableExtensionSource);
+        }
     }
 
     private static bool CouldBeMutableGenerationAttribute(SyntaxNode syntaxNode)
@@ -91,15 +97,5 @@ public class MutableRecordGenerator : IIncrementalGenerator
     private static void AddSource(SourceProductionContext context, string name, string source)
     {
         context.AddSource(name, SourceText.From(source, Encoding.UTF8));
-    }
-
-    private static string GenerateMutableWrapper(RecordTokens tokens)
-    {
-        return new MutableWrapperTemplate(tokens).Generate();
-    }
-
-    private static string GenerateMutableExtensions(RecordTokens tokens)
-    {
-        return new MutableExtensionsTemplate(tokens).Generate();
     }
 }

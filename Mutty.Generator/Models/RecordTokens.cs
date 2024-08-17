@@ -1,6 +1,5 @@
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Mutty.Generator.Models;
 
@@ -18,45 +17,20 @@ public class RecordTokens
         NamespaceName = recordSymbol.ContainingNamespace.IsGlobalNamespace
             ? null
             : recordSymbol.ContainingNamespace.ToString();
-        
+
         Properties =
         [
             ..recordSymbol
                 .GetMembers()
                 .OfType<IPropertySymbol>()
                 .Where(p =>
-                    !p.IsReadOnly &&
-                    !p.IsImplicitlyDeclared &&
-                    p.DeclaredAccessibility == Accessibility.Public)
-                .Select(p => new Property(
-                    p.Name,
-                    p.Type.ToDisplayString(),
-                    GetPropertyType(p.Type))
-                )
+                    p is
+                    {
+                        IsReadOnly: false,
+                        IsImplicitlyDeclared: false,
+                        DeclaredAccessibility: Accessibility.Public
+                    })
+                .Select(p => new Property(p))
         ];
     }
-    
-    private PropertyType GetPropertyType(ITypeSymbol type)
-    {
-        if (type.TypeKind == TypeKind.Class && 
-            type.DeclaringSyntaxReferences.FirstOrDefault()?.GetSyntax() is RecordDeclarationSyntax)
-        {
-            return PropertyType.Record;
-        }
-        
-        // Detect immutable collections
-        if (type.OriginalDefinition.ToDisplayString().StartsWith("System.Collections.Immutable."))
-        {
-            return PropertyType.ImmutableCollection;
-        }
-
-        return PropertyType.Other;
-    }
-}
-
-public enum PropertyType
-{
-    Record,
-    ImmutableCollection,
-    Other
 }
