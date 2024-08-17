@@ -1,5 +1,3 @@
-using System.Collections.Immutable;
-
 namespace Mutty.ConsoleApp;
 
 [MutableGeneration]
@@ -19,4 +17,3 @@ public record Module(string Name, ImmutableList<Lesson> Lessons);
 
 [MutableGeneration]
 public record Lesson(string Title, string Content);
-

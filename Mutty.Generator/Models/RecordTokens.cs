@@ -7,14 +7,17 @@ namespace Mutty.Generator.Models;
 public class RecordTokens
 {
     public string RecordName { get; }
-    public string NamespaceName { get; }
+    public string? NamespaceName { get; }
     public ImmutableArray<Property> Properties { get; }
 
     public RecordTokens(INamedTypeSymbol recordSymbol)
     {
         RecordName = recordSymbol.Name;
-        NamespaceName = recordSymbol.ContainingNamespace.ToDisplayString();
 
+        NamespaceName = recordSymbol.ContainingNamespace.IsGlobalNamespace
+            ? null
+            : recordSymbol.ContainingNamespace.ToString();
+        
         Properties =
         [
             ..recordSymbol

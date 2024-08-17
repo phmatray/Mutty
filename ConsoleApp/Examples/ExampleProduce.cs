@@ -1,5 +1,3 @@
-using Mutty.ConsoleApp.Abstractions;
-
 namespace Mutty.ConsoleApp.Examples;
 
 public sealed class ExampleProduce : ExampleBase

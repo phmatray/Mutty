@@ -1,5 +1,3 @@
-using System.Collections.Immutable;
-
 namespace Mutty.ConsoleApp.Abstractions;
 
 public static class Factories

@@ -1,5 +1,3 @@
-using Spectre.Console;
-
 namespace Mutty.ConsoleApp.Abstractions;
 
 public abstract class ExampleBase
