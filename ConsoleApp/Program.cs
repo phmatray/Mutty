@@ -1,6 +1,7 @@
 ﻿var examples = new Dictionary<string, ExampleBase>
 {
     { "Basic Example (Manual Mutation)", new ExampleBasic() },
+    { "Create/Finish Draft Example", new ExampleCreateFinishDraft() },
     { "Produce Example (Fluent Mutation)", new ExampleProduce() },
     { "ImmutableArray Example", new ExampleImmutableArray() }
 };

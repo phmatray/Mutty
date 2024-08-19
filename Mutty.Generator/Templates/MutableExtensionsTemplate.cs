@@ -43,6 +43,20 @@ public class MutableExtensionsTemplate(RecordTokens tokens) : IndentedCodeBuilde
             });
 
             EmptyLine();
+            
+            // CreateDraft method
+            Summary($"Creates a new instance of the <see cref=\"{_mutableRecordName}\"/> record.");
+            Line($"public static {_mutableRecordName} CreateDraft(this {_recordName} baseState)");
+            Braces(() => Line($"return new {_mutableRecordName}(baseState);"));
+            
+            EmptyLine();
+            
+            // FinishDraft method
+            Summary($"Finishes the draft and builds a new instance of the <see cref=\"{_recordName}\"/> record.");
+            Line($"public static {_recordName} FinishDraft(this {_mutableRecordName} draft)");
+            Braces(() => Line("return draft.Build();"));
+            
+            EmptyLine();
 
             // AsMutable method
             Summary($"Converts a collection of <see cref=\"{_recordName}\"/> records to mutable.");

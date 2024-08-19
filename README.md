@@ -8,10 +8,24 @@ Mutty is a C# Incremental Source Generator that provides a convenient way to wor
 - **Deep Nesting Support**: Easily handle complex nested structures without tedious and error-prone manual code.
 - **Immutable to Mutable Conversion**: Seamlessly switch between immutable and mutable versions of your records using implicit conversions.
 - **Ideal for Flux Architecture**: Works great with Flux architecture, allowing you to manage state changes in a predictable and immutable way.
+- **Helper Methods**:
+    - Provides a `Produce` method to apply mutations to your immutable records using the generated mutable wrappers.
+    - Also includes `CreateDraft` and `FinishDraft` methods for more granular control...
+    - ...and `AsMutable` and `ToImmutable` extension methods for collections.
 
-## How It Works
+## How Mutty Works
 
-Mutty uses a custom attribute `[MutableGeneration]` to mark immutable records for which you want to generate mutable wrappers. The Incremental Source Generator detects these records and generates corresponding mutable wrapper classes and extension methods.
+Mutty uses a custom attribute `[MutableGeneration]` to mark immutable records for which you want to generate mutable wrappers.
+The Incremental Source Generator detects these records and generates corresponding mutable wrapper classes and extension methods.
+
+The basic idea is that with Mutty, you will apply all your changes to a temporary mutable wrapper, which acts as a proxy of the immutable record.
+Once all your mutations are completed, Mutty will produce the next immutable state based on the mutations to the mutable wrapper.
+This means that you can interact with your data by simply modifying it while keeping all the benefits of immutable data.
+
+![Mutty Overview](docs/images/mutty-overview.png)
+
+Using Mutty is like having a personal assistant. The assistant takes a letter (the current state) and gives you a copy (mutable wrapper) to jot changes onto.
+Once you are done, the assistant will take your draft and produce the real immutable, final letter for you (the next state).
 
 ### Example Usage
 
@@ -216,4 +230,4 @@ If you want to contribute to Mutty or report issues:
 
 ### License
 
-Mutty is open-source software licensed under the [MIT License](LICENSE).
+Mutty is open-source software licensed under the [Apache License 2.0](LICENSE).
