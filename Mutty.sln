@@ -1,10 +1,10 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp", "ConsoleApp\ConsoleApp.csproj", "{6F989D78-74A3-498F-837D-18C5AD0E43F5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp", "src\ConsoleApp\ConsoleApp.csproj", "{6F989D78-74A3-498F-837D-18C5AD0E43F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mutty.Generator", "Mutty.Generator\Mutty.Generator.csproj", "{05C38793-20A7-4117-8751-6A36F722A0B6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mutty", "src\Mutty\Mutty.csproj", "{8DC24BDF-06F3-496B-BB88-7324F94F5DC9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mutty", "Mutty\Mutty.csproj", "{8DC24BDF-06F3-496B-BB88-7324F94F5DC9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mutty.Generator", "src\Mutty.Generator\Mutty.Generator.csproj", "{05C38793-20A7-4117-8751-6A36F722A0B6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
