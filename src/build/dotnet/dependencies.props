@@ -1,0 +1,50 @@
+<Project>
+  <!-- Dependencies custom properties -->
+  <PropertyGroup>
+    <IsTestProject Condition="'$(IsTestProject)' == ''">false</IsTestProject>
+    <IsConsoleProject Condition="'$(IsConsoleProject)' == ''">false</IsConsoleProject>
+    <IncludeAnalyzers Condition="'$(IncludeAnalyzers)' == ''">true</IncludeAnalyzers>
+  </PropertyGroup>
+
+  <!-- Central Package Version Management -->
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <!-- Indicate to NuGet that Directory.Packages.props isn't being used since this repo is using Directory.Build.props instead -->
+    <CentralPackageVersionsFileImported>true</CentralPackageVersionsFileImported>
+  </PropertyGroup>
+
+  <!-- Conditional Package Versions for Analyzers -->
+  <ItemGroup Condition="'$(IncludeAnalyzers)' == 'true'">
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" PrivateAssets="all" />
+    <PackageReference Include="StyleCop.Analyzers" PrivateAssets="all" />
+    <PackageReference Include="Roslynator.Analyzers" PrivateAssets="all" />
+  </ItemGroup>
+
+  <!-- Universal Development Dependencies -->
+  <!-- These dependencies are used in both production and test projects -->
+  <ItemGroup>
+    <PackageReference Include="DotNet.ReproducibleBuilds" PrivateAssets="all"/>
+    <PackageReference Include="MinVer" PrivateAssets="all"/>
+  </ItemGroup>
+
+  <!-- Library-Specific Dependencies -->
+  <!-- These dependencies are only used in production projects -->
+  <ItemGroup Condition="'$(IsTestProject)' != 'true'">
+    <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" />
+  </ItemGroup>
+
+  <!-- Test-Specific Dependencies -->
+  <!-- These dependencies are only used in test projects -->
+  <ItemGroup Condition="'$(IsTestProject)' == 'true'">
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="Microsoft.Extensions.TimeProvider.Testing" />
+    <PackageReference Include="coverlet.collector" PrivateAssets="all" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio" PrivateAssets="all" />
+    <PackageReference Include="Snapshooter.Xunit" />
+    <PackageReference Include="FluentAssertions" />
+    <PackageReference Include="FluentAssertions.Analyzers" PrivateAssets="all" />
+    <PackageReference Include="Moq" />
+  </ItemGroup>
+</Project>

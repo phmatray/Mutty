@@ -1,0 +1,6 @@
+<Project>
+  <!-- Configuration for Documentation -->
+  <PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+</Project>

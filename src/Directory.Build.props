@@ -1,0 +1,9 @@
+<Project>
+  <Import Project="build/dotnet/common.props"/>
+  <Import Project="build/dotnet/dependencies.props"/>
+  <Import Project="build/dotnet/code-analysis.props"/>
+  <Import Project="build/dotnet/continuous-integration.props"/>
+  <Import Project="build/dotnet/packaging.props"/>
+  <Import Project="build/dotnet/source-link.props"/>
+  <Import Project="build/dotnet/file-inclusion.props"/>
+</Project>

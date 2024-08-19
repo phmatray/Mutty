@@ -1,10 +1,29 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp", "src\ConsoleApp\ConsoleApp.csproj", "{6F989D78-74A3-498F-837D-18C5AD0E43F5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp", "src\demo\ConsoleApp\ConsoleApp.csproj", "{6F989D78-74A3-498F-837D-18C5AD0E43F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mutty", "src\Mutty\Mutty.csproj", "{8DC24BDF-06F3-496B-BB88-7324F94F5DC9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mutty", "src\library\Mutty\Mutty.csproj", "{8DC24BDF-06F3-496B-BB88-7324F94F5DC9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mutty.Generator", "src\Mutty.Generator\Mutty.Generator.csproj", "{05C38793-20A7-4117-8751-6A36F722A0B6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mutty.Generator", "src\library\Mutty.Generator\Mutty.Generator.csproj", "{05C38793-20A7-4117-8751-6A36F722A0B6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{1F6F9D2E-F39A-4146-B951-C2313F68ACE5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "demo", "demo", "{59B34D71-FC18-438B-A8C3-83485895DF9B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "library", "library", "{E081D3BF-D62B-4728-91EC-B8F00FBB3F39}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{582B0464-D23B-4FA0-BEC9-6DAC02716E56}"
+	ProjectSection(SolutionItems) = preProject
+		src\build\dotnet\code-analysis.props = src\build\dotnet\code-analysis.props
+		src\build\dotnet\CodeAnalysis.ruleset = src\build\dotnet\CodeAnalysis.ruleset
+		src\build\dotnet\common.props = src\build\dotnet\common.props
+		src\build\dotnet\continuous-integration.props = src\build\dotnet\continuous-integration.props
+		src\build\dotnet\dependencies.props = src\build\dotnet\dependencies.props
+		src\build\dotnet\documentation.props = src\build\dotnet\documentation.props
+		src\build\dotnet\file-inclusion.props = src\build\dotnet\file-inclusion.props
+		src\build\dotnet\packaging.props = src\build\dotnet\packaging.props
+		src\build\dotnet\source-link.props = src\build\dotnet\source-link.props
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,5 +43,13 @@ Global
 		{8DC24BDF-06F3-496B-BB88-7324F94F5DC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8DC24BDF-06F3-496B-BB88-7324F94F5DC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8DC24BDF-06F3-496B-BB88-7324F94F5DC9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{59B34D71-FC18-438B-A8C3-83485895DF9B} = {1F6F9D2E-F39A-4146-B951-C2313F68ACE5}
+		{E081D3BF-D62B-4728-91EC-B8F00FBB3F39} = {1F6F9D2E-F39A-4146-B951-C2313F68ACE5}
+		{6F989D78-74A3-498F-837D-18C5AD0E43F5} = {59B34D71-FC18-438B-A8C3-83485895DF9B}
+		{8DC24BDF-06F3-496B-BB88-7324F94F5DC9} = {E081D3BF-D62B-4728-91EC-B8F00FBB3F39}
+		{05C38793-20A7-4117-8751-6A36F722A0B6} = {E081D3BF-D62B-4728-91EC-B8F00FBB3F39}
+		{582B0464-D23B-4FA0-BEC9-6DAC02716E56} = {1F6F9D2E-F39A-4146-B951-C2313F68ACE5}
 	EndGlobalSection
 EndGlobal

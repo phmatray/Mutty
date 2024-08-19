@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>Mutty.ConsoleApp</RootNamespace>
+    <IsPackable>false</IsPackable>
+    <NoWarn>IDE0059;SA1402</NoWarn>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\library\Mutty\Mutty.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference
+        Include="..\..\library\Mutty.Generator\Mutty.Generator.csproj"
+        OutputItemType="Analyzer"
+        ReferenceOutputAssembly="false" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Spectre.Console" Version="0.49.1" />
+  </ItemGroup>
+
+</Project>

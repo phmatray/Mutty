@@ -1,0 +1,23 @@
+<Project>
+  <!-- Packaging -->
+  <PropertyGroup Label="Package Information">
+    <EnablePackageValidation>true</EnablePackageValidation>
+
+    <Description>
+      Mutty is a C# Incremental Source Generator that provides a convenient way to work with immutable records 
+      by generating mutable wrappers for them. These wrappers allow you to modify properties of immutable records 
+      in a clean, controlled manner and then convert them back into immutable records.
+    </Description>
+    <Authors>Philippe Matray</Authors>
+    <Copyright>Atypical Consulting SRL</Copyright>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/phmatray/Mutty</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/phmatray/Mutty</PackageProjectUrl>
+    <PackageReleaseNotes>https://github.com/phmatray/Mutty/releases</PackageReleaseNotes>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageIcon>logo.png</PackageIcon>
+    <PackageTags>blazor, immutable, immer, state management, .NET, C#</PackageTags>
+  </PropertyGroup>
+</Project>
