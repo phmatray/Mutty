@@ -42,13 +42,10 @@ public class PropertyModel(IPropertySymbol propertySymbol)
         }
 
         // Detect immutable collections
-        if (type.OriginalDefinition
+        return type.OriginalDefinition
             .ToDisplayString()
-            .StartsWith("System.Collections.Immutable.", StringComparison.Ordinal))
-        {
-            return PropertyType.ImmutableCollection;
-        }
-
-        return PropertyType.Other;
+            .StartsWith("System.Collections.Immutable.", StringComparison.Ordinal)
+            ? PropertyType.ImmutableCollection
+            : PropertyType.Other;
     }
 }
