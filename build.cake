@@ -6,7 +6,6 @@ var configuration = Argument("configuration", "Release");
 //////////////////////////////////////////////////////////////////////
 
 Task("Clean")
-    .WithCriteria(c => HasArgument("rebuild"))
     .Does(() =>
 {
     CleanDirectory("./.artifacts");
@@ -24,6 +23,7 @@ Task("Build")
         NoLogo = true,
         NoIncremental = context.HasArgument("rebuild"),
         MSBuildSettings = new DotNetMSBuildSettings()
+            .WithProperty("BuildInParallel", "false")
             .TreatAllWarningsAs(MSBuildTreatAllWarningsAs.Error)
     });
 });
@@ -54,6 +54,7 @@ Task("Package")
         NoBuild = true,
         OutputDirectory = "./.artifacts",
         MSBuildSettings = new DotNetMSBuildSettings()
+            .WithProperty("BuildInParallel", "false")
             .TreatAllWarningsAs(MSBuildTreatAllWarningsAs.Error)
     });
 });

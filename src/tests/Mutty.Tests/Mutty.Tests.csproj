@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <NoWarn>SA0001;SA1402;SA1600;IDE0005</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\library\Mutty\Mutty.csproj" />
+    <ProjectReference Include="..\..\library\Mutty.Generator\Mutty.Generator.csproj" OutputItemType="Analyzer" />
+  </ItemGroup>
+
+</Project>

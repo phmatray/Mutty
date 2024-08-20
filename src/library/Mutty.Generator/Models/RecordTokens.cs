@@ -29,14 +29,14 @@ public class RecordTokens
             ..recordSymbol
                 .GetMembers()
                 .OfType<IPropertySymbol>()
-                .Where(p =>
+                .Where(static p =>
                     p is
                     {
                         IsReadOnly: false,
                         IsImplicitlyDeclared: false,
                         DeclaredAccessibility: Accessibility.Public
                     })
-                .Select(p => new PropertyModel(p))
+                .Select(static p => new PropertyModel(p))
         ];
     }
 

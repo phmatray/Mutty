@@ -18,7 +18,7 @@ public sealed class ExampleDeepNestingArray : ExampleBase
         var student = Factories.CreateJohnDoe();
 
         // Use the Produce method to create an updated person object with mutations
-        var updatedStudent = student.Produce(mutable =>
+        var updatedStudent = student.Produce(static mutable =>
         {
             // You can use the Add, Insert, Remove, and RemoveAt methods to mutate the immutable list
             mutable.Enrollments[0].Course.Modules[0].Lessons[0].Title = "=== NEW TITLE ===";

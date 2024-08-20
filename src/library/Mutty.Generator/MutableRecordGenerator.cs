@@ -93,7 +93,7 @@ public class MutableRecordGenerator : IIncrementalGenerator
 
     private static bool HasMutableGenerationAttribute(ISymbol type)
     {
-        return type.GetAttributes().Any(a =>
+        return type.GetAttributes().Any(static a =>
             a.AttributeClass?.Name == "MutableGenerationAttribute" &&
             a.AttributeClass.ContainingNamespace is
             {
