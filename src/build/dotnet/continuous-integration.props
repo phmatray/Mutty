@@ -1,6 +1,6 @@
 <Project>
   <!-- Continuous Integration -->
-  <PropertyGroup Label="Deterministic Build">
+  <PropertyGroup Label="Deterministic Build" Condition="'$(GITHUB_ACTIONS)' == 'true'">
     <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
   </PropertyGroup>
 </Project>

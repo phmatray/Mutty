@@ -18,6 +18,6 @@
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageIcon>logo.png</PackageIcon>
-    <PackageTags>blazor, immutable, immer, state management, .NET, C#</PackageTags>
+    <PackageTags>immutable, immer, state management, .NET, C#</PackageTags>
   </PropertyGroup>
 </Project>

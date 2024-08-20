@@ -7,7 +7,7 @@
     <Nullable>enable</Nullable>
     <RootNamespace>Mutty.ConsoleApp</RootNamespace>
     <IsPackable>false</IsPackable>
-    <NoWarn>IDE0059;SA1402</NoWarn>
+    <NoWarn>IDE0007;IDE0017;IDE0059;SA1402</NoWarn>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 

@@ -1,17 +1,56 @@
-# Mutty: Immutable Record Mutation Made Easy
+# Mutty
 
-Mutty is a C# Incremental Source Generator that provides a convenient way to work with immutable records by generating mutable wrappers for them. These wrappers allow you to modify properties of immutable records in a clean, controlled manner and then convert them back into immutable records.
+Immutable Record Mutation Made Easy
 
-## Features
+| ![Logo Mutty](https://raw.githubusercontent.com/phmatray/Mutty/main/logo.png) | Mutty is a C# Incremental Source Generator that provides a convenient way to work with immutable records by generating mutable wrappers for them. These wrappers allow you to modify properties of immutable records in a clean, controlled manner and then convert them back into immutable records. |
+|-------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 
-- **Automated Mutable Wrappers**: Automatically generates mutable wrapper classes for your immutable records using Roslyn's Incremental Source Generation.
-- **Deep Nesting Support**: Easily handle complex nested structures without tedious and error-prone manual code.
-- **Immutable to Mutable Conversion**: Seamlessly switch between immutable and mutable versions of your records using implicit conversions.
-- **Ideal for Flux Architecture**: Works great with Flux architecture, allowing you to manage state changes in a predictable and immutable way.
-- **Helper Methods**:
-    - Provides a `Produce` method to apply mutations to your immutable records using the generated mutable wrappers.
-    - Also includes `CreateDraft` and `FinishDraft` methods for more granular control...
-    - ...and `AsMutable` and `ToImmutable` extension methods for collections.
+[![phmatray - Mutty](https://img.shields.io/static/v1?label=phmatray&message=Mutty&color=blue&logo=github)](https://github.com/phmatray/Mutty "Go to GitHub repo")
+[![License: Apache-2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
+[![stars - Mutty](https://img.shields.io/github/stars/phmatray/Mutty?style=social)](https://github.com/phmatray/Mutty)
+[![forks - Mutty](https://img.shields.io/github/forks/phmatray/Mutty?style=social)](https://github.com/phmatray/Mutty)
+
+[![GitHub tag](https://img.shields.io/github/tag/phmatray/Mutty?include_prereleases=&sort=semver&color=blue)](https://github.com/phmatray/Mutty/releases/)
+[![issues - Mutty](https://img.shields.io/github/issues/phmatray/Mutty)](https://github.com/phmatray/Mutty/issues)
+[![GitHub pull requests](https://img.shields.io/github/issues-pr/phmatray/Mutty)](https://github.com/phmatray/Mutty/pulls)
+[![GitHub contributors](https://img.shields.io/github/contributors/phmatray/Mutty)](https://github.com/phmatray/Mutty/graphs/contributors)
+[![GitHub last commit](https://img.shields.io/github/last-commit/phmatray/Mutty)](https://github.com/phmatray/Mutty/commits/master)
+
+---
+
+## 📝 Table of Contents
+
+<!-- TOC -->
+* [Mutty](#mutty)
+  * [📝 Table of Contents](#-table-of-contents)
+  * [📌 Features](#-features)
+    * [Current Features](#current-features)
+  * [How Mutty Works](#how-mutty-works)
+    * [Example Usage](#example-usage)
+    * [How to Use the Generated Code](#how-to-use-the-generated-code)
+      * [Deep Nesting Example](#deep-nesting-example)
+      * [Comparison with `with` Notation](#comparison-with-with-notation)
+    * [Ideal for Flux Architecture](#ideal-for-flux-architecture)
+    * [Installation](#installation)
+    * [Best Practices](#best-practices)
+    * [Contributing](#contributing)
+    * [License](#license)
+<!-- TOC -->
+
+---
+
+## 📌 Features
+
+### Current Features
+
+- [x] **Automated Mutable Wrappers**: Automatically generates mutable wrapper classes for your immutable records using Roslyn's Incremental Source Generation.
+- [x] **Deep Nesting Support**: Easily handle complex nested structures without tedious and error-prone manual code.
+- [x] **Immutable to Mutable Conversion**: Seamlessly switch between immutable and mutable versions of your records using implicit conversions.
+- [x] **Ideal for Flux Architecture**: Works great with Flux architecture, allowing you to manage state changes in a predictable and immutable way.
+- [x] **Helper Methods**:
+    - [x] Provides a `Produce` method to apply mutations to your immutable records using the generated mutable wrappers.
+    - [x] Also includes `CreateDraft` and `FinishDraft` methods for more granular control...
+    - [x] ...and `AsMutable` and `ToImmutable` extension methods for collections.
 
 ## How Mutty Works
 
