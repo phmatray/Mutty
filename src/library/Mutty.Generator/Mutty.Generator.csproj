@@ -8,7 +8,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <NoWarn>CA1822</NoWarn>
+    <NoWarn>CA1822;NU5128</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
