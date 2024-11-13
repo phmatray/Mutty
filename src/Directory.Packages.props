@@ -23,7 +23,7 @@
     <PackageVersion Include="MinVer" Version="5.0.0" />
     <PackageVersion Include="Moq" Version="4.20.70" />
     <PackageVersion Include="NUnit" Version="4.1.0"/>
-    <PackageVersion Include="NUnit.Analyzers" Version="4.3.0" PrivateAssets="all"/>
+    <PackageVersion Include="NUnit.Analyzers" Version="4.4.0" PrivateAssets="all"/>
     <PackageVersion Include="NUnit3TestAdapter" Version="4.6.0"/>
     <PackageVersion Include="Roslynator.Analyzers" Version="4.12.4" />
     <PackageVersion Include="Snapshooter.Xunit" Version="0.14.1" />
