@@ -2,15 +2,14 @@
 // Atypical Consulting SRL licenses this file to you under the Apache 2.0 license.
 // See the LICENSE file in the project root for full license information.
 
-var examples = new Dictionary<string, ExampleBase>
-{
-    { "Basic Example (Manual Mutation)", new ExampleBasic() },
-    { "Create/Finish Draft Example", new ExampleCreateFinishDraft() },
-    { "Produce Example (Fluent Mutation)", new ExampleProduce() },
-    { "ImmutableArray Example", new ExampleDeepNestingArray() }
-};
+Dictionary<string, ExampleBase> examples = [];
 
-var selectedExample = Prompt(
+examples.Add("Basic Example (Manual Mutation)", new ExampleBasic());
+examples.Add("Create/Finish Draft Example", new ExampleCreateFinishDraft());
+examples.Add("Produce Example (Fluent Mutation)", new ExampleProduce());
+examples.Add("ImmutableArray Example", new ExampleDeepNestingArray());
+
+string selectedExample = Prompt(
     new SelectionPrompt<string>()
         .Title("[bold yellow]Select an example to run:[/]")
         .PageSize(10)
@@ -22,4 +21,4 @@ WriteLine();
 examples[selectedExample].Run();
 
 MarkupLine("\n[bold green]Example finished. Press any key to exit...[/]");
-Console.ReadKey(true);
+System.Console.ReadKey(true);

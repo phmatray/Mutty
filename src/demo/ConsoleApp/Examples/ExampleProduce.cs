@@ -15,10 +15,10 @@ public sealed class ExampleProduce : ExampleBase
         DisplayHeader("Produce Example: Fluent Mutation");
 
         // Initialize original immutable objects
-        var student = Factories.CreateJohnDoe();
+        Student student = Factories.CreateJohnDoe();
 
         // Use the Produce method to create an updated person object with mutations
-        var updatedStudent = student.Produce(static mutable =>
+        Student updatedStudent = student.Produce(static mutable =>
         {
             mutable.Email = "jack.doe@example.com";
             mutable.Details.Name = "Jack Doe";

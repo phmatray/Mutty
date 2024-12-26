@@ -15,10 +15,10 @@ public sealed class ExampleDeepNestingArray : ExampleBase
         DisplayHeader("ImmutableArray Example");
 
         // Initialize original immutable objects
-        var student = Factories.CreateJohnDoe();
+        Student student = Factories.CreateJohnDoe();
 
         // Use the Produce method to create an updated person object with mutations
-        var updatedStudent = student.Produce(static mutable =>
+        Student updatedStudent = student.Produce(static mutable =>
         {
             // You can use the Add, Insert, Remove, and RemoveAt methods to mutate the immutable list
             mutable.Enrollments[0].Course.Modules[0].Lessons[0].Title = "=== NEW TITLE ===";

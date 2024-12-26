@@ -35,16 +35,16 @@ public class PropertyModel(IPropertySymbol propertySymbol)
     /// <returns>The property type.</returns>
     private static PropertyType GetPropertyType(ITypeSymbol type)
     {
-        if (type.TypeKind == TypeKind.Class &&
-            type.DeclaringSyntaxReferences.FirstOrDefault()?.GetSyntax() is RecordDeclarationSyntax)
+        if (type.TypeKind == TypeKind.Class
+            && type.DeclaringSyntaxReferences.FirstOrDefault()?.GetSyntax() is RecordDeclarationSyntax)
         {
             return PropertyType.Record;
         }
 
         // Detect immutable collections
-        return type.OriginalDefinition
+        return (type.OriginalDefinition
             .ToDisplayString()
-            .StartsWith("System.Collections.Immutable.", StringComparison.Ordinal)
+            .StartsWith("System.Collections.Immutable.", StringComparison.Ordinal))
             ? PropertyType.ImmutableCollection
             : PropertyType.Other;
     }

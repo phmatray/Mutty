@@ -8,4 +8,3 @@ global using Mutty.ConsoleApp.Examples;
 global using Spectre.Console;
 
 global using static Spectre.Console.AnsiConsole;
-global using Console = System.Console;

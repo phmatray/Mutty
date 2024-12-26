@@ -18,7 +18,7 @@ public sealed class ExampleBasic : ExampleBase
         Student student = Factories.CreateJohnDoe();
 
         // Create a mutable version of the person object
-        var mutable = new MutableStudent(student);
+        MutableStudent mutable = new(student);
 
         // Mutate properties using the mutable wrapper
         mutable.Email = "jack.doe@example.com";
@@ -26,7 +26,7 @@ public sealed class ExampleBasic : ExampleBase
         mutable.Details.Age = 36;
 
         // Build the updated immutable person object
-        var updatedStudent = mutable.Build();
+        Student updatedStudent = mutable.Build();
 
         // Display the original and updated person objects
         DisplayStudentTree(student);
