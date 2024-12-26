@@ -69,7 +69,7 @@ public sealed class IndentedStringBuilder(byte indent = 0, byte indentSize = 2)
     {
         DoIndent();
 
-        foreach (var str in value)
+        foreach (string str in value)
         {
             _stringBuilder.Append(str);
         }
@@ -86,7 +86,7 @@ public sealed class IndentedStringBuilder(byte indent = 0, byte indentSize = 2)
     {
         DoIndent();
 
-        foreach (var chr in value)
+        foreach (char chr in value)
         {
             _stringBuilder.Append(chr);
         }
@@ -136,7 +136,7 @@ public sealed class IndentedStringBuilder(byte indent = 0, byte indentSize = 2)
     /// <returns>This builder so that additional calls can be chained.</returns>
     public IndentedStringBuilder AppendLines(string value, bool skipFinalNewline = false)
     {
-        using (var reader = new StringReader(value))
+        using (StringReader reader = new(value))
         {
             var first = true;
 

@@ -15,7 +15,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{582B0464-D23B-4FA0-BEC9-6DAC02716E56}"
 	ProjectSection(SolutionItems) = preProject
 		src\build\dotnet\code-analysis.props = src\build\dotnet\code-analysis.props
-		src\build\dotnet\CodeAnalysis.ruleset = src\build\dotnet\CodeAnalysis.ruleset
 		src\build\dotnet\common.props = src\build\dotnet\common.props
 		src\build\dotnet\continuous-integration.props = src\build\dotnet\continuous-integration.props
 		src\build\dotnet\dependencies.props = src\build\dotnet\dependencies.props
