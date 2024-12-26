@@ -18,10 +18,10 @@ public class MutableStudentTests
     public void ShouldCreateMutableStudent()
     {
         // Arrange
-        var student = Factories.CreateJohnDoe();
+        Student student = Factories.CreateJohnDoe();
 
         // Act
-        var mutable = new MutableStudent(student);
+        MutableStudent mutable = new(student);
 
         // Assert
         Assert.Multiple(() =>

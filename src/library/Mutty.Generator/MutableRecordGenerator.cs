@@ -23,7 +23,7 @@ public class MutableRecordGenerator : IIncrementalGenerator
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
         // Create a provider that finds all records with the MutableGenerationAttribute
-        var recordTypesWithAttribute = context.SyntaxProvider
+        IncrementalValueProvider<ImmutableArray<INamedTypeSymbol>> recordTypesWithAttribute = context.SyntaxProvider
             .CreateSyntaxProvider(
                 predicate: static (syntaxNode, _) => CouldBeMutableGenerationAttribute(syntaxNode),
                 transform: static (ctx, _) => GetRecordTypeWithAttribute(ctx)!)
@@ -41,22 +41,22 @@ public class MutableRecordGenerator : IIncrementalGenerator
             return;
         }
 
-        foreach (var record in recordTypes)
+        foreach (INamedTypeSymbol record in recordTypes)
         {
-            var recordTokens = new RecordTokens(record);
-            var recordName = recordTokens.RecordName;
-            var namespaceName = recordTokens.NamespaceName;
+            RecordTokens recordTokens = new(record);
+            string recordName = recordTokens.RecordName;
+            string? namespaceName = recordTokens.NamespaceName;
 
             // Generate mutable wrapper
-            var mutableWrapperSource = new MutableWrapperTemplate(recordTokens).GenerateCode();
-            var mutableFileName = namespaceName is not null
+            string mutableWrapperSource = new MutableWrapperTemplate(recordTokens).GenerateCode();
+            string mutableFileName = (namespaceName is not null)
                 ? $"{namespaceName}.Mutable{recordName}.g.cs"
                 : $"Mutable{recordName}.g.cs";
             AddSource(context, mutableFileName, mutableWrapperSource);
 
             // Generate extension methods
-            var mutableExtensionSource = new MutableExtensionsTemplate(recordTokens).GenerateCode();
-            var extensionFileName = namespaceName is not null
+            string mutableExtensionSource = new MutableExtensionsTemplate(recordTokens).GenerateCode();
+            string extensionFileName = (namespaceName is not null)
                 ? $"{namespaceName}.Extensions{recordName}.g.cs"
                 : $"Extensions{recordName}.g.cs";
             AddSource(context, extensionFileName, mutableExtensionSource);
@@ -70,11 +70,11 @@ public class MutableRecordGenerator : IIncrementalGenerator
             return false;
         }
 
-        var name = ExtractName(attribute.Name);
+        string? name = ExtractName(attribute.Name);
         return name is "MutableGeneration" or "MutableGenerationAttribute";
     }
 
-    private static INamedTypeSymbol? GetRecordTypeWithAttribute(GeneratorSyntaxContext context)
+    private static INamedTypeSymbol? GetRecordTypeWithAttribute(in GeneratorSyntaxContext context)
     {
         var attributeSyntax = (AttributeSyntax)context.Node;
 
@@ -85,20 +85,22 @@ public class MutableRecordGenerator : IIncrementalGenerator
         }
 
         // Get the semantic model and check the type symbol
-        var type = context.SemanticModel.GetDeclaredSymbol(recordDeclaration);
+        INamedTypeSymbol? type = context.SemanticModel.GetDeclaredSymbol(recordDeclaration);
 
         // Check if the type symbol has the MutableGenerationAttribute
-        return type is null || !HasMutableGenerationAttribute(type) ? null : type;
+        return (type is null || !HasMutableGenerationAttribute(type)) ? null : type;
     }
 
     private static bool HasMutableGenerationAttribute(ISymbol type)
     {
         return type.GetAttributes().Any(static a =>
-            a.AttributeClass?.Name == "MutableGenerationAttribute" &&
-            a.AttributeClass.ContainingNamespace is
+            a.AttributeClass is
             {
-                Name: "Mutty",
-                ContainingNamespace.IsGlobalNamespace: true
+                Name: "MutableGenerationAttribute", ContainingNamespace:
+                {
+                    Name: "Mutty",
+                    ContainingNamespace.IsGlobalNamespace: true
+                }
             });
     }
 
@@ -112,7 +114,7 @@ public class MutableRecordGenerator : IIncrementalGenerator
         };
     }
 
-    private static void AddSource(SourceProductionContext context, string name, string source)
+    private static void AddSource(in SourceProductionContext context, string name, string source)
     {
         context.AddSource(name, SourceText.From(source, Encoding.UTF8));
     }

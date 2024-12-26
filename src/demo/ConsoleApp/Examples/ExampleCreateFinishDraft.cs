@@ -15,10 +15,10 @@ public sealed class ExampleCreateFinishDraft : ExampleBase
         DisplayHeader("Basic Example: Manual Mutation");
 
         // Initialize original immutable objects
-        var student = Factories.CreateJohnDoe();
+        Student student = Factories.CreateJohnDoe();
 
         // Create a mutable version of the person object
-        var mutable = student.CreateDraft();
+        MutableStudent mutable = student.CreateDraft();
 
         // Mutate properties using the mutable wrapper
         mutable.Email = "jack.doe@example.com";
@@ -26,7 +26,7 @@ public sealed class ExampleCreateFinishDraft : ExampleBase
         mutable.Details.Age = 36;
 
         // Build the updated immutable person object
-        var updatedStudent = mutable.FinishDraft();
+        Student updatedStudent = mutable.FinishDraft();
 
         // Display the original and updated person objects
         DisplayStudentTree(student);

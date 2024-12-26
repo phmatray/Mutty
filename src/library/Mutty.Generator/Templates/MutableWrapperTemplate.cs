@@ -66,16 +66,20 @@ public class MutableWrapperTemplate(RecordTokens tokens) : IndentedCodeBuilder
         {
             Line("_record = record;");
             EmptyLine();
-            foreach (var property in _properties)
+            foreach (PropertyModel property in _properties)
             {
                 switch (property.PropertyType)
                 {
                     case PropertyType.ImmutableCollection:
-                        Line($"{property.Name} = _record.{property.Name}.AsMutable();");
-                        break;
+                        {
+                            Line($"{property.Name} = _record.{property.Name}.AsMutable();");
+                            break;
+                        }
                     default:
-                        Line($"{property.Name} = _record.{property.Name};");
-                        break;
+                        {
+                            Line($"{property.Name} = _record.{property.Name};");
+                            break;
+                        }
                 }
             }
         });
@@ -92,19 +96,25 @@ public class MutableWrapperTemplate(RecordTokens tokens) : IndentedCodeBuilder
             Braces(
                 () =>
                 {
-                    foreach (var property in _properties)
+                    foreach (PropertyModel property in _properties)
                     {
                         switch (property.PropertyType)
                         {
                             case PropertyType.Record:
-                                Line($"{property.Name} = this.{property.Name},");
-                                break;
+                                {
+                                    Line($"{property.Name} = this.{property.Name},");
+                                    break;
+                                }
                             case PropertyType.ImmutableCollection:
-                                Line($"{property.Name} = this.{property.Name}.ToImmutable(),");
-                                break;
+                                {
+                                    Line($"{property.Name} = this.{property.Name}.ToImmutable(),");
+                                    break;
+                                }
                             case PropertyType.Other:
-                                Line($"{property.Name} = this.{property.Name},");
-                                break;
+                                {
+                                    Line($"{property.Name} = this.{property.Name},");
+                                    break;
+                                }
                             default:
                                 throw new ArgumentOutOfRangeException();
                         }
@@ -116,21 +126,27 @@ public class MutableWrapperTemplate(RecordTokens tokens) : IndentedCodeBuilder
 
     private void GenerateProperties()
     {
-        foreach (var property in _properties)
+        foreach (PropertyModel property in _properties)
         {
             EmptyLine();
 
             switch (property.PropertyType)
             {
                 case PropertyType.Record:
-                    GenerateNestedMutableProperty(property);
-                    break;
+                    {
+                        GenerateNestedMutableProperty(property);
+                        break;
+                    }
                 case PropertyType.ImmutableCollection:
-                    GenerateCollectionProperty(property);
-                    break;
+                    {
+                        GenerateCollectionProperty(property);
+                        break;
+                    }
                 case PropertyType.Other:
-                    GenerateSimpleProperty(property);
-                    break;
+                    {
+                        GenerateSimpleProperty(property);
+                        break;
+                    }
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -145,18 +161,20 @@ public class MutableWrapperTemplate(RecordTokens tokens) : IndentedCodeBuilder
 
     private void GenerateNestedMutableProperty(PropertyModel property)
     {
-        var mutableTypeName = $"Mutable{property.Type.Split('.').Last()}";
+        string mutableTypeName = $"Mutable{property.Type.Split('.').Last()}";
+        string propertyType = property.PropertyType.ToString();
 
-        Summary($"Gets or sets the {property.PropertyType} {property.Name}.");
+        Summary($"Gets or sets the {propertyType} {property.Name}.");
         Line($"public {mutableTypeName} {property.Name} {{ get; set; }}");
     }
 
     private void GenerateCollectionProperty(PropertyModel property)
     {
-        var mutableType = ConvertImmutableToMutable(property.Type);
-        var mutableItemType = GetMutableItemType(property.Type);
+        string mutableType = ConvertImmutableToMutable(property.Type);
+        string mutableItemType = GetMutableItemType(property.Type);
+        string propertyType = property.PropertyType.ToString();
 
-        Summary($"Gets or sets the {property.PropertyType} {property.Name}.");
+        Summary($"Gets or sets the {propertyType} {property.Name}.");
         Line($"public {mutableType}<Mutable{mutableItemType}> {property.Name} {{ get; set; }}");
     }
 
@@ -178,10 +196,10 @@ public class MutableWrapperTemplate(RecordTokens tokens) : IndentedCodeBuilder
 
     private string GetMutableItemType(string immutableType)
     {
-        var genericTypeIndex = immutableType.IndexOf('<');
+        int genericTypeIndex = immutableType.IndexOf('<');
         if (genericTypeIndex > 0)
         {
-            var itemType = immutableType.Substring(genericTypeIndex + 1, immutableType.Length - genericTypeIndex - 2);
+            string itemType = immutableType.Substring(genericTypeIndex + 1, immutableType.Length - genericTypeIndex - 2);
             return itemType.Split('.').Last();
         }
 
