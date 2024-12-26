@@ -31,17 +31,17 @@ public abstract class ExampleBase
     protected static void DisplayStudentTree(Student student, int maxDepth = 1)
     {
         // Create the tree root
-        var root = new Tree($"[bold yellow]Student: {student.Details.Name}[/]");
+        Tree root = new($"[bold yellow]Student: {student.Details.Name}[/]");
 
         // Add student details
-        var detailsNode = root.AddNode("[blue]Details[/]");
+        TreeNode detailsNode = root.AddNode("[blue]Details[/]");
         detailsNode.AddNode($"[green]Email:[/] {student.Email}");
         detailsNode.AddNode($"[green]Age:[/] {student.Details.Age}");
 
         // Add enrollments
-        var enrollmentsNode = root.AddNode("[blue]Enrollments[/]");
+        TreeNode enrollmentsNode = root.AddNode("[blue]Enrollments[/]");
 
-        foreach (var enrollment in student.Enrollments)
+        foreach (Enrollment enrollment in student.Enrollments)
         {
             AddEnrollmentNode(enrollment, enrollmentsNode, maxDepth, 1);
         }
@@ -52,14 +52,14 @@ public abstract class ExampleBase
 
     private static void AddEnrollmentNode(Enrollment enrollment, TreeNode parentNode, int maxDepth, int currentDepth)
     {
-        var enrollmentNode = parentNode.AddNode($"[yellow]Course: {enrollment.Course.Title}[/]");
+        TreeNode enrollmentNode = parentNode.AddNode($"[yellow]Course: {enrollment.Course.Title}[/]");
         enrollmentNode.AddNode($"[green]Enrollment Date:[/] {enrollment.EnrollmentDate.ToShortDateString()}");
         enrollmentNode.AddNode($"[green]Description:[/] {enrollment.Course.Description}");
 
         if (currentDepth < maxDepth)
         {
-            var modulesNode = enrollmentNode.AddNode("[blue]Modules[/]");
-            foreach (var module in enrollment.Course.Modules)
+            TreeNode modulesNode = enrollmentNode.AddNode("[blue]Modules[/]");
+            foreach (CourseModule module in enrollment.Course.Modules)
             {
                 AddModuleNode(module, modulesNode, maxDepth, currentDepth + 1);
             }
@@ -72,12 +72,12 @@ public abstract class ExampleBase
 
     private static void AddModuleNode(CourseModule courseModule, TreeNode parentNode, int maxDepth, int currentDepth)
     {
-        var moduleNode = parentNode.AddNode($"[yellow]Module: {courseModule.Name}[/]");
+        TreeNode moduleNode = parentNode.AddNode($"[yellow]Module: {courseModule.Name}[/]");
 
         if (currentDepth < maxDepth)
         {
-            var lessonsNode = moduleNode.AddNode("[blue]Lessons[/]");
-            foreach (var lesson in courseModule.Lessons)
+            TreeNode lessonsNode = moduleNode.AddNode("[blue]Lessons[/]");
+            foreach (Lesson lesson in courseModule.Lessons)
             {
                 AddLessonNode(lesson, lessonsNode, maxDepth, currentDepth + 1);
             }
@@ -90,11 +90,13 @@ public abstract class ExampleBase
 
     private static void AddLessonNode(Lesson lesson, TreeNode parentNode, int maxDepth, int currentDepth)
     {
-        var lessonNode = parentNode.AddNode($"[yellow]Lesson: {lesson.Title}[/]");
+        TreeNode lessonNode = parentNode.AddNode($"[yellow]Lesson: {lesson.Title}[/]");
 
-        if (currentDepth < maxDepth)
+        if (currentDepth >= maxDepth)
         {
-            lessonNode.AddNode($"[green]Content:[/] {lesson.Content}");
+            return;
         }
+
+        lessonNode.AddNode($"[green]Content:[/] {lesson.Content}");
     }
 }

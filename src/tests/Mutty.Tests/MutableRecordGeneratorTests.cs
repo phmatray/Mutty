@@ -2,6 +2,7 @@
 // Atypical Consulting SRL licenses this file to you under the Apache 2.0 license.
 // See the LICENSE file in the project root for full license information.
 
+using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Mutty.Generator;
@@ -20,14 +21,14 @@ public class MutableRecordGeneratorTests
     public void ShouldGenerateMutableRecord()
     {
         // Arrange
-        var input = GetInput();
-        var outputMutable = GetOutputMutable();
-        var outputExtensions = GetOutputExtensions();
+        string input = GetInput();
+        string outputMutable = GetOutputMutable();
+        string outputExtensions = GetOutputExtensions();
 
         // Act
-        var generatedOutputs = GetGeneratedOutput(input);
-        var resultMutable = generatedOutputs.First(x => x.Contains("class MutableStudentDetails"));
-        var resultExtensions = generatedOutputs.First(x => x.Contains("class StudentDetailsExtensions"));
+        string[] generatedOutputs = GetGeneratedOutput(input);
+        string resultMutable = generatedOutputs.First(x => x.Contains("class MutableStudentDetails"));
+        string resultExtensions = generatedOutputs.First(x => x.Contains("class StudentDetailsExtensions"));
 
         // Assert
         Assert.Multiple(() =>
@@ -39,34 +40,34 @@ public class MutableRecordGeneratorTests
 
     private static string[] GetGeneratedOutput(string sourceCode)
     {
-        var syntaxTree = CSharpSyntaxTree.ParseText(sourceCode);
-        var references = AppDomain.CurrentDomain.GetAssemblies()
+        SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(sourceCode);
+        IEnumerable<MetadataReference> references = AppDomain.CurrentDomain.GetAssemblies()
             .Where(static assembly => !assembly.IsDynamic)
             .Select(static assembly => MetadataReference.CreateFromFile(assembly.Location))
             .Cast<MetadataReference>()
             .Concat([MetadataReference.CreateFromFile(typeof(MutableGenerationAttribute).Assembly.Location)]);
 
-        var compilation = CSharpCompilation.Create(
+        CSharpCompilation compilation = CSharpCompilation.Create(
             "SourceGeneratorTests",
             [syntaxTree],
             references,
             new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
 
         // Source Generator to test
-        var generator = new MutableRecordGenerator();
+        MutableRecordGenerator generator = new();
 
-        CSharpGeneratorDriver.Create(generator)
+        _ = CSharpGeneratorDriver.Create(generator)
             .RunGeneratorsAndUpdateCompilation(
                 compilation,
-                out var outputCompilation,
-                out var diagnostics);
+                out Compilation outputCompilation,
+                out ImmutableArray<Diagnostic> diagnostics);
 
         // optional
         Assert.That(
             diagnostics.Where(static d => d.Severity == DiagnosticSeverity.Error),
             Is.Empty);
 
-        var generatedOutput = outputCompilation
+        string[] generatedOutput = outputCompilation
             .SyntaxTrees
             .Skip(1)
             .Select(static tree => tree.ToString())

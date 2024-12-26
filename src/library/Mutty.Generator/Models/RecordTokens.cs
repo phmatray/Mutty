@@ -20,24 +20,22 @@ public class RecordTokens
     {
         RecordName = recordSymbol.Name;
 
-        NamespaceName = recordSymbol.ContainingNamespace.IsGlobalNamespace
+        NamespaceName = (recordSymbol.ContainingNamespace.IsGlobalNamespace)
             ? null
             : recordSymbol.ContainingNamespace.ToString();
 
-        Properties =
-        [
-            ..recordSymbol
-                .GetMembers()
-                .OfType<IPropertySymbol>()
-                .Where(static p =>
-                    p is
-                    {
-                        IsReadOnly: false,
-                        IsImplicitlyDeclared: false,
-                        DeclaredAccessibility: Accessibility.Public
-                    })
-                .Select(static p => new PropertyModel(p))
-        ];
+        Properties = recordSymbol
+            .GetMembers()
+            .OfType<IPropertySymbol>()
+            .Where(static p =>
+                p is
+                {
+                    IsReadOnly: false,
+                    IsImplicitlyDeclared: false,
+                    DeclaredAccessibility: Accessibility.Public
+                })
+            .Select(static p => new PropertyModel(p))
+            .ToImmutableArray();
     }
 
     /// <summary>
