@@ -32,6 +32,5 @@
     <PackageVersion Include="Snapshooter.Xunit" Version="0.14.1" />
     <PackageVersion Include="Spectre.Console" Version="0.50.0" />
     <PackageVersion Include="coverlet.collector" Version="6.0.4" />
-    <PackageVersion Include="System.Formats.Asn1" Version="9.0.4" />
   </ItemGroup>
 </Project>
