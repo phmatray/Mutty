@@ -168,7 +168,7 @@ class Build : NukeBuild
         .Requires(() => Configuration.Equals(Configuration.Release))
         .Produces(ArtifactsDirectory / ArtifactsType)
         .DependsOn(Compile, UnitTests)
-        .Triggers(PublishToGithub, PublishToNuGet)
+        .Triggers(PublishToGithub, PublishToNuGet, ValidateNuGetPackage)
         .Executes(() =>
         {
             Log.Information("Packing NuGet package");
@@ -286,30 +286,27 @@ class Build : NukeBuild
         await GitHubTasks.GitHubClient.Repository.Release.UploadAsset(release, assetUpload);
     }
     
-    // Target InstallNuGetValidator => _ => _
-    //     .DependsOn(Pack)
-    //     .Executes(() =>
-    //     {
-    //         // Ensure the tool is installed globally
-    //         ProcessTasks.StartProcess("dotnet", "tool update Meziantou.Framework.NuGetPackageValidation.Tool --global");
-    //     });
-    //
-    // Target ValidateNuGetPackage => _ => _
-    //     .DependsOn(InstallNuGetValidator)
-    //     .Executes(() =>
-    //     {
-    //         // Assuming NuGet packages are placed in "./.artifacts" directory
-    //         var nuGetPackages = (RootDirectory / ".artifacts").GlobFiles("*.nupkg");
-    //         foreach (var package in nuGetPackages)
-    //         {
-    //             // Run validation for each package
-    //             IProcess processExitCode = ProcessTasks.StartProcess("dotnet", $"meziantou.validate-nuget-package {package}");
-    //             
-    //             // Check if the process was successful
-    //             if (processExitCode.ExitCode != 0)
-    //             {
-    //                 throw new Exception("NuGet package validation failed.");
-    //             }
-    //         }
-    //     });
+    Target InstallNuGetValidator => _ => _
+        .Description("Restore local dotnet tools (includes meziantou.validate-nuget-package)")
+        .DependsOn(Pack)
+        .Executes(() =>
+        {
+            // Restore local dotnet tools declared in .config/dotnet-tools.json
+            ProcessTasks.StartProcess("dotnet", "tool restore").AssertZeroExitCode();
+        });
+
+    Target ValidateNuGetPackage => _ => _
+        .Description("Validate packed NuGet packages with Meziantou's validator")
+        .DependsOn(InstallNuGetValidator)
+        .Executes(() =>
+        {
+            // Validate each .nupkg in the artifacts directory
+            var nuGetPackages = (RootDirectory / ".artifacts").GlobFiles("*.nupkg");
+            foreach (var package in nuGetPackages)
+            {
+                Log.Information("Validating NuGet package: {Package}", package);
+                IProcess process = ProcessTasks.StartProcess("dotnet", $"tool run meziantou.validate-nuget-package {package}");
+                process.AssertZeroExitCode();
+            }
+        });
 }
