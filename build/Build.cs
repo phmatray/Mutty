@@ -69,7 +69,7 @@ class Build : NukeBuild
     [OctoVersion(
         AutoDetectBranch = true,
         UpdateBuildNumber = true,
-        Framework = "net9.0",
+        Framework = "net10.0",
         Major = 1)]
     readonly OctoVersionInfo OctoVersionInfo;
 
