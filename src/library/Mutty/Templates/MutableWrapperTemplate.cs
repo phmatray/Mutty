@@ -178,7 +178,7 @@ public class MutableWrapperTemplate(RecordTokens tokens) : IndentedCodeBuilder
         string propertyType = property.PropertyType.ToString();
 
         // Only add "Mutable" prefix to custom record types, not to primitive/built-in types
-        string finalItemType = IsBuiltInType(itemType) ? itemType : $"Mutable{itemType}";
+        string finalItemType = (IsBuiltInType(itemType)) ? itemType : $"Mutable{itemType}";
 
         Summary($"Gets or sets the {propertyType} {property.Name}.");
         Line($"public {mutableType}<{finalItemType}> {property.Name} {{ get; set; }}");
