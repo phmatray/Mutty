@@ -174,11 +174,14 @@ public class MutableWrapperTemplate(RecordTokens tokens) : IndentedCodeBuilder
     private void GenerateCollectionProperty(PropertyModel property)
     {
         string mutableType = ConvertImmutableToMutable(property.Type);
-        string mutableItemType = GetMutableItemType(property.Type);
+        string itemType = GetMutableItemType(property.Type);
         string propertyType = property.PropertyType.ToString();
 
+        // Only add "Mutable" prefix to custom record types, not to primitive/built-in types
+        string finalItemType = IsBuiltInType(itemType) ? itemType : $"Mutable{itemType}";
+
         Summary($"Gets or sets the {propertyType} {property.Name}.");
-        Line($"public {mutableType}<Mutable{mutableItemType}> {property.Name} {{ get; set; }}");
+        Line($"public {mutableType}<{finalItemType}> {property.Name} {{ get; set; }}");
     }
 
     private string ConvertImmutableToMutable(string immutableType)
@@ -219,6 +222,23 @@ public class MutableWrapperTemplate(RecordTokens tokens) : IndentedCodeBuilder
         }
 
         return immutableType;
+    }
+
+    private bool IsBuiltInType(string typeName)
+    {
+        // C# built-in types and common .NET types that should not get "Mutable" prefix
+        string[] builtInTypes =
+        [
+            "string", "int", "long", "short", "byte", "sbyte",
+            "uint", "ulong", "ushort", "decimal", "double", "float",
+            "bool", "char", "object",
+            "DateTime", "DateTimeOffset", "TimeSpan", "Guid",
+            "Int16", "Int32", "Int64", "UInt16", "UInt32", "UInt64",
+            "Single", "Double", "Decimal", "Boolean", "String", "Char", "Object",
+            "Byte", "SByte"
+        ];
+
+        return builtInTypes.Contains(typeName);
     }
 
     private void GenerateImplicitOperatorToMutable()
