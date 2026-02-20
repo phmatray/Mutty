@@ -39,7 +39,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Setup .NET 9 runtime
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: '9.0.x'
       - name: 'Cache: .nuke/temp, ~/.nuget/packages'
