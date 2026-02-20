@@ -44,7 +44,6 @@
     <PackageReference Include="NUnit" />
     <PackageReference Include="NUnit.Analyzers" PrivateAssets="all"/>
     <PackageReference Include="NUnit3TestAdapter" />
-    <PackageReference Include="System.Formats.Asn1" />
     <PackageReference Include="coverlet.collector" PrivateAssets="all" />
   </ItemGroup>
 </Project>
