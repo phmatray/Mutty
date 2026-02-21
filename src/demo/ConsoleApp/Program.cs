@@ -8,6 +8,7 @@ examples.Add("Basic Example (Manual Mutation)", new ExampleBasic());
 examples.Add("Create/Finish Draft Example", new ExampleCreateFinishDraft());
 examples.Add("Produce Example (Fluent Mutation)", new ExampleProduce());
 examples.Add("ImmutableArray Example", new ExampleDeepNestingArray());
+examples.Add("ImmutableList<string> Example (Fix #85)", new ExampleCollectionOfBasicTypes());
 
 string selectedExample = Prompt(
     new SelectionPrompt<string>()
