@@ -20,7 +20,26 @@ public class SnapshotTests : GeneratorTests
     /// </summary>
     private static string GetMutableCode(string[] generated, string recordName)
     {
-        return generated.First(x => x.Contains($"class Mutable{recordName}"));
+        var mutableClassName = $"class Mutable{recordName}";
+        var match = generated.FirstOrDefault(x => x.Contains(mutableClassName));
+        
+        if (match == null)
+        {
+            // Provide detailed diagnostics if the expected class wasn't generated
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine($"ERROR: Could not find '{mutableClassName}' in generated output.");
+            sb.AppendLine($"Generated {generated.Length} file(s):");
+            for (int i = 0; i < generated.Length; i++)
+            {
+                var preview = generated[i].Length > 100 
+                    ? generated[i].Substring(0, 100) + "..." 
+                    : generated[i];
+                sb.AppendLine($"  File {i}: {preview.Replace("\n", " ")}");
+            }
+            return sb.ToString();
+        }
+        
+        return match;
     }
     
     /// <summary>
