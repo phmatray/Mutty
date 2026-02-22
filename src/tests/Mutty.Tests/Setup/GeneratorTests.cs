@@ -25,10 +25,12 @@ public abstract class GeneratorTests
             references,
             new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
 
-        // Source Generator to test
-        Attributes generator = new();
+        // Source Generators to test (all three are needed for complete generation)
+        Attributes attributesGenerator = new();
+        MutableRecordGenerator mutableRecordGenerator = new();
+        MutableExtensionsGenerator mutableExtensionsGenerator = new();
 
-        _ = CSharpGeneratorDriver.Create(generator)
+        _ = CSharpGeneratorDriver.Create(attributesGenerator, mutableRecordGenerator, mutableExtensionsGenerator)
             .RunGeneratorsAndUpdateCompilation(
                 compilation,
                 out Compilation outputCompilation,

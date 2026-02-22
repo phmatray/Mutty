@@ -11,6 +11,8 @@
     <ProjectReference Include="..\..\library\Mutty\Mutty.csproj" OutputItemType="Analyzer" />
   </ItemGroup>
 
-  <ItemGroup />
+  <ItemGroup>
+    <PackageReference Include="Verify.NUnit" />
+  </ItemGroup>
 
 </Project>
