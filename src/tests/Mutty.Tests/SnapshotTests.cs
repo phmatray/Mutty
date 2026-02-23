@@ -26,7 +26,7 @@ public class SnapshotTests : GeneratorTests
         if (match == null)
         {
             // Provide detailed diagnostics if the expected class wasn't generated
-            var sb = new System.Text.StringBuilder();
+            System.Text.StringBuilder sb = new();
             sb.AppendLine($"ERROR: Could not find '{mutableClassName}' in generated output.");
             sb.AppendLine($"Generated {generated.Length} file(s):");
             for (int i = 0; i < generated.Length; i++)
@@ -38,7 +38,7 @@ public class SnapshotTests : GeneratorTests
             }
             return sb.ToString();
         }
-        
+
         return match;
     }
     
