@@ -101,11 +101,20 @@ public class SnapshotTests : GeneratorTests
     [Test]
     public Task GeneratesCorrectCodeForNestedRecordAsync()
     {
-        string source = CreateInput("""
+        // Each record needs its own [MutableGeneration] attribute
+        string source = """
+            using System.Collections.Immutable;
+            using Mutty;
+            using Mutty.Tests.Setup;
+
+            namespace Mutty.Tests;
+
+            [MutableGeneration]
             public record Address(string Street, string City);
             
+            [MutableGeneration]
             public record Person(string Name, Address HomeAddress);
-            """);
+            """;
 
         string[] generated = GetGeneratedOutput(source);
         
