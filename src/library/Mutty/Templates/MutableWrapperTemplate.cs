@@ -226,8 +226,8 @@ public class MutableWrapperTemplate(RecordTokens tokens) : IndentedCodeBuilder
         string itemType = GetMutableItemType(property.Type);
         string propertyType = property.PropertyType.ToString();
 
-        // Only add "Mutable" prefix to custom record types, not to primitive/built-in types
-        string finalItemType = (IsBuiltInType(itemType)) ? itemType : $"Mutable{itemType}";
+        // Recursively convert the item type (handles nested generics and primitives)
+        string finalItemType = ConvertTypeToMutable(itemType);
 
         Summary($"Gets or sets the {propertyType} {property.Name}.");
         Line($"public {mutableType}<{finalItemType}> {property.Name} {{ get; set; }}");
@@ -266,8 +266,10 @@ public class MutableWrapperTemplate(RecordTokens tokens) : IndentedCodeBuilder
         int genericTypeIndex = immutableType.IndexOf('<');
         if (genericTypeIndex > 0)
         {
+            // Extract everything between the outermost < and >
+            // Don't split by '.' here as it breaks nested generics like ImmutableDictionary<string, int>
             string itemType = immutableType.Substring(genericTypeIndex + 1, immutableType.Length - genericTypeIndex - 2);
-            return itemType.Split('.').Last();
+            return itemType;
         }
 
         return immutableType;
@@ -308,6 +310,120 @@ public class MutableWrapperTemplate(RecordTokens tokens) : IndentedCodeBuilder
         ];
 
         return builtInTypes.Contains(typeName);
+    }
+
+    private string ConvertTypeToMutable(string typeName)
+    {
+        // Handle nullable types (e.g., "string?" → "string")
+        bool isNullable = typeName.EndsWith("?", StringComparison.Ordinal);
+        string baseType = (isNullable) ? typeName.TrimEnd('?') : typeName;
+
+        // Check if it's a built-in type
+        if (IsBuiltInType(baseType))
+        {
+            return typeName; // Return as-is (with nullable marker if present)
+        }
+
+        // Check if it's a generic type (contains '<')
+        int genericIndex = baseType.IndexOf('<');
+        if (genericIndex > 0)
+        {
+            // Extract the base generic type and type arguments
+            string genericBaseName = baseType.Substring(0, genericIndex);
+            string typeArgs = baseType.Substring(genericIndex + 1, baseType.Length - genericIndex - 2);
+
+            // Convert immutable collection to mutable collection
+            string mutableBaseName = ConvertImmutableToMutableSimple(genericBaseName);
+
+            // Recursively convert type arguments
+            string convertedTypeArgs = ConvertGenericTypeArguments(typeArgs);
+
+            return $"{mutableBaseName}<{convertedTypeArgs}>{((isNullable) ? "?" : string.Empty)}";
+        }
+
+        // It's a custom record type - add "Mutable" prefix
+        string mutableType = $"Mutable{baseType.Split('.').Last()}";
+        return $"{mutableType}{((isNullable) ? "?" : string.Empty)}";
+    }
+
+    private string ConvertGenericTypeArguments(string typeArgs)
+    {
+        // Split type arguments by comma, handling nested generics properly
+        List<string> args = SplitGenericArguments(typeArgs);
+        List<string> convertedArgs = args.Select(arg => ConvertTypeToMutable(arg.Trim())).ToList();
+        return string.Join(", ", convertedArgs);
+    }
+
+    private List<string> SplitGenericArguments(string typeArgs)
+    {
+        List<string> result = [];
+        int depth = 0;
+        int startIndex = 0;
+
+        for (int i = 0; i < typeArgs.Length; i++)
+        {
+            char c = typeArgs[i];
+            
+            if (c == '<')
+            {
+                depth++;
+            }
+            else if (c == '>')
+            {
+                depth--;
+            }
+            else if (c == ',' && depth == 0)
+            {
+                result.Add(typeArgs.Substring(startIndex, i - startIndex));
+                startIndex = i + 1;
+            }
+        }
+
+        // Add the last argument
+        if (startIndex < typeArgs.Length)
+        {
+            result.Add(typeArgs.Substring(startIndex));
+        }
+
+        return result;
+    }
+
+    private string ConvertImmutableToMutableSimple(string typeName)
+    {
+        // Simple mapping for immutable collection short names
+        Dictionary<string, string> immutableMap = new()
+        {
+            { "ImmutableArray", "List" },
+            { "ImmutableDictionary", "Dictionary" },
+            { "ImmutableHashSet", "HashSet" },
+            { "ImmutableList", "List" },
+            { "ImmutableQueue", "Queue" },
+            { "ImmutableSortedDictionary", "SortedDictionary" },
+            { "ImmutableSortedSet", "SortedSet" },
+            { "ImmutableStack", "Stack" }
+        };
+
+        // Extract the short type name (e.g., "ImmutableList" from "System.Collections.Immutable.ImmutableList")
+        string shortName = typeName.Split('.').Last();
+
+        // Check if it matches any immutable collection type
+        if (immutableMap.TryGetValue(shortName, out string? mutableName))
+        {
+            return mutableName;
+        }
+
+        // Also check the full name for exact match
+        const string fullPrefix = "System.Collections.Immutable.";
+        if (typeName.StartsWith(fullPrefix, StringComparison.Ordinal))
+        {
+            string typeWithoutPrefix = typeName.Substring(fullPrefix.Length);
+            if (immutableMap.TryGetValue(typeWithoutPrefix, out string? mutableNameFromFull))
+            {
+                return mutableNameFromFull;
+            }
+        }
+
+        return typeName;
     }
 
     private void GenerateImplicitOperatorToMutable()
