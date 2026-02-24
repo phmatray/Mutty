@@ -36,6 +36,7 @@ public class SnapshotTests : GeneratorTests
                     : generated[i];
                 sb.AppendLine($"  File {i}: {preview.Replace("\n", " ")}");
             }
+
             return sb.ToString();
         }
 
