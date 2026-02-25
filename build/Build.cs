@@ -248,29 +248,49 @@ class Build : NukeBuild
             var latestChangeLog = changeLogSectionEntries
                 .Aggregate((c, n) => c + Environment.NewLine + n);
 
-            var newRelease = new NewRelease(releaseTag)
+            // Check if release already exists
+            Release existingRelease = null;
+            try
             {
-                TargetCommitish = GitRepository.Branch,
-                Draft = true,
-                Name = $"v{releaseTag}",
-                Prerelease = !string.IsNullOrEmpty(OctoVersionInfo.PreReleaseTag),
-                Body = latestChangeLog
-            };
+                existingRelease = await GitHubTasks
+                    .GitHubClient
+                    .Repository
+                    .Release
+                    .Get(owner, name, releaseTag);
+                Log.Information("Release {ReleaseTag} already exists, skipping creation", releaseTag);
+            }
+            catch (Octokit.NotFoundException)
+            {
+                // Release doesn't exist, we'll create it
+                Log.Information("Release {ReleaseTag} does not exist, creating new release", releaseTag);
+            }
 
-            var createdRelease = await GitHubTasks
-                .GitHubClient
-                .Repository
-                .Release.Create(owner, name, newRelease);
+            if (existingRelease == null)
+            {
+                var newRelease = new NewRelease(releaseTag)
+                {
+                    TargetCommitish = GitRepository.Branch,
+                    Draft = true,
+                    Name = $"v{releaseTag}",
+                    Prerelease = !string.IsNullOrEmpty(OctoVersionInfo.PreReleaseTag),
+                    Body = latestChangeLog
+                };
 
-            ArtifactsDirectory.GlobFiles(ArtifactsType)
-                .Where(x => !x.Name.EndsWith(ExcludedArtifactsType))
-                .ForEach(async void (x) => await UploadReleaseAssetToGithub(createdRelease, x));
+                var createdRelease = await GitHubTasks
+                    .GitHubClient
+                    .Repository
+                    .Release.Create(owner, name, newRelease);
 
-            await GitHubTasks
-                .GitHubClient
-                .Repository
-                .Release
-                .Edit(owner, name, createdRelease.Id, new ReleaseUpdate { Draft = false });
+                ArtifactsDirectory.GlobFiles(ArtifactsType)
+                    .Where(x => !x.Name.EndsWith(ExcludedArtifactsType))
+                    .ForEach(async void (x) => await UploadReleaseAssetToGithub(createdRelease, x));
+
+                await GitHubTasks
+                    .GitHubClient
+                    .Repository
+                    .Release
+                    .Edit(owner, name, createdRelease.Id, new ReleaseUpdate { Draft = false });
+            }
         });
 
     static async Task UploadReleaseAssetToGithub(Release release, string asset)
