@@ -297,6 +297,12 @@ public class MutableWrapperTemplate(RecordTokens tokens) : IndentedCodeBuilder
 
     private bool IsBuiltInType(string typeName)
     {
+        // Strip nullable suffix before checking — nullable primitives (e.g. string?, int?)
+        // are still value/primitive types and should not get the "Mutable" prefix.
+        string baseTypeName = (typeName.EndsWith("?", StringComparison.Ordinal))
+            ? typeName.TrimEnd('?')
+            : typeName;
+
         // C# built-in types and common .NET types that should not get "Mutable" prefix
         string[] builtInTypes =
         [
@@ -309,7 +315,7 @@ public class MutableWrapperTemplate(RecordTokens tokens) : IndentedCodeBuilder
             "Byte", "SByte"
         ];
 
-        return builtInTypes.Contains(typeName);
+        return builtInTypes.Contains(baseTypeName);
     }
 
     private string ConvertTypeToMutable(string typeName)

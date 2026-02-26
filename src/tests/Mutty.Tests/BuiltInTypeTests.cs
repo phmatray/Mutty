@@ -118,9 +118,9 @@ public class BuiltInTypeTests
         // Arrange
         string input = """
             using Mutty;
-            
+
             namespace Mutty.Tests;
-            
+
             [MutableGeneration]
             public record NumericRecord(
                 byte ByteValue,
@@ -144,6 +144,81 @@ public class BuiltInTypeTests
             Assert.That(resultMutable, Does.Contain("long LongValue"));
             Assert.That(resultMutable, Does.Contain("float FloatValue"));
             Assert.That(resultMutable, Does.Contain("double DoubleValue"));
+        });
+    }
+
+    /// <summary>
+    /// Regression test for issue #95: nullable primitive types should not receive Mutable prefix.
+    /// </summary>
+    [Test]
+    public void ShouldGenerateMutableWithNullablePrimitiveProperties()
+    {
+        // Arrange
+        string input = """
+            using Mutty;
+
+            namespace Mutty.Tests;
+
+            [MutableGeneration]
+            public record NullablePrimitivesRecord(
+                string? NullableName,
+                int? NullableAge,
+                bool? NullableFlag,
+                double? NullableScore,
+                decimal? NullablePrice);
+            """;
+
+        // Act
+        string[] generatedOutputs = GetGeneratedOutput(input);
+        string resultMutable = generatedOutputs.First(x => x.Contains("class MutableNullablePrimitivesRecord"));
+
+        // Assert — nullable primitives must NOT get the "Mutable" prefix
+        Assert.Multiple(() =>
+        {
+            Assert.That(resultMutable, Does.Contain("string? NullableName"));
+            Assert.That(resultMutable, Does.Contain("int? NullableAge"));
+            Assert.That(resultMutable, Does.Contain("bool? NullableFlag"));
+            Assert.That(resultMutable, Does.Contain("double? NullableScore"));
+            Assert.That(resultMutable, Does.Contain("decimal? NullablePrice"));
+            Assert.That(resultMutable, Does.Not.Contain("Mutablestring"));
+            Assert.That(resultMutable, Does.Not.Contain("Mutableint"));
+            Assert.That(resultMutable, Does.Not.Contain("Mutablebool"));
+            Assert.That(resultMutable, Does.Not.Contain("Mutabledouble"));
+            Assert.That(resultMutable, Does.Not.Contain("Mutabledecimal"));
+        });
+    }
+
+    /// <summary>
+    /// Regression test for issue #95: nullable primitives in collections should not get Mutable prefix.
+    /// </summary>
+    [Test]
+    public void ShouldGenerateCollectionOfNullablePrimitivesCorrectly()
+    {
+        // Arrange
+        string input = """
+            using System.Collections.Immutable;
+            using Mutty;
+
+            namespace Mutty.Tests;
+
+            [MutableGeneration]
+            public record NullableCollectionRecord(
+                string Name,
+                ImmutableList<string?> NullableTags,
+                ImmutableArray<int?> NullableScores);
+            """;
+
+        // Act
+        string[] generatedOutputs = GetGeneratedOutput(input);
+        string resultMutable = generatedOutputs.First(x => x.Contains("class MutableNullableCollectionRecord"));
+
+        // Assert — collection item types should keep nullable marker but not get "Mutable" prefix
+        Assert.Multiple(() =>
+        {
+            Assert.That(resultMutable, Does.Contain("List<string?> NullableTags"));
+            Assert.That(resultMutable, Does.Contain("List<int?> NullableScores"));
+            Assert.That(resultMutable, Does.Not.Contain("Mutablestring"));
+            Assert.That(resultMutable, Does.Not.Contain("Mutableint"));
         });
     }
 
