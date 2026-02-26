@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Documentation
+    url: https://phmatray.github.io/Mutty/
+    about: Check the Mutty documentation before opening an issue
