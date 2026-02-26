@@ -5,60 +5,57 @@
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.CodeAnalysis.Testing;
 using NUnit.Framework;
+using Shouldly;
 
 namespace Mutty.Tests.Analyzers;
 
 /// <summary>
-/// Default verifier for analyzer tests using NUnit assertions.
+/// Default verifier for analyzer tests using Shouldly assertions.
 /// </summary>
 public class DefaultVerifier : IVerifier
 {
     /// <inheritdoc />
     public void Empty<T>(string collectionName, IEnumerable<T> collection)
     {
-        Assert.That(collection, Is.Empty, $"{collectionName} is not empty.");
+        collection.ShouldBeEmpty($"{collectionName} is not empty.");
     }
 
     /// <inheritdoc />
     public void Equal<T>(T expected, T actual, string? message = null)
     {
-        Assert.That(actual, Is.EqualTo(expected), message);
+        actual.ShouldBe(expected, message);
     }
 
     /// <inheritdoc />
     public void True([DoesNotReturnIf(false)] bool assert, string? message = null)
     {
-        Assert.That(assert, Is.True, message);
+        assert.ShouldBeTrue(message);
     }
 
     /// <inheritdoc />
     public void False([DoesNotReturnIf(true)] bool assert, string? message = null)
     {
-        Assert.That(assert, Is.False, message);
+        assert.ShouldBeFalse(message);
     }
 
     /// <inheritdoc />
     [DoesNotReturn]
     public void Fail(string? message = null)
     {
-        Assert.Fail(message ?? "Test failed.");
-        throw new InvalidOperationException("This method should not return");
+        throw new ShouldAssertException(message ?? "Test failed.");
     }
 
     /// <inheritdoc />
     public void LanguageIsSupported(string language)
     {
-        Assert.That(
-            language,
-            Is.EqualTo(Microsoft.CodeAnalysis.LanguageNames.CSharp).Or
-                .EqualTo(Microsoft.CodeAnalysis.LanguageNames.VisualBasic),
-            $"Language '{language}' is not supported.");
+        new[] { Microsoft.CodeAnalysis.LanguageNames.CSharp, Microsoft.CodeAnalysis.LanguageNames.VisualBasic }
+            .ShouldContain(language, $"Language '{language}' is not supported.");
     }
 
     /// <inheritdoc />
     public void NotEmpty<T>(string collectionName, IEnumerable<T> collection)
     {
-        Assert.That(collection, Is.Not.Empty, $"{collectionName} is empty.");
+        collection.ShouldNotBeEmpty($"{collectionName} is empty.");
     }
 
     /// <inheritdoc />
@@ -70,11 +67,11 @@ public class DefaultVerifier : IVerifier
     {
         if (equalityComparer is not null)
         {
-            Assert.That(actual, Is.EqualTo(expected).Using(equalityComparer), message);
+            actual.ToList().ShouldBe(expected.ToList(), message);
         }
         else
         {
-            Assert.That(actual, Is.EqualTo(expected), message);
+            actual.ToList().ShouldBe(expected.ToList(), message);
         }
     }
 

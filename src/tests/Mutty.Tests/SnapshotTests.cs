@@ -4,6 +4,7 @@
 
 using Mutty.Tests.Setup;
 using NUnit.Framework;
+using Shouldly;
 
 namespace Mutty.Tests;
 
@@ -22,7 +23,7 @@ public class SnapshotTests : GeneratorTests
     {
         var mutableClassName = $"class Mutable{recordName}";
         var match = generated.FirstOrDefault(x => x.Contains(mutableClassName));
-        
+
         if (match == null)
         {
             // Provide detailed diagnostics if the expected class wasn't generated
@@ -31,8 +32,8 @@ public class SnapshotTests : GeneratorTests
             sb.AppendLine($"Generated {generated.Length} file(s):");
             for (int i = 0; i < generated.Length; i++)
             {
-                var preview = generated[i].Length > 100 
-                    ? generated[i].Substring(0, 100) + "..." 
+                var preview = generated[i].Length > 100
+                    ? generated[i].Substring(0, 100) + "..."
                     : generated[i];
                 sb.AppendLine($"  File {i}: {preview.Replace("\n", " ")}");
             }
@@ -42,7 +43,7 @@ public class SnapshotTests : GeneratorTests
 
         return match;
     }
-    
+
     /// <summary>
     /// Test: Basic record with primitive types
     /// Verifies code generation for a simple record with string and int properties.
@@ -55,7 +56,7 @@ public class SnapshotTests : GeneratorTests
             """);
 
         string[] generated = GetGeneratedOutput(source);
-        
+
         return Verify(GetMutableCode(generated, "Person"))
             .UseMethodName("BasicRecord");
     }
@@ -72,7 +73,7 @@ public class SnapshotTests : GeneratorTests
             """);
 
         string[] generated = GetGeneratedOutput(source);
-        
+
         return Verify(GetMutableCode(generated, "Team"))
             .UseMethodName("RecordWithImmutableList");
     }
@@ -89,7 +90,7 @@ public class SnapshotTests : GeneratorTests
             """);
 
         string[] generated = GetGeneratedOutput(source);
-        
+
         return Verify(GetMutableCode(generated, "Configuration"))
             .UseMethodName("RecordWithImmutableDictionary");
     }
@@ -103,13 +104,13 @@ public class SnapshotTests : GeneratorTests
     {
         string source = CreateInput("""
             public record DataSet(
-                string Name, 
-                ImmutableList<int> Numbers, 
+                string Name,
+                ImmutableList<int> Numbers,
                 ImmutableDictionary<string, double> Metrics);
             """);
 
         string[] generated = GetGeneratedOutput(source);
-        
+
         return Verify(GetMutableCode(generated, "DataSet"))
             .UseMethodName("RecordWithMultipleCollections");
     }
@@ -131,17 +132,17 @@ public class SnapshotTests : GeneratorTests
 
             [MutableGeneration]
             public record Address(string Street, string City);
-            
+
             [MutableGeneration]
             public record Person(string Name, Address HomeAddress);
             """;
 
         string[] generated = GetGeneratedOutput(source);
-        
+
         // Should generate mutable classes for both Address and Person
         // (may also generate other files like extensions and attribute)
-        Assert.That(generated.Length, Is.GreaterThanOrEqualTo(2));
-        
+        generated.Length.ShouldBeGreaterThanOrEqualTo(2);
+
         return Verify(new
             {
                 AddressGenerated = GetMutableCode(generated, "Address"),
@@ -162,7 +163,7 @@ public class SnapshotTests : GeneratorTests
             """);
 
         string[] generated = GetGeneratedOutput(source);
-        
+
         return Verify(GetMutableCode(generated, "Container"))
             .UseMethodName("GenericRecord");
     }
@@ -179,7 +180,7 @@ public class SnapshotTests : GeneratorTests
             """);
 
         string[] generated = GetGeneratedOutput(source);
-        
+
         return Verify(GetMutableCode(generated, "Repository"))
             .UseMethodName("GenericRecordWithConstraints");
     }
@@ -197,7 +198,7 @@ public class SnapshotTests : GeneratorTests
             """);
 
         string[] generated = GetGeneratedOutput(source);
-        
+
         return Verify(GetMutableCode(generated, "User"))
             .UseMethodName("NullableReferenceTypes");
     }
@@ -214,7 +215,7 @@ public class SnapshotTests : GeneratorTests
             """);
 
         string[] generated = GetGeneratedOutput(source);
-        
+
         return Verify(GetMutableCode(generated, "Stats"))
             .UseMethodName("NullableValueTypes");
     }
@@ -233,7 +234,7 @@ public class SnapshotTests : GeneratorTests
             """);
 
         string[] generated = GetGeneratedOutput(source);
-        
+
         return Verify(GetMutableCode(generated, "ComplexData"))
             .UseMethodName("ComplexNestedGeneric");
     }
@@ -264,7 +265,7 @@ public class SnapshotTests : GeneratorTests
             """);
 
         string[] generated = GetGeneratedOutput(source);
-        
+
         return Verify(GetMutableCode(generated, "AllTypes"))
             .UseMethodName("AllPrimitiveTypes");
     }
@@ -284,7 +285,7 @@ public class SnapshotTests : GeneratorTests
             """);
 
         string[] generated = GetGeneratedOutput(source);
-        
+
         return Verify(GetMutableCode(generated, "MixedData"))
             .UseMethodName("MixedCollectionsWithBasicTypes");
     }

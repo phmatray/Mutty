@@ -6,6 +6,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Mutty.Models;
 using NUnit.Framework;
+using Shouldly;
 
 namespace Mutty.Tests;
 
@@ -22,13 +23,10 @@ public class PropertyModelTests
         PropertyModel? model = propertySymbol is not null ? new PropertyModel(propertySymbol) : null;
 
         // Assert
-        Assert.Multiple(() =>
-        {
-            Assert.That(model, Is.Not.Null);
-            Assert.That(model!.Name, Is.EqualTo("Name"));
-            Assert.That(model.Type, Is.EqualTo("string"));
-            Assert.That(model.PropertyType, Is.EqualTo(PropertyType.Other));
-        });
+        model.ShouldNotBeNull();
+        model!.Name.ShouldBe("Name");
+        model.Type.ShouldBe("string");
+        model.PropertyType.ShouldBe(PropertyType.Other);
     }
 
     [Test]
@@ -41,12 +39,9 @@ public class PropertyModelTests
         PropertyModel? model = propertySymbol is not null ? new PropertyModel(propertySymbol) : null;
 
         // Assert
-        Assert.Multiple(() =>
-        {
-            Assert.That(model, Is.Not.Null);
-            Assert.That(model!.Name, Is.EqualTo("Items"));
-            Assert.That(model.PropertyType, Is.EqualTo(PropertyType.ImmutableCollection));
-        });
+        model.ShouldNotBeNull();
+        model!.Name.ShouldBe("Items");
+        model.PropertyType.ShouldBe(PropertyType.ImmutableCollection);
     }
 
     [Test]
@@ -59,12 +54,9 @@ public class PropertyModelTests
         PropertyModel? model = propertySymbol is not null ? new PropertyModel(propertySymbol) : null;
 
         // Assert
-        Assert.Multiple(() =>
-        {
-            Assert.That(model, Is.Not.Null);
-            Assert.That(model!.Name, Is.EqualTo("Tags"));
-            Assert.That(model.PropertyType, Is.EqualTo(PropertyType.ImmutableCollection));
-        });
+        model.ShouldNotBeNull();
+        model!.Name.ShouldBe("Tags");
+        model.PropertyType.ShouldBe(PropertyType.ImmutableCollection);
     }
 
     [Test]
@@ -77,12 +69,9 @@ public class PropertyModelTests
         PropertyModel? model = propertySymbol is not null ? new PropertyModel(propertySymbol) : null;
 
         // Assert
-        Assert.Multiple(() =>
-        {
-            Assert.That(model, Is.Not.Null);
-            Assert.That(model!.Name, Is.EqualTo("UniqueIds"));
-            Assert.That(model.PropertyType, Is.EqualTo(PropertyType.ImmutableCollection));
-        });
+        model.ShouldNotBeNull();
+        model!.Name.ShouldBe("UniqueIds");
+        model.PropertyType.ShouldBe(PropertyType.ImmutableCollection);
     }
 
     [Test]
@@ -95,12 +84,9 @@ public class PropertyModelTests
         PropertyModel? model = propertySymbol is not null ? new PropertyModel(propertySymbol) : null;
 
         // Assert
-        Assert.Multiple(() =>
-        {
-            Assert.That(model, Is.Not.Null);
-            Assert.That(model!.Name, Is.EqualTo("Map"));
-            Assert.That(model.PropertyType, Is.EqualTo(PropertyType.ImmutableCollection));
-        });
+        model.ShouldNotBeNull();
+        model!.Name.ShouldBe("Map");
+        model.PropertyType.ShouldBe(PropertyType.ImmutableCollection);
     }
 
     [Test]
@@ -111,11 +97,8 @@ public class PropertyModelTests
         PropertyModel? model = propertySymbol is not null ? new PropertyModel(propertySymbol) : null;
 
         // Assert
-        Assert.Multiple(() =>
-        {
-            Assert.That(model, Is.Not.Null);
-            Assert.That(model!.Name, Is.EqualTo("OptionalName"));
-        });
+        model.ShouldNotBeNull();
+        model!.Name.ShouldBe("OptionalName");
     }
 
     private static IPropertySymbol? GetPropertySymbol(string propertyDeclaration, string propertyName)

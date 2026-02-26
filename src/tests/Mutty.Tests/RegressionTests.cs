@@ -5,6 +5,7 @@
 using Microsoft.CodeAnalysis;
 using Mutty.Tests.Setup;
 using NUnit.Framework;
+using Shouldly;
 
 namespace Mutty.Tests;
 
@@ -19,7 +20,7 @@ public class RegressionTests : GeneratorTests
     /// <summary>
     /// Regression test for Issue #81: Nullable records in constructors
     /// Fixed in PR #89
-    /// 
+    ///
     /// Problem: Generator failed to handle nullable reference types in record constructors correctly.
     /// Expected: Generated code should properly handle nullable annotations.
     /// </summary>
@@ -36,27 +37,21 @@ public class RegressionTests : GeneratorTests
         string[] generated = GetGeneratedOutput(source);
 
         // Assert
-        Assert.That(generated, Is.Not.Empty, "Should generate code");
-        
+        generated.ShouldNotBeEmpty();
+
         string userCode = generated.First(x => x.Contains("class MutableUser"));
-        Assert.That(
-            userCode,
-            Does.Contain("string? Email"),
-            "Generated code should preserve nullable annotation for Email property");
-        Assert.That(
-            userCode,
-            Does.Contain("string Name"),
-            "Generated code should have non-nullable Name property");
+        userCode.ShouldContain("string? Email");
+        userCode.ShouldContain("string Name");
     }
 
     /// <summary>
     /// Regression test for Issue #86: ImmutableList with BasicType CS1929 error
     /// Fixed in PR #87
-    /// 
-    /// Problem: When using ImmutableList with basic types (int, string, etc.), 
-    /// the generator produced code that caused CS1929 compiler error 
+    ///
+    /// Problem: When using ImmutableList with basic types (int, string, etc.),
+    /// the generator produced code that caused CS1929 compiler error
     /// ('ToImmutableList' does not contain a definition for extension method).
-    /// 
+    ///
     /// Expected: Generated code should compile without CS1929 errors for basic type collections.
     /// </summary>
     [Test]
@@ -71,15 +66,12 @@ public class RegressionTests : GeneratorTests
         string[] generated = GetGeneratedOutput(source);
 
         // Assert
-        Assert.That(generated, Is.Not.Empty, "Should generate code");
-        
+        generated.ShouldNotBeEmpty();
+
         // Verify the mutable version uses List (not ImmutableList)
         string teamCode = generated.First(x => x.Contains("class MutableTeam"));
-        Assert.That(
-            teamCode,
-            Does.Contain("List<int> Scores"),
-            "Generated mutable code should use List<int> for the mutable property");
-        
+        teamCode.ShouldContain("List<int> Scores");
+
         // If we got here, compilation succeeded without CS1929 error
     }
 
@@ -103,14 +95,14 @@ public class RegressionTests : GeneratorTests
         string[] generated = GetGeneratedOutput(source);
 
         // Assert
-        Assert.That(generated, Is.Not.Empty, "Should generate code");
-        
+        generated.ShouldNotBeEmpty();
+
         string dataCode = generated.First(x => x.Contains("class MutableDataCollection"));
         // Mutable version should use List, not ImmutableList
-        Assert.That(dataCode, Does.Contain("List<int> Integers"));
-        Assert.That(dataCode, Does.Contain("List<string> Strings"));
-        Assert.That(dataCode, Does.Contain("List<double> Doubles"));
-        Assert.That(dataCode, Does.Contain("List<bool> Flags"));
+        dataCode.ShouldContain("List<int> Integers");
+        dataCode.ShouldContain("List<string> Strings");
+        dataCode.ShouldContain("List<double> Doubles");
+        dataCode.ShouldContain("List<bool> Flags");
     }
 
     /// <summary>
@@ -131,13 +123,10 @@ public class RegressionTests : GeneratorTests
         string[] generated = GetGeneratedOutput(source);
 
         // Assert
-        Assert.That(generated, Is.Not.Empty, "Should generate code");
-        
+        generated.ShouldNotBeEmpty();
+
         string configCode = generated.First(x => x.Contains("class MutableConfiguration"));
-        Assert.That(
-            configCode,
-            Does.Contain("Dictionary<string, int> Settings"),
-            "Generated mutable code should use Dictionary<string, int>");
+        configCode.ShouldContain("Dictionary<string, int> Settings");
     }
 
     /// <summary>
@@ -161,21 +150,12 @@ public class RegressionTests : GeneratorTests
         string[] generated = GetGeneratedOutput(source);
 
         // Assert
-        Assert.That(generated, Is.Not.Empty, "Should generate code");
-        
+        generated.ShouldNotBeEmpty();
+
         string profileCode = generated.First(x => x.Contains("class MutableUserProfile"));
-        Assert.That(
-            profileCode,
-            Does.Contain("string? Email"),
-            "Should handle nullable reference type");
-        Assert.That(
-            profileCode,
-            Does.Contain("List<string> Tags"),
-            "Should handle List with non-nullable string in mutable version");
-        Assert.That(
-            profileCode,
-            Does.Contain("List<string?> OptionalNotes"),
-            "Should handle List with nullable string in mutable version");
+        profileCode.ShouldContain("string? Email");
+        profileCode.ShouldContain("List<string> Tags");
+        profileCode.ShouldContain("List<string?> OptionalNotes");
     }
 
     /// <summary>
@@ -201,17 +181,11 @@ public class RegressionTests : GeneratorTests
         string[] generated = GetGeneratedOutput(source);
 
         // Assert
-        Assert.That(generated, Is.Not.Empty, "Should generate code for nested collections");
+        generated.ShouldNotBeEmpty();
 
         string complexCode = generated.First(x => x.Contains("class MutableComplexData"));
-        Assert.That(
-            complexCode,
-            Does.Contain("List<List<int>> NestedLists"),
-            "Nested ImmutableList<ImmutableList<int>> should become List<List<int>>");
-        Assert.That(
-            complexCode,
-            Does.Contain("Dictionary<string, List<int>> DictOfLists"),
-            "ImmutableDictionary<string, ImmutableList<int>> should become Dictionary<string, List<int>>");
+        complexCode.ShouldContain("List<List<int>> NestedLists");
+        complexCode.ShouldContain("Dictionary<string, List<int>> DictOfLists");
     }
 
     /// <summary>
@@ -230,13 +204,10 @@ public class RegressionTests : GeneratorTests
         string[] generated = GetGeneratedOutput(source);
 
         // Assert
-        Assert.That(generated, Is.Not.Empty, "Should generate code");
+        generated.ShouldNotBeEmpty();
 
         string configCode = generated.First(x => x.Contains("class MutableConfig"));
-        Assert.That(
-            configCode,
-            Does.Contain("Dictionary<string, int> Settings"),
-            "ImmutableDictionary<string, int> should become Dictionary<string, int>");
+        configCode.ShouldContain("Dictionary<string, int> Settings");
     }
 
     /// <summary>
@@ -255,13 +226,10 @@ public class RegressionTests : GeneratorTests
         string[] generated = GetGeneratedOutput(source);
 
         // Assert
-        Assert.That(generated, Is.Not.Empty, "Should generate code");
+        generated.ShouldNotBeEmpty();
 
         string deepCode = generated.First(x => x.Contains("class MutableDeepNesting"));
-        Assert.That(
-            deepCode,
-            Does.Contain("Dictionary<string, Dictionary<int, List<string>>> Deep"),
-            "Deeply nested generics should preserve all type parameters");
+        deepCode.ShouldContain("Dictionary<string, Dictionary<int, List<string>>> Deep");
     }
 
     /// <summary>
@@ -282,8 +250,8 @@ public class RegressionTests : GeneratorTests
         string[] generated = GetGeneratedOutput(source);
 
         // Assert
-        Assert.That(generated, Is.Not.Empty, "Should generate code");
-        
+        generated.ShouldNotBeEmpty();
+
         // The generated code should handle empty collections properly
         // This is verified by compilation success (no runtime assertion here)
     }

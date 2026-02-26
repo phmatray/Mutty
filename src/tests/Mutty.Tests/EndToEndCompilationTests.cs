@@ -8,6 +8,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Mutty.Tests.Setup;
 using NUnit.Framework;
+using Shouldly;
 
 namespace Mutty.Tests;
 
@@ -34,17 +35,17 @@ public class EndToEndCompilationTests : GeneratorTests
     private static Assembly CompileToAssembly(string sourceCode)
     {
         SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(sourceCode);
-        
+
         // Get all assemblies, filtering out dynamic and those without location
         var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies()
             .Where(assembly => !assembly.IsDynamic && !string.IsNullOrWhiteSpace(assembly.Location))
             .Select(assembly => MetadataReference.CreateFromFile(assembly.Location))
             .ToList();
-            
+
         // Add specific required assemblies that might not be loaded yet
         loadedAssemblies.Add(MetadataReference.CreateFromFile(typeof(MutableGenerationAttribute).Assembly.Location));
         loadedAssemblies.Add(MetadataReference.CreateFromFile(typeof(ImmutableList<>).Assembly.Location));
-        
+
         IEnumerable<MetadataReference> references = loadedAssemblies;
 
         CSharpCompilation compilation = CSharpCompilation.Create(
@@ -57,7 +58,7 @@ public class EndToEndCompilationTests : GeneratorTests
         Attributes attributesGenerator = new();
         MutableRecordGenerator mutableRecordGenerator = new();
         MutableExtensionsGenerator mutableExtensionsGenerator = new();
-        
+
         var driver = CSharpGeneratorDriver.Create(attributesGenerator, mutableRecordGenerator, mutableExtensionsGenerator)
             .RunGeneratorsAndUpdateCompilation(
                 compilation,
@@ -78,7 +79,7 @@ public class EndToEndCompilationTests : GeneratorTests
         // Emit to memory stream
         using MemoryStream ms = new();
         var emitResult = outputCompilation.Emit(ms);
-        
+
         if (!emitResult.Success)
         {
             var failures = emitResult.Diagnostics
@@ -104,40 +105,40 @@ public class EndToEndCompilationTests : GeneratorTests
             """);
 
         Assembly assembly = CompileToAssembly(source);
-        
+
         // Get the immutable record type
         Type? personType = assembly.GetType("Mutty.Tests.Person");
-        Assert.That(personType, Is.Not.Null, "Person type should exist");
+        personType.ShouldNotBeNull("Person type should exist");
 
         // Act - Create immutable instance
         object? person = Activator.CreateInstance(personType!, "John Doe", 30);
-        Assert.That(person, Is.Not.Null);
+        person.ShouldNotBeNull();
 
         // Get ToMutable method
         MethodInfo? toMutableMethod = personType!.GetMethod("ToMutable");
-        Assert.That(toMutableMethod, Is.Not.Null, "ToMutable method should exist");
+        toMutableMethod.ShouldNotBeNull("ToMutable method should exist");
 
         // Convert to mutable
         object? mutablePerson = toMutableMethod!.Invoke(person, null);
-        Assert.That(mutablePerson, Is.Not.Null);
+        mutablePerson.ShouldNotBeNull();
 
         // Get the mutable type
         Type mutableType = mutablePerson!.GetType();
-        
+
         // Get ToImmutable method
         MethodInfo? toImmutableMethod = mutableType.GetMethod("ToImmutable");
-        Assert.That(toImmutableMethod, Is.Not.Null, "ToImmutable method should exist");
+        toImmutableMethod.ShouldNotBeNull("ToImmutable method should exist");
 
         // Convert back to immutable
         object? roundTrippedPerson = toImmutableMethod!.Invoke(mutablePerson, null);
-        Assert.That(roundTrippedPerson, Is.Not.Null);
+        roundTrippedPerson.ShouldNotBeNull();
 
         // Assert - Verify round-trip maintains data
         PropertyInfo? nameProperty = personType.GetProperty("Name");
         PropertyInfo? ageProperty = personType.GetProperty("Age");
-        
-        Assert.That(nameProperty!.GetValue(roundTrippedPerson), Is.EqualTo("John Doe"));
-        Assert.That(ageProperty!.GetValue(roundTrippedPerson), Is.EqualTo(30));
+
+        nameProperty!.GetValue(roundTrippedPerson).ShouldBe("John Doe");
+        ageProperty!.GetValue(roundTrippedPerson).ShouldBe(30);
     }
 
     /// <summary>
@@ -155,7 +156,7 @@ public class EndToEndCompilationTests : GeneratorTests
         Assembly assembly = CompileToAssembly(source);
         Type? personType = assembly.GetType("Mutty.Tests.Person");
         object? person = Activator.CreateInstance(personType!, "Jane Doe", 25);
-        
+
         MethodInfo? toMutableMethod = personType!.GetMethod("ToMutable");
         object? mutablePerson = toMutableMethod!.Invoke(person, null);
         Type mutableType = mutablePerson!.GetType();
@@ -163,13 +164,13 @@ public class EndToEndCompilationTests : GeneratorTests
         // Act - Modify mutable properties
         PropertyInfo? nameProperty = mutableType.GetProperty("Name");
         PropertyInfo? ageProperty = mutableType.GetProperty("Age");
-        
+
         nameProperty!.SetValue(mutablePerson, "Jane Smith");
         ageProperty!.SetValue(mutablePerson, 26);
 
         // Assert
-        Assert.That(nameProperty.GetValue(mutablePerson), Is.EqualTo("Jane Smith"));
-        Assert.That(ageProperty.GetValue(mutablePerson), Is.EqualTo(26));
+        nameProperty.GetValue(mutablePerson).ShouldBe("Jane Smith");
+        ageProperty.GetValue(mutablePerson).ShouldBe(26);
     }
 
     /// <summary>
@@ -186,11 +187,11 @@ public class EndToEndCompilationTests : GeneratorTests
 
         Assembly assembly = CompileToAssembly(source);
         Type? teamType = assembly.GetType("Mutty.Tests.Team");
-        
+
         // Create immutable with initial members
         var initialMembers = ImmutableList.Create("Alice", "Bob");
         object? team = Activator.CreateInstance(teamType!, "Dev Team", initialMembers);
-        
+
         // Convert to mutable
         MethodInfo? toMutableMethod = teamType!.GetMethod("ToMutable");
         object? mutableTeam = toMutableMethod!.Invoke(team, null);
@@ -199,20 +200,17 @@ public class EndToEndCompilationTests : GeneratorTests
         // Act - Get the mutable Members collection (should be List<string>)
         PropertyInfo? membersProperty = mutableType.GetProperty("Members");
         object? membersList = membersProperty!.GetValue(mutableTeam);
-        
-        Assert.That(membersList, Is.Not.Null);
-        Assert.That(
-            membersList,
-            Is.InstanceOf<List<string>>(),
-            "Mutable version should use List<T>");
+
+        membersList.ShouldNotBeNull();
+        membersList.ShouldBeOfType<List<string>>("Mutable version should use List<T>");
 
         // Modify the list
         var list = (List<string>)membersList!;
         list.Add("Charlie");
 
         // Assert - List was modified
-        Assert.That(list, Has.Count.EqualTo(3));
-        Assert.That(list, Does.Contain("Charlie"));
+        list.Count.ShouldBe(3);
+        list.ShouldContain("Charlie");
     }
 
     /// <summary>
@@ -229,19 +227,19 @@ public class EndToEndCompilationTests : GeneratorTests
 
         Assembly assembly = CompileToAssembly(source);
         Type? teamType = assembly.GetType("Mutty.Tests.Team");
-        
+
         var initialMembers = ImmutableList.Create("Alice", "Bob");
         object? team = Activator.CreateInstance(teamType!, "Dev Team", initialMembers);
-        
+
         // Convert to mutable, modify, convert back
         MethodInfo? toMutableMethod = teamType!.GetMethod("ToMutable");
         object? mutableTeam = toMutableMethod!.Invoke(team, null);
         Type mutableType = mutableTeam!.GetType();
-        
+
         PropertyInfo? membersProperty = mutableType.GetProperty("Members");
         var membersList = (List<string>)membersProperty!.GetValue(mutableTeam)!;
         membersList.Add("Charlie");
-        
+
         // Act - Convert back to immutable
         MethodInfo? toImmutableMethod = mutableType.GetMethod("ToImmutable");
         object? immutableTeam = toImmutableMethod!.Invoke(mutableTeam, null);
@@ -249,15 +247,12 @@ public class EndToEndCompilationTests : GeneratorTests
         // Assert - Get Members property from immutable version
         PropertyInfo? immutableMembersProperty = teamType.GetProperty("Members");
         object? immutableMembers = immutableMembersProperty!.GetValue(immutableTeam);
-        
-        Assert.That(
-            immutableMembers,
-            Is.InstanceOf<ImmutableList<string>>(),
-            "Immutable version should use ImmutableList<T>");
-        
+
+        immutableMembers.ShouldBeOfType<ImmutableList<string>>("Immutable version should use ImmutableList<T>");
+
         var immutableList = (ImmutableList<string>)immutableMembers!;
-        Assert.That(immutableList, Has.Count.EqualTo(3));
-        Assert.That(immutableList, Does.Contain("Charlie"));
+        immutableList.Count.ShouldBe(3);
+        immutableList.ShouldContain("Charlie");
     }
 
     /// <summary>
@@ -270,31 +265,31 @@ public class EndToEndCompilationTests : GeneratorTests
         // Arrange
         string source = CreateInput("""
             public partial record DataSet(
-                string Name, 
-                ImmutableList<int> Numbers, 
+                string Name,
+                ImmutableList<int> Numbers,
                 ImmutableDictionary<string, double> Metrics);
             """);
 
         Assembly assembly = CompileToAssembly(source);
         Type? dataSetType = assembly.GetType("Mutty.Tests.DataSet");
-        
+
         var numbers = ImmutableList.Create(1, 2, 3);
         var metrics = ImmutableDictionary.CreateRange(new[]
         {
             KeyValuePair.Create("accuracy", 0.95),
             KeyValuePair.Create("precision", 0.88)
         });
-        
+
         object? original = Activator.CreateInstance(dataSetType!, "TestData", numbers, metrics);
-        
+
         // Act - Multiple round trips
         MethodInfo? toMutableMethod = dataSetType!.GetMethod("ToMutable");
         object? mutable1 = toMutableMethod!.Invoke(original, null);
-        
+
         Type mutableType = mutable1!.GetType();
         MethodInfo? toImmutableMethod = mutableType.GetMethod("ToImmutable");
         object? immutable1 = toImmutableMethod!.Invoke(mutable1, null);
-        
+
         object? mutable2 = toMutableMethod.Invoke(immutable1, null);
         object? immutable2 = toImmutableMethod!.Invoke(mutable2, null);
 
@@ -302,15 +297,15 @@ public class EndToEndCompilationTests : GeneratorTests
         PropertyInfo? nameProperty = dataSetType.GetProperty("Name");
         PropertyInfo? numbersProperty = dataSetType.GetProperty("Numbers");
         PropertyInfo? metricsProperty = dataSetType.GetProperty("Metrics");
-        
-        Assert.That(nameProperty!.GetValue(immutable2), Is.EqualTo("TestData"));
-        
+
+        nameProperty!.GetValue(immutable2).ShouldBe("TestData");
+
         var finalNumbers = (ImmutableList<int>)numbersProperty!.GetValue(immutable2)!;
-        Assert.That(finalNumbers, Is.EquivalentTo(new[] { 1, 2, 3 }));
-        
+        finalNumbers.ShouldBe(new[] { 1, 2, 3 }, ignoreOrder: true);
+
         var finalMetrics = (ImmutableDictionary<string, double>)metricsProperty!.GetValue(immutable2)!;
-        Assert.That(finalMetrics["accuracy"], Is.EqualTo(0.95));
-        Assert.That(finalMetrics["precision"], Is.EqualTo(0.88));
+        finalMetrics["accuracy"].ShouldBe(0.95);
+        finalMetrics["precision"].ShouldBe(0.88);
     }
 
     /// <summary>
@@ -327,28 +322,28 @@ public class EndToEndCompilationTests : GeneratorTests
 
         Assembly assembly = CompileToAssembly(source);
         Type? userType = assembly.GetType("Mutty.Tests.User");
-        
+
         // Test with null value
         object? userWithNullEmail = Activator.CreateInstance(userType!, "John", null);
-        
+
         // Act - Round trip
         MethodInfo? toMutableMethod = userType!.GetMethod("ToMutable");
         object? mutable = toMutableMethod!.Invoke(userWithNullEmail, null);
-        
+
         Type mutableType = mutable!.GetType();
         MethodInfo? toImmutableMethod = mutableType.GetMethod("ToImmutable");
         object? roundTripped = toImmutableMethod!.Invoke(mutable, null);
 
         // Assert
         PropertyInfo? emailProperty = userType.GetProperty("Email");
-        Assert.That(emailProperty!.GetValue(roundTripped), Is.Null);
-        
+        emailProperty!.GetValue(roundTripped).ShouldBeNull();
+
         // Test with non-null value
         object? userWithEmail = Activator.CreateInstance(userType, "Jane", "jane@example.com");
         mutable = toMutableMethod.Invoke(userWithEmail, null);
         roundTripped = toImmutableMethod!.Invoke(mutable, null);
-        
-        Assert.That(emailProperty.GetValue(roundTripped), Is.EqualTo("jane@example.com"));
+
+        emailProperty.GetValue(roundTripped).ShouldBe("jane@example.com");
     }
 
     /// <summary>
@@ -363,22 +358,22 @@ public class EndToEndCompilationTests : GeneratorTests
             """);
 
         Assembly assembly = CompileToAssembly(source);
-        
+
         // Get the generic type definition
         Type? containerType = assembly.GetType("Mutty.Tests.Container`1");
-        Assert.That(containerType, Is.Not.Null, "Generic Container type should exist");
-        
+        containerType.ShouldNotBeNull("Generic Container type should exist");
+
         // Make concrete type Container<int>
         Type concreteType = containerType!.MakeGenericType(typeof(int));
-        
+
         // Act - Create instance
         object? container = Activator.CreateInstance(concreteType, 42, "Answer");
-        Assert.That(container, Is.Not.Null);
-        
+        container.ShouldNotBeNull();
+
         // Round trip
         MethodInfo? toMutableMethod = concreteType.GetMethod("ToMutable");
         object? mutable = toMutableMethod!.Invoke(container, null);
-        
+
         Type mutableType = mutable!.GetType();
         MethodInfo? toImmutableMethod = mutableType.GetMethod("ToImmutable");
         object? roundTripped = toImmutableMethod!.Invoke(mutable, null);
@@ -386,8 +381,8 @@ public class EndToEndCompilationTests : GeneratorTests
         // Assert
         PropertyInfo? valueProperty = concreteType.GetProperty("Value");
         PropertyInfo? labelProperty = concreteType.GetProperty("Label");
-        
-        Assert.That(valueProperty!.GetValue(roundTripped), Is.EqualTo(42));
-        Assert.That(labelProperty!.GetValue(roundTripped), Is.EqualTo("Answer"));
+
+        valueProperty!.GetValue(roundTripped).ShouldBe(42);
+        labelProperty!.GetValue(roundTripped).ShouldBe("Answer");
     }
 }

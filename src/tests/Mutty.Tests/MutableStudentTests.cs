@@ -4,6 +4,7 @@
 
 using Mutty.Tests.Setup;
 using NUnit.Framework;
+using Shouldly;
 
 namespace Mutty.Tests;
 
@@ -24,11 +25,8 @@ public class MutableStudentTests
         MutableStudent mutable = new(student);
 
         // Assert
-        Assert.Multiple(() =>
-        {
-            Assert.That(mutable, Is.Not.Null);
-            Assert.That(mutable.Email, Is.EqualTo("john.doe@example.com"));
-            Assert.That(mutable.Details.Name, Is.EqualTo("John Doe"));
-        });
+        mutable.ShouldNotBeNull();
+        mutable.Email.ShouldBe("john.doe@example.com");
+        mutable.Details.Name.ShouldBe("John Doe");
     }
 }

@@ -4,6 +4,7 @@
 
 using Mutty.CodeHelpers;
 using NUnit.Framework;
+using Shouldly;
 
 namespace Mutty.Tests;
 
@@ -15,8 +16,8 @@ public class IndentedStringBuilderTests
     {
         IndentedStringBuilder builder = new();
 
-        Assert.That(builder.Length, Is.EqualTo(0));
-        Assert.That(builder.ToString(), Is.EqualTo(string.Empty));
+        builder.Length.ShouldBe(0);
+        builder.ToString().ShouldBe(string.Empty);
     }
 
     [Test]
@@ -25,7 +26,7 @@ public class IndentedStringBuilderTests
         IndentedStringBuilder builder = new(indent: 2, indentSize: 4);
         builder.Append("test");
 
-        Assert.That(builder.ToString(), Is.EqualTo("        test"));
+        builder.ToString().ShouldBe("        test");
     }
 
     [Test]
@@ -35,7 +36,7 @@ public class IndentedStringBuilderTests
         builder.IncrementIndent();
         builder.Append("Hello");
 
-        Assert.That(builder.ToString(), Is.EqualTo("  Hello"));
+        builder.ToString().ShouldBe("  Hello");
     }
 
     [Test]
@@ -45,7 +46,7 @@ public class IndentedStringBuilderTests
         builder.IncrementIndent();
         builder.Append('A');
 
-        Assert.That(builder.ToString(), Is.EqualTo("  A"));
+        builder.ToString().ShouldBe("  A");
     }
 
     [Test]
@@ -55,7 +56,7 @@ public class IndentedStringBuilderTests
         builder.IncrementIndent();
         builder.Append(["Hello", " ", "World"]);
 
-        Assert.That(builder.ToString(), Is.EqualTo("  Hello World"));
+        builder.ToString().ShouldBe("  Hello World");
     }
 
     [Test]
@@ -65,7 +66,7 @@ public class IndentedStringBuilderTests
         builder.IncrementIndent();
         builder.Append(['A', 'B', 'C']);
 
-        Assert.That(builder.ToString(), Is.EqualTo("  ABC"));
+        builder.ToString().ShouldBe("  ABC");
     }
 
     [Test]
@@ -76,7 +77,7 @@ public class IndentedStringBuilderTests
         builder.AppendLine();
         builder.Append("Second");
 
-        Assert.That(builder.ToString(), Is.EqualTo($"First{Environment.NewLine}Second"));
+        builder.ToString().ShouldBe($"First{Environment.NewLine}Second");
     }
 
     [Test]
@@ -87,7 +88,7 @@ public class IndentedStringBuilderTests
         builder.AppendLine("Hello");
         builder.AppendLine("World");
 
-        Assert.That(builder.ToString(), Is.EqualTo($"  Hello{Environment.NewLine}  World{Environment.NewLine}"));
+        builder.ToString().ShouldBe($"  Hello{Environment.NewLine}  World{Environment.NewLine}");
     }
 
     [Test]
@@ -100,7 +101,7 @@ public class IndentedStringBuilderTests
         builder.AppendLine("Third");
 
         string expected = $"  First{Environment.NewLine}{Environment.NewLine}  Third{Environment.NewLine}";
-        Assert.That(builder.ToString(), Is.EqualTo(expected));
+        builder.ToString().ShouldBe(expected);
     }
 
     [Test]
@@ -110,7 +111,7 @@ public class IndentedStringBuilderTests
         builder.IncrementIndent();
         builder.AppendLines("Single line");
 
-        Assert.That(builder.ToString(), Is.EqualTo($"  Single line{Environment.NewLine}"));
+        builder.ToString().ShouldBe($"  Single line{Environment.NewLine}");
     }
 
     [Test]
@@ -122,7 +123,7 @@ public class IndentedStringBuilderTests
         builder.AppendLines(multilineText);
 
         string expected = $"  Line1{Environment.NewLine}  Line2{Environment.NewLine}  Line3{Environment.NewLine}";
-        Assert.That(builder.ToString(), Is.EqualTo(expected));
+        builder.ToString().ShouldBe(expected);
     }
 
     [Test]
@@ -132,7 +133,7 @@ public class IndentedStringBuilderTests
         builder.IncrementIndent();
         builder.AppendLines("Line1", skipFinalNewline: true);
 
-        Assert.That(builder.ToString(), Is.EqualTo("  Line1"));
+        builder.ToString().ShouldBe("  Line1");
     }
 
     [Test]
@@ -144,7 +145,7 @@ public class IndentedStringBuilderTests
         builder.AppendLines(multilineText);
 
         string expected = $"  Line1{Environment.NewLine}{Environment.NewLine}  Line3{Environment.NewLine}";
-        Assert.That(builder.ToString(), Is.EqualTo(expected));
+        builder.ToString().ShouldBe(expected);
     }
 
     [Test]
@@ -156,12 +157,12 @@ public class IndentedStringBuilderTests
 
         builder.Clear();
 
-        Assert.That(builder.Length, Is.EqualTo(0));
-        Assert.That(builder.ToString(), Is.EqualTo(string.Empty));
+        builder.Length.ShouldBe(0);
+        builder.ToString().ShouldBe(string.Empty);
 
         // Verify indent is also reset
         builder.Append("Test");
-        Assert.That(builder.ToString(), Is.EqualTo("Test"));
+        builder.ToString().ShouldBe("Test");
     }
 
     [Test]
@@ -174,7 +175,7 @@ public class IndentedStringBuilderTests
         builder.IncrementIndent();
         builder.Append("Level2");
 
-        Assert.That(builder.ToString(), Is.EqualTo($"  Level1{Environment.NewLine}    Level2"));
+        builder.ToString().ShouldBe($"  Level1{Environment.NewLine}    Level2");
     }
 
     [Test]
@@ -184,7 +185,7 @@ public class IndentedStringBuilderTests
         builder.IncrementIndent(3);
         builder.Append("Deep");
 
-        Assert.That(builder.ToString(), Is.EqualTo("      Deep"));
+        builder.ToString().ShouldBe("      Deep");
     }
 
     [Test]
@@ -198,7 +199,7 @@ public class IndentedStringBuilderTests
         builder.DecrementIndent();
         builder.Append("Level1");
 
-        Assert.That(builder.ToString(), Is.EqualTo($"    Level2{Environment.NewLine}  Level1"));
+        builder.ToString().ShouldBe($"    Level2{Environment.NewLine}  Level1");
     }
 
     [Test]
@@ -208,7 +209,7 @@ public class IndentedStringBuilderTests
         builder.DecrementIndent();
         builder.Append("Test");
 
-        Assert.That(builder.ToString(), Is.EqualTo("Test"));
+        builder.ToString().ShouldBe("Test");
     }
 
     [Test]
@@ -219,7 +220,7 @@ public class IndentedStringBuilderTests
         builder.DecrementIndent(2);
         builder.Append("Test");
 
-        Assert.That(builder.ToString(), Is.EqualTo("  Test"));
+        builder.ToString().ShouldBe("  Test");
     }
 
     [Test]
@@ -230,7 +231,7 @@ public class IndentedStringBuilderTests
         builder.DecrementIndent(5);
         builder.Append("Test");
 
-        Assert.That(builder.ToString(), Is.EqualTo("Test"));
+        builder.ToString().ShouldBe("Test");
     }
 
     [Test]
@@ -245,7 +246,7 @@ public class IndentedStringBuilderTests
 
         builder.Append("Not indented");
 
-        Assert.That(builder.ToString(), Is.EqualTo($"  Indented{Environment.NewLine}Not indented"));
+        builder.ToString().ShouldBe($"  Indented{Environment.NewLine}Not indented");
     }
 
     [Test]
@@ -267,7 +268,7 @@ public class IndentedStringBuilderTests
         }
 
         string expected = $"  Level1{Environment.NewLine}    Level2{Environment.NewLine}      Level3";
-        Assert.That(builder.ToString(), Is.EqualTo(expected));
+        builder.ToString().ShouldBe(expected);
     }
 
     [Test]
@@ -286,7 +287,7 @@ public class IndentedStringBuilderTests
         builder.Append("Indented again");
 
         string expected = $"    Indented{Environment.NewLine}Not indented{Environment.NewLine}    Indented again";
-        Assert.That(builder.ToString(), Is.EqualTo(expected));
+        builder.ToString().ShouldBe(expected);
     }
 
     [Test]
@@ -294,14 +295,14 @@ public class IndentedStringBuilderTests
     {
         IndentedStringBuilder builder = new();
 
-        Assert.That(builder.Length, Is.EqualTo(0));
+        builder.Length.ShouldBe(0);
 
         builder.Append("Hello");
-        Assert.That(builder.Length, Is.EqualTo(5));
+        builder.Length.ShouldBe(5);
 
         builder.AppendLine(" World");
         // "Hello" (5) + " World" (6) + Environment.NewLine (1 on Unix, 2 on Windows)
-        Assert.That(builder.Length, Is.EqualTo(11 + Environment.NewLine.Length));
+        builder.Length.ShouldBe(11 + Environment.NewLine.Length);
     }
 
     [Test]
@@ -311,7 +312,7 @@ public class IndentedStringBuilderTests
         builder.IncrementIndent();
         builder.Append("Four spaces");
 
-        Assert.That(builder.ToString(), Is.EqualTo("    Four spaces"));
+        builder.ToString().ShouldBe("    Four spaces");
     }
 
     [Test]
@@ -359,7 +360,7 @@ public class IndentedStringBuilderTests
             }
             """;
 
-        Assert.That(builder.ToString(), Is.EqualTo(expected));
+        builder.ToString().ShouldBe(expected);
     }
 
     [Test]
@@ -371,7 +372,7 @@ public class IndentedStringBuilderTests
         builder.AppendLine("First");
         builder.Append("Second");
 
-        Assert.That(builder.ToString(), Is.EqualTo($"  First{Environment.NewLine}  Second"));
+        builder.ToString().ShouldBe($"  First{Environment.NewLine}  Second");
     }
 
     [Test]
@@ -384,6 +385,6 @@ public class IndentedStringBuilderTests
         builder.Append(" ");
         builder.Append("World");
 
-        Assert.That(builder.ToString(), Is.EqualTo("  Hello World"));
+        builder.ToString().ShouldBe("  Hello World");
     }
 }

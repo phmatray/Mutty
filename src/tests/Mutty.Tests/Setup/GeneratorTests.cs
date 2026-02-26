@@ -5,6 +5,7 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using NUnit.Framework;
+using Shouldly;
 
 namespace Mutty.Tests.Setup;
 
@@ -37,9 +38,7 @@ public abstract class GeneratorTests
                 out System.Collections.Immutable.ImmutableArray<Diagnostic> diagnostics);
 
         // optional
-        Assert.That(
-            diagnostics.Where(static d => d.Severity == DiagnosticSeverity.Error),
-            Is.Empty);
+        diagnostics.Where(static d => d.Severity == DiagnosticSeverity.Error).ShouldBeEmpty();
 
         string[] generatedOutput = outputCompilation
             .SyntaxTrees

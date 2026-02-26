@@ -6,6 +6,7 @@ using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using NUnit.Framework;
+using Shouldly;
 
 namespace Mutty.Tests;
 
@@ -21,9 +22,9 @@ public class CollectionPropertyTests
         string input = """
             using System.Collections.Immutable;
             using Mutty;
-            
+
             namespace Mutty.Tests;
-            
+
             [MutableGeneration]
             public record StudentWithScores(string Name, ImmutableArray<int> Scores);
             """;
@@ -33,7 +34,7 @@ public class CollectionPropertyTests
         string resultMutable = generatedOutputs.First(x => x.Contains("class MutableStudentWithScores"));
 
         // Assert
-        Assert.That(resultMutable, Does.Contain("List<int> Scores"));
+        resultMutable.ShouldContain("List<int> Scores");
     }
 
     [Test]
@@ -43,9 +44,9 @@ public class CollectionPropertyTests
         string input = """
             using System.Collections.Immutable;
             using Mutty;
-            
+
             namespace Mutty.Tests;
-            
+
             [MutableGeneration]
             public record StudentWithTags(string Name, ImmutableList<string> Tags);
             """;
@@ -55,7 +56,7 @@ public class CollectionPropertyTests
         string resultMutable = generatedOutputs.First(x => x.Contains("class MutableStudentWithTags"));
 
         // Assert
-        Assert.That(resultMutable, Does.Contain("List<string> Tags"));
+        resultMutable.ShouldContain("List<string> Tags");
     }
 
     [Test]
@@ -65,9 +66,9 @@ public class CollectionPropertyTests
         string input = """
             using System.Collections.Immutable;
             using Mutty;
-            
+
             namespace Mutty.Tests;
-            
+
             [MutableGeneration]
             public record StudentWithUniqueIds(string Name, ImmutableHashSet<int> UniqueIds);
             """;
@@ -77,7 +78,7 @@ public class CollectionPropertyTests
         string resultMutable = generatedOutputs.First(x => x.Contains("class MutableStudentWithUniqueIds"));
 
         // Assert
-        Assert.That(resultMutable, Does.Contain("HashSet<int> UniqueIds"));
+        resultMutable.ShouldContain("HashSet<int> UniqueIds");
     }
 
     [Test]
@@ -87,9 +88,9 @@ public class CollectionPropertyTests
         string input = """
             using System.Collections.Immutable;
             using Mutty;
-            
+
             namespace Mutty.Tests;
-            
+
             [MutableGeneration]
             public record StudentWithSortedScores(string Name, ImmutableSortedSet<int> SortedScores);
             """;
@@ -99,7 +100,7 @@ public class CollectionPropertyTests
         string resultMutable = generatedOutputs.First(x => x.Contains("class MutableStudentWithSortedScores"));
 
         // Assert
-        Assert.That(resultMutable, Does.Contain("SortedSet<int> SortedScores"));
+        resultMutable.ShouldContain("SortedSet<int> SortedScores");
     }
 
     [Test]
@@ -109,9 +110,9 @@ public class CollectionPropertyTests
         string input = """
             using System.Collections.Immutable;
             using Mutty;
-            
+
             namespace Mutty.Tests;
-            
+
             [MutableGeneration]
             public record ComplexStudent(
                 string Name,
@@ -125,12 +126,9 @@ public class CollectionPropertyTests
         string resultMutable = generatedOutputs.First(x => x.Contains("class MutableComplexStudent"));
 
         // Assert
-        Assert.Multiple(() =>
-        {
-            Assert.That(resultMutable, Does.Contain("List<int> Scores"));
-            Assert.That(resultMutable, Does.Contain("List<string> Tags"));
-            Assert.That(resultMutable, Does.Contain("HashSet<string> Categories"));
-        });
+        resultMutable.ShouldContain("List<int> Scores");
+        resultMutable.ShouldContain("List<string> Tags");
+        resultMutable.ShouldContain("HashSet<string> Categories");
     }
 
     private static string[] GetGeneratedOutput(string sourceCode)
@@ -160,9 +158,7 @@ public class CollectionPropertyTests
                 out ImmutableArray<Diagnostic> diagnostics);
 
         // Ensure no compilation errors
-        Assert.That(
-            diagnostics.Where(static d => d.Severity == DiagnosticSeverity.Error),
-            Is.Empty);
+        diagnostics.Where(static d => d.Severity == DiagnosticSeverity.Error).ShouldBeEmpty();
 
         string[] generatedOutput = outputCompilation
             .SyntaxTrees

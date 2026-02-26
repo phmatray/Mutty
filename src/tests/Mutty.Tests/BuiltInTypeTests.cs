@@ -6,6 +6,7 @@ using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using NUnit.Framework;
+using Shouldly;
 
 namespace Mutty.Tests;
 
@@ -21,9 +22,9 @@ public class BuiltInTypeTests
         string input = """
             using System;
             using Mutty;
-            
+
             namespace Mutty.Tests;
-            
+
             [MutableGeneration]
             public record EventRecord(string Name, DateTime StartDate, DateTimeOffset EndDate);
             """;
@@ -33,11 +34,8 @@ public class BuiltInTypeTests
         string resultMutable = generatedOutputs.First(x => x.Contains("class MutableEventRecord"));
 
         // Assert
-        Assert.Multiple(() =>
-        {
-            Assert.That(resultMutable, Does.Contain("DateTime StartDate"));
-            Assert.That(resultMutable, Does.Contain("DateTimeOffset EndDate"));
-        });
+        resultMutable.ShouldContain("DateTime StartDate");
+        resultMutable.ShouldContain("DateTimeOffset EndDate");
     }
 
     [Test]
@@ -47,9 +45,9 @@ public class BuiltInTypeTests
         string input = """
             using System;
             using Mutty;
-            
+
             namespace Mutty.Tests;
-            
+
             [MutableGeneration]
             public record EntityRecord(Guid Id, string Name);
             """;
@@ -59,7 +57,7 @@ public class BuiltInTypeTests
         string resultMutable = generatedOutputs.First(x => x.Contains("class MutableEntityRecord"));
 
         // Assert
-        Assert.That(resultMutable, Does.Contain("Guid Id"));
+        resultMutable.ShouldContain("Guid Id");
     }
 
     [Test]
@@ -68,9 +66,9 @@ public class BuiltInTypeTests
         // Arrange
         string input = """
             using Mutty;
-            
+
             namespace Mutty.Tests;
-            
+
             [MutableGeneration]
             public record PriceRecord(string Product, decimal Price, double Discount);
             """;
@@ -80,11 +78,8 @@ public class BuiltInTypeTests
         string resultMutable = generatedOutputs.First(x => x.Contains("class MutablePriceRecord"));
 
         // Assert
-        Assert.Multiple(() =>
-        {
-            Assert.That(resultMutable, Does.Contain("decimal Price"));
-            Assert.That(resultMutable, Does.Contain("double Discount"));
-        });
+        resultMutable.ShouldContain("decimal Price");
+        resultMutable.ShouldContain("double Discount");
     }
 
     [Test]
@@ -93,9 +88,9 @@ public class BuiltInTypeTests
         // Arrange
         string input = """
             using Mutty;
-            
+
             namespace Mutty.Tests;
-            
+
             [MutableGeneration]
             public record FeatureFlags(bool IsEnabled, bool IsActive);
             """;
@@ -105,11 +100,8 @@ public class BuiltInTypeTests
         string resultMutable = generatedOutputs.First(x => x.Contains("class MutableFeatureFlags"));
 
         // Assert
-        Assert.Multiple(() =>
-        {
-            Assert.That(resultMutable, Does.Contain("bool IsEnabled"));
-            Assert.That(resultMutable, Does.Contain("bool IsActive"));
-        });
+        resultMutable.ShouldContain("bool IsEnabled");
+        resultMutable.ShouldContain("bool IsActive");
     }
 
     [Test]
@@ -136,15 +128,12 @@ public class BuiltInTypeTests
         string resultMutable = generatedOutputs.First(x => x.Contains("class MutableNumericRecord"));
 
         // Assert
-        Assert.Multiple(() =>
-        {
-            Assert.That(resultMutable, Does.Contain("byte ByteValue"));
-            Assert.That(resultMutable, Does.Contain("short ShortValue"));
-            Assert.That(resultMutable, Does.Contain("int IntValue"));
-            Assert.That(resultMutable, Does.Contain("long LongValue"));
-            Assert.That(resultMutable, Does.Contain("float FloatValue"));
-            Assert.That(resultMutable, Does.Contain("double DoubleValue"));
-        });
+        resultMutable.ShouldContain("byte ByteValue");
+        resultMutable.ShouldContain("short ShortValue");
+        resultMutable.ShouldContain("int IntValue");
+        resultMutable.ShouldContain("long LongValue");
+        resultMutable.ShouldContain("float FloatValue");
+        resultMutable.ShouldContain("double DoubleValue");
     }
 
     /// <summary>
@@ -249,9 +238,7 @@ public class BuiltInTypeTests
                 out ImmutableArray<Diagnostic> diagnostics);
 
         // Ensure no compilation errors
-        Assert.That(
-            diagnostics.Where(static d => d.Severity == DiagnosticSeverity.Error),
-            Is.Empty);
+        diagnostics.Where(static d => d.Severity == DiagnosticSeverity.Error).ShouldBeEmpty();
 
         string[] generatedOutput = outputCompilation
             .SyntaxTrees

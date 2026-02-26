@@ -7,6 +7,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Mutty.Tests.Setup;
 using NUnit.Framework;
+using Shouldly;
 
 namespace Mutty.Tests;
 
@@ -39,10 +40,10 @@ public class CollectionOfBasicTypesTests
         string resultMutable = generatedOutputs.First(x => x.Contains("class MutableArticle"));
 
         // Assert: .ToList() must be present (LINQ conversion for built-in types)
-        Assert.That(resultMutable, Does.Contain("Tags = _record.Tags.ToList();"));
+        resultMutable.ShouldContain("Tags = _record.Tags.ToList();");
 
         // Assert: .AsMutable() must NOT be present (extension only for custom record types)
-        Assert.That(resultMutable, Does.Not.Contain(".AsMutable()"));
+        resultMutable.ShouldNotContain(".AsMutable()");
     }
 
     // ---------------------------------------------------------------------------
@@ -56,10 +57,10 @@ public class CollectionOfBasicTypesTests
         string resultMutable = generatedOutputs.First(x => x.Contains("class MutableArticle"));
 
         // Assert: .ToImmutableList() must be present
-        Assert.That(resultMutable, Does.Contain("Tags = this.Tags.ToImmutableList(),"));
+        resultMutable.ShouldContain("Tags = this.Tags.ToImmutableList(),");
 
         // Assert: .ToImmutable() must NOT be present (extension only for custom record types)
-        Assert.That(resultMutable, Does.Not.Contain(".ToImmutable()"));
+        resultMutable.ShouldNotContain(".ToImmutable()");
     }
 
     // ---------------------------------------------------------------------------
@@ -82,16 +83,16 @@ public class CollectionOfBasicTypesTests
         });
 
         // Assert: original is unchanged (immutable)
-        Assert.That(article.Tags, Has.Count.EqualTo(3));
-        Assert.That(article.Tags, Does.Contain("records"));
-        Assert.That(article.Tags, Does.Not.Contain("sourcegen"));
+        article.Tags.Count.ShouldBe(3);
+        article.Tags.ShouldContain("records");
+        article.Tags.ShouldNotContain("sourcegen");
 
         // Assert: updated article has correct tags
-        Assert.That(updatedArticle.Tags, Has.Count.EqualTo(3));
-        Assert.That(updatedArticle.Tags, Does.Contain("dotnet"));
-        Assert.That(updatedArticle.Tags, Does.Contain("immutable"));
-        Assert.That(updatedArticle.Tags, Does.Contain("sourcegen"));
-        Assert.That(updatedArticle.Tags, Does.Not.Contain("records"));
+        updatedArticle.Tags.Count.ShouldBe(3);
+        updatedArticle.Tags.ShouldContain("dotnet");
+        updatedArticle.Tags.ShouldContain("immutable");
+        updatedArticle.Tags.ShouldContain("sourcegen");
+        updatedArticle.Tags.ShouldNotContain("records");
     }
 
     // ---------------------------------------------------------------------------
@@ -113,8 +114,8 @@ public class CollectionOfBasicTypesTests
         string[] generatedOutputs = GetGeneratedOutput(input);
         string resultMutable = generatedOutputs.First(x => x.Contains("class MutableStudentWithScores"));
 
-        Assert.That(resultMutable, Does.Contain("Scores = _record.Scores.ToList();"));
-        Assert.That(resultMutable, Does.Not.Contain(".AsMutable()"));
+        resultMutable.ShouldContain("Scores = _record.Scores.ToList();");
+        resultMutable.ShouldNotContain(".AsMutable()");
     }
 
     [Test]
@@ -133,8 +134,8 @@ public class CollectionOfBasicTypesTests
         string[] generatedOutputs = GetGeneratedOutput(input);
         string resultMutable = generatedOutputs.First(x => x.Contains("class MutableStudentWithScores"));
 
-        Assert.That(resultMutable, Does.Contain("Scores = this.Scores.ToImmutableArray(),"));
-        Assert.That(resultMutable, Does.Not.Contain(".ToImmutable()"));
+        resultMutable.ShouldContain("Scores = this.Scores.ToImmutableArray(),");
+        resultMutable.ShouldNotContain(".ToImmutable()");
     }
 
     // ---------------------------------------------------------------------------
@@ -156,7 +157,7 @@ public class CollectionOfBasicTypesTests
         string[] generatedOutputs = GetGeneratedOutput(input);
         string resultMutable = generatedOutputs.First(x => x.Contains("class MutableStudentWithCategories"));
 
-        Assert.That(resultMutable, Does.Contain("Categories = this.Categories.ToImmutableHashSet(),"));
+        resultMutable.ShouldContain("Categories = this.Categories.ToImmutableHashSet(),");
     }
 
     // ---------------------------------------------------------------------------
@@ -187,9 +188,7 @@ public class CollectionOfBasicTypesTests
                 out Compilation outputCompilation,
                 out ImmutableArray<Diagnostic> diagnostics);
 
-        Assert.That(
-            diagnostics.Where(static d => d.Severity == DiagnosticSeverity.Error),
-            Is.Empty);
+        diagnostics.Where(static d => d.Severity == DiagnosticSeverity.Error).ShouldBeEmpty();
 
         string[] generatedOutput = outputCompilation
             .SyntaxTrees
