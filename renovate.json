@@ -1,1 +1,38 @@
-{"$schema":"https://docs.renovatebot.com/renovate-schema.json","extends":["config:recommended"]}
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    ":automergeMinor",
+    "schedule:earlyMondays"
+  ],
+  "labels": ["dependencies"],
+  "packageRules": [
+    {
+      "description": "Group all NuGet minor and patch updates",
+      "matchManagers": ["nuget"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "nuget minor/patch",
+      "automerge": true
+    },
+    {
+      "description": "NuGet major updates require dashboard approval",
+      "matchManagers": ["nuget"],
+      "matchUpdateTypes": ["major"],
+      "dependencyDashboardApproval": true
+    },
+    {
+      "description": "Group GitHub Actions updates",
+      "matchManagers": ["github-actions"],
+      "groupName": "github-actions",
+      "automerge": true
+    },
+    {
+      "description": "Auto-merge Nuke build tool updates (minor/patch)",
+      "matchManagers": ["nuget"],
+      "matchPackagePrefixes": ["Nuke."],
+      "matchUpdateTypes": ["minor", "patch"],
+      "automerge": true,
+      "groupName": "nuke build tools"
+    }
+  ]
+}
