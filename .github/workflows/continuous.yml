@@ -53,7 +53,7 @@ jobs:
           mkdir -p "$DOTNET_INSTALL_DIR"
           curl -sSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --runtime dotnet --channel 10.0 --install-dir "$DOTNET_INSTALL_DIR"
       - name: 'Run: Pack'
-        run: ./build.cmd Pack
+        run: ./build.sh Pack
         env:
           NuGetApiKey: ${{ secrets.NUGET_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
