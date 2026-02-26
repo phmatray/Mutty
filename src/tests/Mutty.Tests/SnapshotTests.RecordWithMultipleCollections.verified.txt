@@ -70,6 +70,6 @@ namespace Mutty.Tests
         /// <summary>
         /// Gets or sets the ImmutableCollection Metrics.
         /// </summary>
-        public Dictionary<Mutablestring, double> Metrics { get; set; }
+        public Dictionary<string, double> Metrics { get; set; }
     }
 }

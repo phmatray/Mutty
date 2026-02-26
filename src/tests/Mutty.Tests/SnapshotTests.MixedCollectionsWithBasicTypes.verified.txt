@@ -70,6 +70,6 @@ namespace Mutty.Tests
         /// <summary>
         /// Gets or sets the ImmutableCollection Mapping.
         /// </summary>
-        public Dictionary<Mutablestring, int> Mapping { get; set; }
+        public Dictionary<string, int> Mapping { get; set; }
     }
 }

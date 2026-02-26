@@ -63,6 +63,6 @@ namespace Mutty.Tests
         /// <summary>
         /// Gets or sets the ImmutableCollection Settings.
         /// </summary>
-        public Dictionary<Mutablestring, string> Settings { get; set; }
+        public Dictionary<string, string> Settings { get; set; }
     }
 }

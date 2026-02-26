@@ -223,14 +223,14 @@ public class MutableWrapperTemplate(RecordTokens tokens) : IndentedCodeBuilder
     private void GenerateCollectionProperty(PropertyModel property)
     {
         string mutableType = ConvertImmutableToMutable(property.Type);
-        string itemType = GetMutableItemType(property.Type);
+        string typeArgs = GetMutableItemType(property.Type);
         string propertyType = property.PropertyType.ToString();
 
-        // Recursively convert the item type (handles nested generics and primitives)
-        string finalItemType = ConvertTypeToMutable(itemType);
+        // Split all type arguments, convert each individually (handles multi-arg generics like Dictionary<K,V>)
+        string convertedTypeArgs = ConvertGenericTypeArguments(typeArgs);
 
         Summary($"Gets or sets the {propertyType} {property.Name}.");
-        Line($"public {mutableType}<{finalItemType}> {property.Name} {{ get; set; }}");
+        Line($"public {mutableType}<{convertedTypeArgs}> {property.Name} {{ get; set; }}");
     }
 
     private string ConvertImmutableToMutable(string immutableType)

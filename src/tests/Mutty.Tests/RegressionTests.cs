@@ -134,18 +134,10 @@ public class RegressionTests : GeneratorTests
         Assert.That(generated, Is.Not.Empty, "Should generate code");
         
         string configCode = generated.First(x => x.Contains("class MutableConfiguration"));
-        // NOTE: Current generator bug - adds "Mutable" prefix to primitive types in generics
-        // Should be: Dictionary<string, int> Settings
-        // Currently generates: Dictionary<Mutablestring, int> Settings
-        // TODO: File bug report for incorrect "Mutable" prefix on basic types
         Assert.That(
             configCode,
-            Does.Contain("Dictionary<"),
-            "Generated mutable code should use Dictionary");
-        Assert.That(
-            configCode,
-            Does.Contain("Settings"),
-            "Should have Settings property");
+            Does.Contain("Dictionary<string, int> Settings"),
+            "Generated mutable code should use Dictionary<string, int>");
     }
 
     /// <summary>
@@ -180,20 +172,23 @@ public class RegressionTests : GeneratorTests
             profileCode,
             Does.Contain("List<string> Tags"),
             "Should handle List with non-nullable string in mutable version");
-        // Note: There's currently a generator bug where List<string?> becomes List<Mutablestring?>
-        // This is a known issue to be fixed separately
         Assert.That(
             profileCode,
-            Does.Contain("OptionalNotes"),
-            "Should have OptionalNotes property");
+            Does.Contain("List<string?> OptionalNotes"),
+            "Should handle List with nullable string in mutable version");
     }
 
     /// <summary>
-    /// Proactive regression test: Nested immutable collections
-    /// Ensures complex nested scenarios continue to work.
+    /// Regression test for Issue #94: Missing type parameters in nested generic collections
+    /// Fixed in PR for #94
+    ///
+    /// Problem: When processing nested generic types like Dictionary&lt;string, List&lt;int&gt;&gt;,
+    /// the source generator lost type parameters, resulting in malformed generic type declarations.
+    ///
+    /// Expected: All type parameters should be preserved in nested generics.
     /// </summary>
     [Test]
-    public void NestedImmutableCollections_GenerateCorrectly()
+    public void Issue94_NestedImmutableCollections_GenerateCorrectly()
     {
         // Arrange
         string source = CreateInput("""
@@ -207,14 +202,66 @@ public class RegressionTests : GeneratorTests
 
         // Assert
         Assert.That(generated, Is.Not.Empty, "Should generate code for nested collections");
-        
+
         string complexCode = generated.First(x => x.Contains("class MutableComplexData"));
-        // NOTE: Current generator has bugs with nested collections
-        // Should be: List<List<int>> NestedLists and Dictionary<string, List<int>> DictOfLists
-        // Currently has issues with nested generics (missing type parameters, wrong Mutable prefix)
-        // TODO: File bug report for nested collection handling
-        Assert.That(complexCode, Does.Contain("NestedLists"));
-        Assert.That(complexCode, Does.Contain("DictOfLists"));
+        Assert.That(
+            complexCode,
+            Does.Contain("List<List<int>> NestedLists"),
+            "Nested ImmutableList<ImmutableList<int>> should become List<List<int>>");
+        Assert.That(
+            complexCode,
+            Does.Contain("Dictionary<string, List<int>> DictOfLists"),
+            "ImmutableDictionary<string, ImmutableList<int>> should become Dictionary<string, List<int>>");
+    }
+
+    /// <summary>
+    /// Regression test for Issue #94: ImmutableDictionary with basic types preserves all type params
+    /// </summary>
+    [Test]
+    public void Issue94_ImmutableDictionary_BasicTypes_PreservesAllTypeParams()
+    {
+        // Arrange
+        string source = CreateInput("""
+            public record Config(
+                ImmutableDictionary<string, int> Settings);
+            """);
+
+        // Act
+        string[] generated = GetGeneratedOutput(source);
+
+        // Assert
+        Assert.That(generated, Is.Not.Empty, "Should generate code");
+
+        string configCode = generated.First(x => x.Contains("class MutableConfig"));
+        Assert.That(
+            configCode,
+            Does.Contain("Dictionary<string, int> Settings"),
+            "ImmutableDictionary<string, int> should become Dictionary<string, int>");
+    }
+
+    /// <summary>
+    /// Regression test for Issue #94: Deeply nested generics
+    /// </summary>
+    [Test]
+    public void Issue94_DeeplyNestedGenerics_PreservesAllTypeParams()
+    {
+        // Arrange
+        string source = CreateInput("""
+            public record DeepNesting(
+                ImmutableDictionary<string, ImmutableDictionary<int, ImmutableList<string>>> Deep);
+            """);
+
+        // Act
+        string[] generated = GetGeneratedOutput(source);
+
+        // Assert
+        Assert.That(generated, Is.Not.Empty, "Should generate code");
+
+        string deepCode = generated.First(x => x.Contains("class MutableDeepNesting"));
+        Assert.That(
+            deepCode,
+            Does.Contain("Dictionary<string, Dictionary<int, List<string>>> Deep"),
+            "Deeply nested generics should preserve all type parameters");
     }
 
     /// <summary>
