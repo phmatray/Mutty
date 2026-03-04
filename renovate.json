@@ -44,15 +44,15 @@
       "matchManagers": [
         "nuget"
       ],
-      "matchPackagePrefixes": [
-        "Nuke."
-      ],
       "matchUpdateTypes": [
         "minor",
         "patch"
       ],
       "automerge": true,
-      "groupName": "nuke build tools"
+      "groupName": "nuke build tools",
+      "matchPackageNames": [
+        "Nuke.{/,}**"
+      ]
     }
   ],
   "platformAutomerge": true
