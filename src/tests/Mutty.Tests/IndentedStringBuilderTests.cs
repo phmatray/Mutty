@@ -3,15 +3,14 @@
 // See the LICENSE file in the project root for full license information.
 
 using Mutty.CodeHelpers;
-using NUnit.Framework;
+using Xunit;
 using Shouldly;
 
 namespace Mutty.Tests;
 
-[TestFixture]
 public class IndentedStringBuilderTests
 {
-    [Test]
+    [Fact]
     public void Constructor_DefaultParameters_CreatesEmptyBuilder()
     {
         IndentedStringBuilder builder = new();
@@ -20,7 +19,7 @@ public class IndentedStringBuilderTests
         builder.ToString().ShouldBe(string.Empty);
     }
 
-    [Test]
+    [Fact]
     public void Constructor_WithCustomIndent_CreatesBuilderWithIndent()
     {
         IndentedStringBuilder builder = new(indent: 2, indentSize: 4);
@@ -29,7 +28,7 @@ public class IndentedStringBuilderTests
         builder.ToString().ShouldBe("        test");
     }
 
-    [Test]
+    [Fact]
     public void Append_String_AppendsWithIndent()
     {
         IndentedStringBuilder builder = new();
@@ -39,7 +38,7 @@ public class IndentedStringBuilderTests
         builder.ToString().ShouldBe("  Hello");
     }
 
-    [Test]
+    [Fact]
     public void Append_Char_AppendsWithIndent()
     {
         IndentedStringBuilder builder = new();
@@ -49,7 +48,7 @@ public class IndentedStringBuilderTests
         builder.ToString().ShouldBe("  A");
     }
 
-    [Test]
+    [Fact]
     public void Append_StringEnumerable_AppendsAllWithIndent()
     {
         IndentedStringBuilder builder = new();
@@ -59,7 +58,7 @@ public class IndentedStringBuilderTests
         builder.ToString().ShouldBe("  Hello World");
     }
 
-    [Test]
+    [Fact]
     public void Append_CharEnumerable_AppendsAllWithIndent()
     {
         IndentedStringBuilder builder = new();
@@ -69,7 +68,7 @@ public class IndentedStringBuilderTests
         builder.ToString().ShouldBe("  ABC");
     }
 
-    [Test]
+    [Fact]
     public void AppendLine_EmptyString_AddsNewLine()
     {
         IndentedStringBuilder builder = new();
@@ -80,7 +79,7 @@ public class IndentedStringBuilderTests
         builder.ToString().ShouldBe($"First{Environment.NewLine}Second");
     }
 
-    [Test]
+    [Fact]
     public void AppendLine_WithString_AppendsStringAndNewLine()
     {
         IndentedStringBuilder builder = new();
@@ -91,7 +90,7 @@ public class IndentedStringBuilderTests
         builder.ToString().ShouldBe($"  Hello{Environment.NewLine}  World{Environment.NewLine}");
     }
 
-    [Test]
+    [Fact]
     public void AppendLine_EmptyStringWithIndent_DoesNotIndent()
     {
         IndentedStringBuilder builder = new();
@@ -104,7 +103,7 @@ public class IndentedStringBuilderTests
         builder.ToString().ShouldBe(expected);
     }
 
-    [Test]
+    [Fact]
     public void AppendLines_SingleLine_AppendsWithIndent()
     {
         IndentedStringBuilder builder = new();
@@ -114,7 +113,7 @@ public class IndentedStringBuilderTests
         builder.ToString().ShouldBe($"  Single line{Environment.NewLine}");
     }
 
-    [Test]
+    [Fact]
     public void AppendLines_MultipleLines_AppendsEachWithIndent()
     {
         IndentedStringBuilder builder = new();
@@ -126,7 +125,7 @@ public class IndentedStringBuilderTests
         builder.ToString().ShouldBe(expected);
     }
 
-    [Test]
+    [Fact]
     public void AppendLines_WithSkipFinalNewline_DoesNotAddFinalNewline()
     {
         IndentedStringBuilder builder = new();
@@ -136,7 +135,7 @@ public class IndentedStringBuilderTests
         builder.ToString().ShouldBe("  Line1");
     }
 
-    [Test]
+    [Fact]
     public void AppendLines_EmptyLines_HandlesCorrectly()
     {
         IndentedStringBuilder builder = new();
@@ -148,7 +147,7 @@ public class IndentedStringBuilderTests
         builder.ToString().ShouldBe(expected);
     }
 
-    [Test]
+    [Fact]
     public void Clear_ResetsBuilder()
     {
         IndentedStringBuilder builder = new();
@@ -165,7 +164,7 @@ public class IndentedStringBuilderTests
         builder.ToString().ShouldBe("Test");
     }
 
-    [Test]
+    [Fact]
     public void IncrementIndent_IncreasesIndentation()
     {
         IndentedStringBuilder builder = new();
@@ -178,7 +177,7 @@ public class IndentedStringBuilderTests
         builder.ToString().ShouldBe($"  Level1{Environment.NewLine}    Level2");
     }
 
-    [Test]
+    [Fact]
     public void IncrementIndent_WithCount_IncreasesMultipleLevels()
     {
         IndentedStringBuilder builder = new();
@@ -188,7 +187,7 @@ public class IndentedStringBuilderTests
         builder.ToString().ShouldBe("      Deep");
     }
 
-    [Test]
+    [Fact]
     public void DecrementIndent_DecreasesIndentation()
     {
         IndentedStringBuilder builder = new();
@@ -202,7 +201,7 @@ public class IndentedStringBuilderTests
         builder.ToString().ShouldBe($"    Level2{Environment.NewLine}  Level1");
     }
 
-    [Test]
+    [Fact]
     public void DecrementIndent_AtZero_DoesNotGoNegative()
     {
         IndentedStringBuilder builder = new();
@@ -212,7 +211,7 @@ public class IndentedStringBuilderTests
         builder.ToString().ShouldBe("Test");
     }
 
-    [Test]
+    [Fact]
     public void DecrementIndent_WithCount_DecreasesMultipleLevels()
     {
         IndentedStringBuilder builder = new();
@@ -223,7 +222,7 @@ public class IndentedStringBuilderTests
         builder.ToString().ShouldBe("  Test");
     }
 
-    [Test]
+    [Fact]
     public void DecrementIndent_WithCountGreaterThanCurrent_GoesToZero()
     {
         IndentedStringBuilder builder = new();
@@ -234,7 +233,7 @@ public class IndentedStringBuilderTests
         builder.ToString().ShouldBe("Test");
     }
 
-    [Test]
+    [Fact]
     public void Indent_UsingStatement_AutomaticallyDecrementsOnDispose()
     {
         IndentedStringBuilder builder = new();
@@ -249,7 +248,7 @@ public class IndentedStringBuilderTests
         builder.ToString().ShouldBe($"  Indented{Environment.NewLine}Not indented");
     }
 
-    [Test]
+    [Fact]
     public void Indent_Nested_HandlesMultipleLevels()
     {
         IndentedStringBuilder builder = new();
@@ -271,7 +270,7 @@ public class IndentedStringBuilderTests
         builder.ToString().ShouldBe(expected);
     }
 
-    [Test]
+    [Fact]
     public void SuspendIndent_TemporarilyDisablesIndentation()
     {
         IndentedStringBuilder builder = new();
@@ -290,7 +289,7 @@ public class IndentedStringBuilderTests
         builder.ToString().ShouldBe(expected);
     }
 
-    [Test]
+    [Fact]
     public void Length_ReturnsCorrectLength()
     {
         IndentedStringBuilder builder = new();
@@ -305,7 +304,7 @@ public class IndentedStringBuilderTests
         builder.Length.ShouldBe(11 + Environment.NewLine.Length);
     }
 
-    [Test]
+    [Fact]
     public void CustomIndentSize_WorksCorrectly()
     {
         IndentedStringBuilder builder = new(indent: 0, indentSize: 4);
@@ -315,7 +314,7 @@ public class IndentedStringBuilderTests
         builder.ToString().ShouldBe("    Four spaces");
     }
 
-    [Test]
+    [Fact]
     public void MultipleOperations_ProduceCorrectOutput()
     {
         IndentedStringBuilder builder = new();
@@ -363,7 +362,7 @@ public class IndentedStringBuilderTests
         builder.ToString().ShouldBe(expected);
     }
 
-    [Test]
+    [Fact]
     public void AppendAfterAppendLine_StartsNewLineWithIndent()
     {
         IndentedStringBuilder builder = new();
@@ -375,7 +374,7 @@ public class IndentedStringBuilderTests
         builder.ToString().ShouldBe($"  First{Environment.NewLine}  Second");
     }
 
-    [Test]
+    [Fact]
     public void ConsecutiveAppends_DoNotRepeatIndent()
     {
         IndentedStringBuilder builder = new();

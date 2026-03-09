@@ -5,11 +5,10 @@
 using Microsoft.CodeAnalysis.CSharp.Testing;
 using Microsoft.CodeAnalysis.Testing;
 using Mutty.Analyzers;
-using NUnit.Framework;
+using Xunit;
 
 namespace Mutty.Tests.Analyzers;
 
-[TestFixture]
 public class MutableGenerationAttributeAnalyzerTests
 {
     private static CSharpAnalyzerTest<MutableGenerationAttributeAnalyzer, DefaultVerifier> CreateTest(string source)
@@ -36,7 +35,7 @@ public class MutableGenerationAttributeAnalyzerTests
         return test;
     }
 
-    [Test]
+    [Fact]
     public async Task ValidUsage_OnRecord_NoDiagnosticAsync()
     {
         const string source = """
@@ -55,7 +54,7 @@ public class MutableGenerationAttributeAnalyzerTests
         await test.RunAsync().ConfigureAwait(false);
     }
 
-    [Test]
+    [Fact]
     public async Task ValidUsage_OnRecordClass_NoDiagnosticAsync()
     {
         const string source = """
@@ -74,7 +73,7 @@ public class MutableGenerationAttributeAnalyzerTests
         await test.RunAsync().ConfigureAwait(false);
     }
 
-    [Test]
+    [Fact]
     public async Task ValidUsage_OnRecordStruct_NoDiagnosticAsync()
     {
         const string source = """
@@ -93,7 +92,7 @@ public class MutableGenerationAttributeAnalyzerTests
         await test.RunAsync().ConfigureAwait(false);
     }
 
-    [Test]
+    [Fact]
     public async Task InvalidUsage_OnClass_ProducesDiagnosticAsync()
     {
         const string source = """
@@ -116,7 +115,7 @@ public class MutableGenerationAttributeAnalyzerTests
         await test.RunAsync().ConfigureAwait(false);
     }
 
-    [Test]
+    [Fact]
     public async Task InvalidUsage_OnStruct_ProducesDiagnosticAsync()
     {
         const string source = """
@@ -139,7 +138,7 @@ public class MutableGenerationAttributeAnalyzerTests
         await test.RunAsync().ConfigureAwait(false);
     }
 
-    [Test]
+    [Fact]
     public async Task InvalidUsage_OnInterface_ProducesDiagnosticAsync()
     {
         const string source = """
@@ -162,7 +161,7 @@ public class MutableGenerationAttributeAnalyzerTests
         await test.RunAsync().ConfigureAwait(false);
     }
 
-    [Test]
+    [Fact]
     public async Task InvalidUsage_OnEnum_ProducesDiagnosticAsync()
     {
         const string source = """
@@ -185,7 +184,7 @@ public class MutableGenerationAttributeAnalyzerTests
         await test.RunAsync().ConfigureAwait(false);
     }
 
-    [Test]
+    [Fact]
     public async Task FullAttributeName_OnClass_ProducesDiagnosticAsync()
     {
         const string source = """
@@ -207,7 +206,7 @@ public class MutableGenerationAttributeAnalyzerTests
         await test.RunAsync().ConfigureAwait(false);
     }
 
-    [Test]
+    [Fact]
     public async Task MultipleAttributes_OnlyMutableGenerationProducesDiagnosticAsync()
     {
         const string source = """
@@ -232,7 +231,7 @@ public class MutableGenerationAttributeAnalyzerTests
         await test.RunAsync().ConfigureAwait(false);
     }
 
-    [Test]
+    [Fact]
     public async Task DifferentAttribute_NoDiagnosticAsync()
     {
         const string source = """

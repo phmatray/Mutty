@@ -5,7 +5,7 @@
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using NUnit.Framework;
+using Xunit;
 using Shouldly;
 
 namespace Mutty.Tests;
@@ -15,7 +15,7 @@ namespace Mutty.Tests;
 /// </summary>
 public class CollectionPropertyTests
 {
-    [Test]
+    [Fact]
     public void ShouldGenerateMutableWithImmutableArrayProperty()
     {
         // Arrange
@@ -37,7 +37,7 @@ public class CollectionPropertyTests
         resultMutable.ShouldContain("List<int> Scores");
     }
 
-    [Test]
+    [Fact]
     public void ShouldGenerateMutableWithImmutableListProperty()
     {
         // Arrange
@@ -59,7 +59,7 @@ public class CollectionPropertyTests
         resultMutable.ShouldContain("List<string> Tags");
     }
 
-    [Test]
+    [Fact]
     public void ShouldGenerateMutableWithImmutableHashSetProperty()
     {
         // Arrange
@@ -81,7 +81,7 @@ public class CollectionPropertyTests
         resultMutable.ShouldContain("HashSet<int> UniqueIds");
     }
 
-    [Test]
+    [Fact]
     public void ShouldGenerateMutableWithImmutableSortedSetProperty()
     {
         // Arrange
@@ -103,7 +103,7 @@ public class CollectionPropertyTests
         resultMutable.ShouldContain("SortedSet<int> SortedScores");
     }
 
-    [Test]
+    [Fact]
     public void ShouldGenerateMutableWithMultipleArrayAndListTypes()
     {
         // Arrange

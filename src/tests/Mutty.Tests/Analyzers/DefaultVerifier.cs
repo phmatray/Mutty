@@ -4,7 +4,7 @@
 
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.CodeAnalysis.Testing;
-using NUnit.Framework;
+using Xunit;
 using Shouldly;
 
 namespace Mutty.Tests.Analyzers;

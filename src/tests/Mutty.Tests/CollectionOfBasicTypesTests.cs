@@ -6,7 +6,7 @@ using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Mutty.Tests.Setup;
-using NUnit.Framework;
+using Xunit;
 using Shouldly;
 
 namespace Mutty.Tests;
@@ -32,7 +32,7 @@ public class CollectionOfBasicTypesTests
     // ---------------------------------------------------------------------------
     // Test 1: Constructor uses .ToList() for built-in item types
     // ---------------------------------------------------------------------------
-    [Test]
+    [Fact]
     public void Constructor_ShouldUseToList_ForImmutableListOfString()
     {
         // Act
@@ -49,7 +49,7 @@ public class CollectionOfBasicTypesTests
     // ---------------------------------------------------------------------------
     // Test 2: Build() uses .ToImmutableList() for built-in item types
     // ---------------------------------------------------------------------------
-    [Test]
+    [Fact]
     public void Build_ShouldUseToImmutableList_ForImmutableListOfString()
     {
         // Act
@@ -66,7 +66,7 @@ public class CollectionOfBasicTypesTests
     // ---------------------------------------------------------------------------
     // Test 3: End-to-end runtime test — Article with ImmutableList<string> actually works
     // ---------------------------------------------------------------------------
-    [Test]
+    [Fact]
     public void Produce_ShouldMutateTags_ForArticleWithImmutableListOfString()
     {
         // Arrange: create an Article with ImmutableList<string> Tags
@@ -98,7 +98,7 @@ public class CollectionOfBasicTypesTests
     // ---------------------------------------------------------------------------
     // Test 4: ImmutableArray<int> uses .ToList() / .ToImmutableArray()
     // ---------------------------------------------------------------------------
-    [Test]
+    [Fact]
     public void Constructor_ShouldUseToList_ForImmutableArrayOfInt()
     {
         string input = """
@@ -118,7 +118,7 @@ public class CollectionOfBasicTypesTests
         resultMutable.ShouldNotContain(".AsMutable()");
     }
 
-    [Test]
+    [Fact]
     public void Build_ShouldUseToImmutableArray_ForImmutableArrayOfInt()
     {
         string input = """
@@ -141,7 +141,7 @@ public class CollectionOfBasicTypesTests
     // ---------------------------------------------------------------------------
     // Test 5: ImmutableHashSet<string> uses .ToImmutableHashSet()
     // ---------------------------------------------------------------------------
-    [Test]
+    [Fact]
     public void Build_ShouldUseToImmutableHashSet_ForImmutableHashSetOfString()
     {
         string input = """

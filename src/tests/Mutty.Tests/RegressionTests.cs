@@ -4,7 +4,7 @@
 
 using Microsoft.CodeAnalysis;
 using Mutty.Tests.Setup;
-using NUnit.Framework;
+using Xunit;
 using Shouldly;
 
 namespace Mutty.Tests;
@@ -14,7 +14,6 @@ namespace Mutty.Tests;
 /// Each test prevents re-introduction of a known bug.
 /// Format: Test method name references the GitHub issue number.
 /// </summary>
-[TestFixture]
 public class RegressionTests : GeneratorTests
 {
     /// <summary>
@@ -24,7 +23,7 @@ public class RegressionTests : GeneratorTests
     /// Problem: Generator failed to handle nullable reference types in record constructors correctly.
     /// Expected: Generated code should properly handle nullable annotations.
     /// </summary>
-    [Test]
+    [Fact]
     public void Issue81_NullableRecordsInConstructors()
     {
         // Arrange
@@ -54,7 +53,7 @@ public class RegressionTests : GeneratorTests
     ///
     /// Expected: Generated code should compile without CS1929 errors for basic type collections.
     /// </summary>
-    [Test]
+    [Fact]
     public void Issue86_ImmutableListWithBasicType_NoCS1929Error()
     {
         // Arrange
@@ -79,7 +78,7 @@ public class RegressionTests : GeneratorTests
     /// Regression test for Issue #86: ImmutableList with multiple basic types
     /// Extended test case to ensure fix works for various basic types.
     /// </summary>
-    [Test]
+    [Fact]
     public void Issue86_ImmutableListWithVariousBasicTypes_AllCompile()
     {
         // Arrange
@@ -109,7 +108,7 @@ public class RegressionTests : GeneratorTests
     /// Regression test for Issue #86: ImmutableDictionary with basic types
     /// Ensures the fix also applies to ImmutableDictionary.
     /// </summary>
-    [Test]
+    [Fact]
     public void Issue86_ImmutableDictionaryWithBasicTypes_NoCS1929Error()
     {
         // Arrange
@@ -133,7 +132,7 @@ public class RegressionTests : GeneratorTests
     /// Combined regression test for Issues #81 and #86
     /// Tests the interaction of nullable types with immutable collections.
     /// </summary>
-    [Test]
+    [Fact]
     public void Issue81And86_NullableTypesWithImmutableCollections()
     {
         // Arrange
@@ -167,7 +166,7 @@ public class RegressionTests : GeneratorTests
     ///
     /// Expected: All type parameters should be preserved in nested generics.
     /// </summary>
-    [Test]
+    [Fact]
     public void Issue94_NestedImmutableCollections_GenerateCorrectly()
     {
         // Arrange
@@ -191,7 +190,7 @@ public class RegressionTests : GeneratorTests
     /// <summary>
     /// Regression test for Issue #94: ImmutableDictionary with basic types preserves all type params
     /// </summary>
-    [Test]
+    [Fact]
     public void Issue94_ImmutableDictionary_BasicTypes_PreservesAllTypeParams()
     {
         // Arrange
@@ -213,7 +212,7 @@ public class RegressionTests : GeneratorTests
     /// <summary>
     /// Regression test for Issue #94: Deeply nested generics
     /// </summary>
-    [Test]
+    [Fact]
     public void Issue94_DeeplyNestedGenerics_PreservesAllTypeParams()
     {
         // Arrange
@@ -236,7 +235,7 @@ public class RegressionTests : GeneratorTests
     /// Proactive regression test: Empty collections initialization
     /// Ensures generated code properly initializes empty collections.
     /// </summary>
-    [Test]
+    [Fact]
     public void EmptyCollections_InitializeCorrectly()
     {
         // Arrange

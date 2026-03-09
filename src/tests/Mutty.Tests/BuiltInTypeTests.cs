@@ -5,7 +5,7 @@
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using NUnit.Framework;
+using Xunit;
 using Shouldly;
 
 namespace Mutty.Tests;
@@ -15,7 +15,7 @@ namespace Mutty.Tests;
 /// </summary>
 public class BuiltInTypeTests
 {
-    [Test]
+    [Fact]
     public void ShouldGenerateMutableWithDateTimeProperty()
     {
         // Arrange
@@ -38,7 +38,7 @@ public class BuiltInTypeTests
         resultMutable.ShouldContain("DateTimeOffset EndDate");
     }
 
-    [Test]
+    [Fact]
     public void ShouldGenerateMutableWithGuidProperty()
     {
         // Arrange
@@ -60,7 +60,7 @@ public class BuiltInTypeTests
         resultMutable.ShouldContain("Guid Id");
     }
 
-    [Test]
+    [Fact]
     public void ShouldGenerateMutableWithDecimalProperty()
     {
         // Arrange
@@ -82,7 +82,7 @@ public class BuiltInTypeTests
         resultMutable.ShouldContain("double Discount");
     }
 
-    [Test]
+    [Fact]
     public void ShouldGenerateMutableWithBooleanProperty()
     {
         // Arrange
@@ -104,7 +104,7 @@ public class BuiltInTypeTests
         resultMutable.ShouldContain("bool IsActive");
     }
 
-    [Test]
+    [Fact]
     public void ShouldGenerateMutableWithMixedNumericTypes()
     {
         // Arrange
@@ -139,7 +139,7 @@ public class BuiltInTypeTests
     /// <summary>
     /// Regression test for issue #95: nullable primitive types should not receive Mutable prefix.
     /// </summary>
-    [Test]
+    [Fact]
     public void ShouldGenerateMutableWithNullablePrimitiveProperties()
     {
         // Arrange
@@ -180,7 +180,7 @@ public class BuiltInTypeTests
     /// <summary>
     /// Regression test for issue #95: nullable primitives in collections should not get Mutable prefix.
     /// </summary>
-    [Test]
+    [Fact]
     public void ShouldGenerateCollectionOfNullablePrimitivesCorrectly()
     {
         // Arrange
