@@ -3,19 +3,19 @@
 // See the LICENSE file in the project root for full license information.
 
 using Mutty.Tests.Setup;
-using NUnit.Framework;
+using Xunit;
 using Shouldly;
 
 namespace Mutty.Tests;
 
 public class MutableStudentTests
 {
-    [SetUp]
+    // Constructor replaces [SetUp]
     public void Setup()
     {
     }
 
-    [Test]
+    [Fact]
     public void ShouldCreateMutableStudent()
     {
         // Arrange

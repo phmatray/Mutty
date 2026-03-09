@@ -5,19 +5,19 @@
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using NUnit.Framework;
+using Xunit;
 using Shouldly;
 
 namespace Mutty.Tests;
 
 public class MutableRecordGeneratorTests
 {
-    [SetUp]
+    // Constructor replaces [SetUp]
     public void Setup()
     {
     }
 
-    [Test]
+    [Fact]
     public void ShouldGenerateMutableRecord()
     {
         // Arrange

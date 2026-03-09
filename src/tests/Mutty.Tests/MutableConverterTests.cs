@@ -2,7 +2,7 @@
 // Atypical Consulting SRL licenses this file to you under the Apache 2.0 license.
 // See the LICENSE file in the project root for full license information.
 
-using NUnit.Framework;
+using Xunit;
 
 namespace Mutty.Tests;
 
@@ -108,12 +108,12 @@ public static class MutableStringConverter
 
 public class MutableStringConverterTests
 {
-    [TestCase("string", ExpectedResult = "string")]
-    [TestCase("System.String", ExpectedResult = "System.String")]
-    [TestCase("Student", ExpectedResult = "MutableStudent")]
-    [TestCase("List<Student>", ExpectedResult = "List<MutableStudent>")]
-    [TestCase("ImmutableList<Student>", ExpectedResult = "List<MutableStudent>")]
-    [TestCase("ImmutableDictionary<int, Student>", ExpectedResult = "Dictionary<int, MutableStudent>")]
+    [InlineData("string", ExpectedResult = "string")]
+    [InlineData("System.String", ExpectedResult = "System.String")]
+    [InlineData("Student", ExpectedResult = "MutableStudent")]
+    [InlineData("List<Student>", ExpectedResult = "List<MutableStudent>")]
+    [InlineData("ImmutableList<Student>", ExpectedResult = "List<MutableStudent>")]
+    [InlineData("ImmutableDictionary<int, Student>", ExpectedResult = "Dictionary<int, MutableStudent>")]
     public string ShouldConvertFromRecordToMutable(string input)
     {
         return MutableStringConverter.ToMutable(input);

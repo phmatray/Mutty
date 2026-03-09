@@ -3,7 +3,7 @@
 // See the LICENSE file in the project root for full license information.
 
 using Mutty.Tests.Setup;
-using NUnit.Framework;
+using Xunit;
 using Shouldly;
 
 namespace Mutty.Tests;
@@ -13,7 +13,6 @@ namespace Mutty.Tests;
 /// These tests capture the actual generated .g.cs output and compare against approved baselines.
 /// This provides regression protection against unintended code generation changes.
 /// </summary>
-[TestFixture]
 public class SnapshotTests : GeneratorTests
 {
     /// <summary>
@@ -48,7 +47,7 @@ public class SnapshotTests : GeneratorTests
     /// Test: Basic record with primitive types
     /// Verifies code generation for a simple record with string and int properties.
     /// </summary>
-    [Test]
+    [Fact]
     public Task GeneratesCorrectCodeForBasicRecordAsyncAsync()
     {
         string source = CreateInput("""
@@ -65,7 +64,7 @@ public class SnapshotTests : GeneratorTests
     /// Test: Record with ImmutableList collection
     /// Verifies proper handling of ImmutableList properties.
     /// </summary>
-    [Test]
+    [Fact]
     public Task GeneratesCorrectCodeForRecordWithImmutableListAsync()
     {
         string source = CreateInput("""
@@ -82,7 +81,7 @@ public class SnapshotTests : GeneratorTests
     /// Test: Record with ImmutableDictionary collection
     /// Verifies proper handling of ImmutableDictionary properties.
     /// </summary>
-    [Test]
+    [Fact]
     public Task GeneratesCorrectCodeForRecordWithImmutableDictionaryAsync()
     {
         string source = CreateInput("""
@@ -99,7 +98,7 @@ public class SnapshotTests : GeneratorTests
     /// Test: Record with multiple collection types
     /// Verifies handling of records with both ImmutableList and ImmutableDictionary.
     /// </summary>
-    [Test]
+    [Fact]
     public Task GeneratesCorrectCodeForRecordWithMultipleCollectionsAsync()
     {
         string source = CreateInput("""
@@ -119,7 +118,7 @@ public class SnapshotTests : GeneratorTests
     /// Test: Nested record (record containing another mutable record property)
     /// Verifies proper handling of nested mutable records.
     /// </summary>
-    [Test]
+    [Fact]
     public Task GeneratesCorrectCodeForNestedRecordAsync()
     {
         // Each record needs its own [MutableGeneration] attribute
@@ -155,7 +154,7 @@ public class SnapshotTests : GeneratorTests
     /// Test: Generic record
     /// Verifies code generation for records with generic type parameters.
     /// </summary>
-    [Test]
+    [Fact]
     public Task GeneratesCorrectCodeForGenericRecordAsync()
     {
         string source = CreateInput("""
@@ -172,7 +171,7 @@ public class SnapshotTests : GeneratorTests
     /// Test: Generic record with constraints
     /// Verifies code generation for generic records with where constraints.
     /// </summary>
-    [Test]
+    [Fact]
     public Task GeneratesCorrectCodeForGenericRecordWithConstraintsAsync()
     {
         string source = CreateInput("""
@@ -189,7 +188,7 @@ public class SnapshotTests : GeneratorTests
     /// Test: Record with nullable reference types
     /// Verifies proper handling of nullable annotations (string? vs string).
     /// </summary>
-    [Test]
+    [Fact]
     public Task GeneratesCorrectCodeForNullableReferenceTypesAsync()
     {
         string source = CreateInput("""
@@ -207,7 +206,7 @@ public class SnapshotTests : GeneratorTests
     /// Test: Record with nullable value types
     /// Verifies proper handling of nullable value types (int? vs int).
     /// </summary>
-    [Test]
+    [Fact]
     public Task GeneratesCorrectCodeForNullableValueTypesAsync()
     {
         string source = CreateInput("""
@@ -224,7 +223,7 @@ public class SnapshotTests : GeneratorTests
     /// Test: Complex nested generic with collections
     /// Verifies handling of complex type combinations.
     /// </summary>
-    [Test]
+    [Fact]
     public Task GeneratesCorrectCodeForComplexNestedGenericAsync()
     {
         string source = CreateInput("""
@@ -243,7 +242,7 @@ public class SnapshotTests : GeneratorTests
     /// Test: Record with all primitive types
     /// Verifies generation for records covering all built-in types.
     /// </summary>
-    [Test]
+    [Fact]
     public Task GeneratesCorrectCodeForAllPrimitiveTypesAsync()
     {
         string source = CreateInput("""
@@ -274,7 +273,7 @@ public class SnapshotTests : GeneratorTests
     /// Test: Record with mixed collection types and basic types
     /// Regression test for Issue #86 - ImmutableList with BasicType CS1929 error
     /// </summary>
-    [Test]
+    [Fact]
     public Task GeneratesCorrectCodeForMixedCollectionsWithBasicTypesAsync()
     {
         string source = CreateInput("""

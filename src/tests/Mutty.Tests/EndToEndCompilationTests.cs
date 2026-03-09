@@ -7,7 +7,7 @@ using System.Reflection;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Mutty.Tests.Setup;
-using NUnit.Framework;
+using Xunit;
 using Shouldly;
 
 namespace Mutty.Tests;
@@ -25,7 +25,6 @@ namespace Mutty.Tests;
 /// requires additional assembly references that aren't trivially available.
 /// TODO: Fix assembly loading or use Microsoft.CodeAnalysis.Testing package for proper test infrastructure.
 /// </remarks>
-[TestFixture]
 [Ignore("Temporarily disabled - assembly reference issues in runtime compilation")]
 public class EndToEndCompilationTests : GeneratorTests
 {
@@ -96,7 +95,7 @@ public class EndToEndCompilationTests : GeneratorTests
     /// Test: Basic record can be instantiated and converted.
     /// Verifies the most fundamental operation works end-to-end.
     /// </summary>
-    [Test]
+    [Fact]
     public void BasicRecord_CanBeInstantiatedAndConverted()
     {
         // Arrange
@@ -145,7 +144,7 @@ public class EndToEndCompilationTests : GeneratorTests
     /// Test: Mutable record properties can be modified.
     /// Verifies that the mutable version actually allows mutations.
     /// </summary>
-    [Test]
+    [Fact]
     public void MutableRecord_PropertiesCanBeModified()
     {
         // Arrange
@@ -177,7 +176,7 @@ public class EndToEndCompilationTests : GeneratorTests
     /// Test: Collections are mutable in mutable record.
     /// Verifies that List properties in mutable version can be modified.
     /// </summary>
-    [Test]
+    [Fact]
     public void MutableRecord_CollectionsAreMutable()
     {
         // Arrange
@@ -217,7 +216,7 @@ public class EndToEndCompilationTests : GeneratorTests
     /// Test: Collections are immutable after ToImmutable().
     /// Verifies that converting back to immutable produces truly immutable collections.
     /// </summary>
-    [Test]
+    [Fact]
     public void ImmutableRecord_CollectionsAreTrulyImmutable()
     {
         // Arrange
@@ -259,7 +258,7 @@ public class EndToEndCompilationTests : GeneratorTests
     /// Test: Round-trip preserves all data for complex records.
     /// Verifies that multiple conversions don't lose data.
     /// </summary>
-    [Test]
+    [Fact]
     public void ComplexRecord_RoundTripPreservesAllData()
     {
         // Arrange
@@ -311,7 +310,7 @@ public class EndToEndCompilationTests : GeneratorTests
     /// <summary>
     /// Test: Nullable reference types work correctly in round-trip.
     /// </summary>
-    [Test]
+    [Fact]
     public void NullableReferenceTypes_RoundTripCorrectly()
     {
         // Arrange
@@ -349,7 +348,7 @@ public class EndToEndCompilationTests : GeneratorTests
     /// <summary>
     /// Test: Generic records work correctly.
     /// </summary>
-    [Test]
+    [Fact]
     public void GenericRecord_WorksCorrectly()
     {
         // Arrange

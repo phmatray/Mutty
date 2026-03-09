@@ -5,7 +5,7 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Mutty.Models;
-using NUnit.Framework;
+using Xunit;
 using Shouldly;
 
 namespace Mutty.Tests;
@@ -15,7 +15,7 @@ namespace Mutty.Tests;
 /// </summary>
 public class PropertyModelTests
 {
-    [Test]
+    [Fact]
     public void PropertyModel_ShouldDetectSimpleProperty()
     {
         // Arrange & Act
@@ -29,7 +29,7 @@ public class PropertyModelTests
         model.PropertyType.ShouldBe(PropertyType.Other);
     }
 
-    [Test]
+    [Fact]
     public void PropertyModel_ShouldDetectImmutableArrayProperty()
     {
         // Arrange & Act
@@ -44,7 +44,7 @@ public class PropertyModelTests
         model.PropertyType.ShouldBe(PropertyType.ImmutableCollection);
     }
 
-    [Test]
+    [Fact]
     public void PropertyModel_ShouldDetectImmutableListProperty()
     {
         // Arrange & Act
@@ -59,7 +59,7 @@ public class PropertyModelTests
         model.PropertyType.ShouldBe(PropertyType.ImmutableCollection);
     }
 
-    [Test]
+    [Fact]
     public void PropertyModel_ShouldDetectImmutableHashSetProperty()
     {
         // Arrange & Act
@@ -74,7 +74,7 @@ public class PropertyModelTests
         model.PropertyType.ShouldBe(PropertyType.ImmutableCollection);
     }
 
-    [Test]
+    [Fact]
     public void PropertyModel_ShouldDetectImmutableDictionaryProperty()
     {
         // Arrange & Act
@@ -89,7 +89,7 @@ public class PropertyModelTests
         model.PropertyType.ShouldBe(PropertyType.ImmutableCollection);
     }
 
-    [Test]
+    [Fact]
     public void PropertyModel_ShouldDetectNullableProperty()
     {
         // Arrange & Act
