@@ -20,8 +20,8 @@
 
 # Scripts
 *.sh text eol=lf
-build.cmd text eol=lf
 *.cmd text eol=crlf
+build.cmd text eol=lf
 *.ps1 text eol=crlf
 
 # Binary
