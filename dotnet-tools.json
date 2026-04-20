@@ -3,7 +3,7 @@
   "isRoot": true,
   "tools": {
     "meziantou.framework.nugetpackagevalidation.tool": {
-      "version": "1.0.46",
+      "version": "1.0.47",
       "commands": [
         "meziantou.validate-nuget-package"
       ]
