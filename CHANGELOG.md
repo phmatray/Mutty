@@ -15,8 +15,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Performance:** rebuilt the incremental pipeline around value-equatable models (`RecordModel`, `PropertyModel`, `EquatableArray<T>`) instead of flowing Roslyn symbols and `Collect()`-ing them. The generator now caches correctly and only regenerates records that actually changed.
 - Merged the three generators into a single `MuttyGenerator` using `ForAttributeWithMetadataName`.
 - Lowered the `Microsoft.CodeAnalysis.CSharp` floor from 5.0.0 to 4.8.0 so the generator runs on a much broader range of SDKs and Visual Studio versions.
+- Generated wrappers now include properties inherited from base records.
 
 ### Fixed
+- Nested mutable type names are namespace-qualified, so a record nesting another `[MutableGeneration]` record from a different namespace no longer fails with CS0246.
+- Generic records now report a clear diagnostic (`MUTTY002`) instead of generating a malformed wrapper.
+- Wrapping a record whose `ImmutableArray<T>` property is `default` no longer throws; it yields an empty list.
 - Generated files now emit the `using` directives they need, so they compile when the consumer has `ImplicitUsings` disabled.
 - `ImmutableDictionary`, `ImmutableSortedDictionary`, `ImmutableHashSet`, `ImmutableSortedSet`, `ImmutableQueue` and `ImmutableStack` properties now generate code that compiles and round-trips (previously CS1929).
 - A nested record property is only treated as a mutable wrapper when that record is `[MutableGeneration]`-annotated; un-annotated nested records no longer cause CS0246.
