@@ -66,9 +66,10 @@ namespace Mutty.Tests
         }
 
         /// <summary>
-        /// Performs an implicit conversion from <see cref="MutableAddress"/> to <see cref="Address"/>.
+        /// Performs an explicit conversion from <see cref="MutableAddress"/> to <see cref="Address"/>.
         /// </summary>
-        public static implicit operator Address(MutableAddress mutable)
+        /// <remarks>Explicit because it allocates a new record; prefer <see cref="Build"/>.</remarks>
+        public static explicit operator Address(MutableAddress mutable)
         {
             return mutable.Build();
         }
@@ -125,7 +126,7 @@ namespace Mutty.Tests
             return _record with
             {
                 Name = this.Name,
-                HomeAddress = this.HomeAddress,
+                HomeAddress = this.HomeAddress.Build(),
             };
         }
 
@@ -152,9 +153,10 @@ namespace Mutty.Tests
         }
 
         /// <summary>
-        /// Performs an implicit conversion from <see cref="MutablePerson"/> to <see cref="Person"/>.
+        /// Performs an explicit conversion from <see cref="MutablePerson"/> to <see cref="Person"/>.
         /// </summary>
-        public static implicit operator Person(MutablePerson mutable)
+        /// <remarks>Explicit because it allocates a new record; prefer <see cref="Build"/>.</remarks>
+        public static explicit operator Person(MutablePerson mutable)
         {
             return mutable.Build();
         }

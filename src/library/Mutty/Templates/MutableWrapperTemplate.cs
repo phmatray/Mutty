@@ -60,7 +60,7 @@ public class MutableWrapperTemplate(RecordModel tokens) : IndentedCodeBuilder
             GenerateToImmutableAlias();
             GenerateOnBeforeBuildHook();
             GenerateImplicitOperatorToMutable();
-            GenerateImplicitOperatorToRecord();
+            GenerateExplicitOperatorToRecord();
             GenerateProperties();
         });
     }
@@ -134,7 +134,13 @@ public class MutableWrapperTemplate(RecordModel tokens) : IndentedCodeBuilder
                         {
                             case PropertyType.Record:
                                 {
-                                    Line($"{property.Name} = this.{property.Name},");
+                                    // Materialise the nested wrapper explicitly rather than relying on the
+                                    // (now explicit) mutable-to-record conversion operator.
+                                    bool isNullable = property.Type.EndsWith("?", StringComparison.Ordinal);
+                                    string build = (isNullable)
+                                        ? $"this.{property.Name}?.Build()"
+                                        : $"this.{property.Name}.Build()";
+                                    Line($"{property.Name} = {build},");
                                     break;
                                 }
                             case PropertyType.ImmutableCollection:
@@ -505,11 +511,12 @@ public class MutableWrapperTemplate(RecordModel tokens) : IndentedCodeBuilder
         Braces(() => Line($"return new {_mutableRecordName}(record);"));
     }
 
-    private void GenerateImplicitOperatorToRecord()
+    private void GenerateExplicitOperatorToRecord()
     {
         EmptyLine();
-        Summary($"Performs an implicit conversion from <see cref=\"{_mutableRecordName}\"/> to <see cref=\"{_recordName}\"/>.");
-        Line($"public static implicit operator {_recordName}({_mutableRecordName} mutable)");
+        Summary($"Performs an explicit conversion from <see cref=\"{_mutableRecordName}\"/> to <see cref=\"{_recordName}\"/>.");
+        Line("/// <remarks>Explicit because it allocates a new record; prefer <see cref=\"Build\"/>.</remarks>");
+        Line($"public static explicit operator {_recordName}({_mutableRecordName} mutable)");
         Braces(() => Line("return mutable.Build();"));
     }
 }

@@ -64,9 +64,10 @@ namespace Mutty.Tests
         }
 
         /// <summary>
-        /// Performs an implicit conversion from <see cref="MutablePerson"/> to <see cref="Person"/>.
+        /// Performs an explicit conversion from <see cref="MutablePerson"/> to <see cref="Person"/>.
         /// </summary>
-        public static implicit operator Person(MutablePerson mutable)
+        /// <remarks>Explicit because it allocates a new record; prefer <see cref="Build"/>.</remarks>
+        public static explicit operator Person(MutablePerson mutable)
         {
             return mutable.Build();
         }

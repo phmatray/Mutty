@@ -66,9 +66,10 @@ namespace Mutty.Tests
         }
 
         /// <summary>
-        /// Performs an implicit conversion from <see cref="MutableDataSet"/> to <see cref="DataSet"/>.
+        /// Performs an explicit conversion from <see cref="MutableDataSet"/> to <see cref="DataSet"/>.
         /// </summary>
-        public static implicit operator DataSet(MutableDataSet mutable)
+        /// <remarks>Explicit because it allocates a new record; prefer <see cref="Build"/>.</remarks>
+        public static explicit operator DataSet(MutableDataSet mutable)
         {
             return mutable.Build();
         }

@@ -252,6 +252,61 @@ public class EndToEndCompilationTests : GeneratorTests
     }
 
     [Test]
+    public void MutableToRecord_ExplicitCastCompilesAndRoundTrips()
+    {
+        string source =
+            """
+            using Mutty;
+
+            namespace Demo
+            {
+                [MutableGeneration]
+                public partial record Point(int X, int Y);
+
+                public static class PointUsage
+                {
+                    public static Point ViaExplicit(MutablePoint m) => (Point)m;
+                }
+            }
+            """;
+
+        Assembly assembly = CompileToAssembly(source);
+
+        Type pointType = assembly.GetType("Demo.Point").ShouldNotBeNull();
+        object point = Activator.CreateInstance(pointType, 1, 2)!;
+        object mutable = ToMutable(assembly, "Demo.Point", point);
+
+        Type usage = assembly.GetType("Demo.PointUsage").ShouldNotBeNull();
+        object result = usage.GetMethod("ViaExplicit")!.Invoke(null, [mutable])!;
+
+        pointType.GetProperty("X")!.GetValue(result).ShouldBe(1);
+        pointType.GetProperty("Y")!.GetValue(result).ShouldBe(2);
+    }
+
+    [Test]
+    public void MutableToRecord_ImplicitConversionDoesNotCompile()
+    {
+        // The mutable-to-record conversion is explicit; assigning a mutable to a record must not compile.
+        string source =
+            """
+            using Mutty;
+
+            namespace Demo
+            {
+                [MutableGeneration]
+                public partial record Point(int X, int Y);
+
+                public static class PointUsage
+                {
+                    public static Point ViaImplicit(MutablePoint m) => m;
+                }
+            }
+            """;
+
+        Should.Throw<InvalidOperationException>(() => CompileToAssembly(source));
+    }
+
+    [Test]
     public void DefaultImmutableArray_DoesNotThrowOnWrap()
     {
         // A record constructed with default(ImmutableArray<T>) must wrap without throwing

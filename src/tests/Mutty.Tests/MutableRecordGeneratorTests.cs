@@ -186,9 +186,10 @@ public class MutableRecordGeneratorTests
                     }
 
                     /// <summary>
-                    /// Performs an implicit conversion from <see cref="MutableStudentDetails"/> to <see cref="StudentDetails"/>.
+                    /// Performs an explicit conversion from <see cref="MutableStudentDetails"/> to <see cref="StudentDetails"/>.
                     /// </summary>
-                    public static implicit operator StudentDetails(MutableStudentDetails mutable)
+                    /// <remarks>Explicit because it allocates a new record; prefer <see cref="Build"/>.</remarks>
+                    public static explicit operator StudentDetails(MutableStudentDetails mutable)
                     {
                         return mutable.Build();
                     }

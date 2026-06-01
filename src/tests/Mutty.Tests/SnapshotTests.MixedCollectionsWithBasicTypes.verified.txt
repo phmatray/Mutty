@@ -66,9 +66,10 @@ namespace Mutty.Tests
         }
 
         /// <summary>
-        /// Performs an implicit conversion from <see cref="MutableMixedData"/> to <see cref="MixedData"/>.
+        /// Performs an explicit conversion from <see cref="MutableMixedData"/> to <see cref="MixedData"/>.
         /// </summary>
-        public static implicit operator MixedData(MutableMixedData mutable)
+        /// <remarks>Explicit because it allocates a new record; prefer <see cref="Build"/>.</remarks>
+        public static explicit operator MixedData(MutableMixedData mutable)
         {
             return mutable.Build();
         }

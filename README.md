@@ -45,7 +45,7 @@ Immutable Record Mutation Made Easy
 
 - [x] **Automated Mutable Wrappers**: Automatically generates mutable wrapper classes for your immutable records using Roslyn's Incremental Source Generation.
 - [x] **Deep Nesting Support**: Easily handle complex nested structures without tedious and error-prone manual code.
-- [x] **Immutable to Mutable Conversion**: Seamlessly switch between immutable and mutable versions of your records using implicit conversions.
+- [x] **Immutable to Mutable Conversion**: An implicit conversion creates a mutable draft from a record; converting back is an explicit cast (or call `Build()`/`ToImmutable()`) so the allocation is never hidden.
 - [x] **Ideal for Flux Architecture**: Works great with Flux architecture, allowing you to manage state changes in a predictable and immutable way.
 - [x] **Helper Methods**:
     - [x] Provides a `Produce` method to apply mutations to your immutable records using the generated mutable wrappers.
@@ -146,9 +146,10 @@ namespace Mutty.ConsoleApp
         }
 
         /// <summary>
-        /// Performs an implicit conversion from <see cref="MutableStudent"/> to <see cref="Student"/>.
+        /// Performs an explicit conversion from <see cref="MutableStudent"/> to <see cref="Student"/>.
         /// </summary>
-        public static implicit operator Student(MutableStudent mutable)
+        /// <remarks>Explicit because it allocates a new record; prefer <see cref="Build"/>.</remarks>
+        public static explicit operator Student(MutableStudent mutable)
         {
             return mutable.Build();
         }
@@ -258,7 +259,7 @@ To use Mutty in your project:
 
 - **Immutable by Default**: Use immutable records for your core data models to ensure thread safety and prevent unintended side effects.
 - **Mutate with Care**: Use the generated mutable wrappers when you need to make changes, but remember to always convert back to the immutable form before exposing the data.
-- **Leverage the Implicit Conversion**: Mutty provides implicit conversions between the immutable and mutable versions of your records, making it easy to switch between the two.
+- **Convert Deliberately**: Creating a mutable draft from a record is implicit, but converting back is an explicit cast — prefer calling `Build()` (or its `ToImmutable()` alias) so the allocation is obvious at the call site.
 
 ### Contributing
 

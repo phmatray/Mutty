@@ -88,9 +88,10 @@ namespace Mutty.Tests
         }
 
         /// <summary>
-        /// Performs an implicit conversion from <see cref="MutableAllTypes"/> to <see cref="AllTypes"/>.
+        /// Performs an explicit conversion from <see cref="MutableAllTypes"/> to <see cref="AllTypes"/>.
         /// </summary>
-        public static implicit operator AllTypes(MutableAllTypes mutable)
+        /// <remarks>Explicit because it allocates a new record; prefer <see cref="Build"/>.</remarks>
+        public static explicit operator AllTypes(MutableAllTypes mutable)
         {
             return mutable.Build();
         }

@@ -66,9 +66,10 @@ namespace Mutty.Tests
         }
 
         /// <summary>
-        /// Performs an implicit conversion from <see cref="MutableStats"/> to <see cref="Stats"/>.
+        /// Performs an explicit conversion from <see cref="MutableStats"/> to <see cref="Stats"/>.
         /// </summary>
-        public static implicit operator Stats(MutableStats mutable)
+        /// <remarks>Explicit because it allocates a new record; prefer <see cref="Build"/>.</remarks>
+        public static explicit operator Stats(MutableStats mutable)
         {
             return mutable.Build();
         }
