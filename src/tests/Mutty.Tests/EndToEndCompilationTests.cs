@@ -216,6 +216,76 @@ public class EndToEndCompilationTests : GeneratorTests
     }
 
     [Test]
+    public void OnBeforeBuildHook_IsInvokedByBuildAndToImmutable()
+    {
+        // A user-provided partial implements the OnBeforeBuild hook to normalise state. Both Build()
+        // and its ToImmutable() alias must run it.
+        string source =
+            """
+            using Mutty;
+
+            namespace Mutty.Tests;
+
+            [MutableGeneration]
+            public partial record Person(string Name, int Age);
+
+            public partial class MutablePerson
+            {
+                partial void OnBeforeBuild()
+                {
+                    Name = Name.ToUpperInvariant();
+                }
+            }
+            """;
+
+        Assembly assembly = CompileToAssembly(source);
+
+        Type personType = assembly.GetType("Mutty.Tests.Person").ShouldNotBeNull();
+        object person = Activator.CreateInstance(personType, "jane", 30)!;
+
+        object viaBuild = Build(ToMutable(assembly, "Mutty.Tests.Person", person));
+        personType.GetProperty("Name")!.GetValue(viaBuild).ShouldBe("JANE");
+
+        object mutable = ToMutable(assembly, "Mutty.Tests.Person", person);
+        object viaToImmutable = mutable.GetType().GetMethod("ToImmutable")!.Invoke(mutable, null)!;
+        personType.GetProperty("Name")!.GetValue(viaToImmutable).ShouldBe("JANE");
+    }
+
+    [Test]
+    public void UnannotatedNestedRecord_CompilesAndRoundTripsByReference()
+    {
+        // Address is NOT annotated with [MutableGeneration], so Person.Home must be kept as-is
+        // (by reference) rather than referencing a MutableAddress type that is never generated.
+        string source =
+            """
+            using Mutty;
+
+            namespace Mutty.Tests;
+
+            public record Address(string City);
+
+            [MutableGeneration]
+            public partial record Person(string Name, Address Home);
+            """;
+
+        Assembly assembly = CompileToAssembly(source);
+
+        Type personType = assembly.GetType("Mutty.Tests.Person").ShouldNotBeNull();
+        Type addressType = assembly.GetType("Mutty.Tests.Address").ShouldNotBeNull();
+        Type mutableType = assembly.GetType("Mutty.Tests.MutablePerson").ShouldNotBeNull();
+
+        // The mutable wrapper exposes Home as the original Address type, not a Mutable wrapper.
+        mutableType.GetProperty("Home")!.PropertyType.ShouldBe(addressType);
+
+        object address = Activator.CreateInstance(addressType, "Paris")!;
+        object person = Activator.CreateInstance(personType, "Jane", address)!;
+        object roundTripped = Build(ToMutable(assembly, "Mutty.Tests.Person", person));
+
+        object? home = personType.GetProperty("Home")!.GetValue(roundTripped);
+        addressType.GetProperty("City")!.GetValue(home).ShouldBe("Paris");
+    }
+
+    [Test]
     public void NullableReferenceTypes_RoundTripCorrectly()
     {
         string source = CreateInput(

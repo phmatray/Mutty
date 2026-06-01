@@ -34,6 +34,7 @@ namespace Mutty.Tests
         /// </summary>
         public DataSet Build()
         {
+            OnBeforeBuild();
             return _record with
             {
                 Name = this.Name,
@@ -41,6 +42,20 @@ namespace Mutty.Tests
                 Metrics = this.Metrics.ToImmutableDictionary(),
             };
         }
+
+        /// <summary>
+        /// Builds a new instance of the <see cref="DataSet"/> record. Alias for <see cref="Build"/>.
+        /// </summary>
+        public DataSet ToImmutable()
+        {
+            return Build();
+        }
+
+        /// <summary>
+        /// Called at the start of <see cref="Build"/>, before the immutable record is produced.
+        /// </summary>
+        /// Implement this method in a user-defined partial class to validate or normalise state.
+        partial void OnBeforeBuild();
 
         /// <summary>
         /// Performs an implicit conversion from <see cref="DataSet"/> to <see cref="MutableDataSet"/>.

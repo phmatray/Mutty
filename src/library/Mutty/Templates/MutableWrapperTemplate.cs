@@ -57,6 +57,8 @@ public class MutableWrapperTemplate(RecordModel tokens) : IndentedCodeBuilder
             Line($"private {_recordName} _record;");
             GenerateConstructor();
             GenerateBuilderMethod();
+            GenerateToImmutableAlias();
+            GenerateOnBeforeBuildHook();
             GenerateImplicitOperatorToMutable();
             GenerateImplicitOperatorToRecord();
             GenerateProperties();
@@ -121,6 +123,7 @@ public class MutableWrapperTemplate(RecordModel tokens) : IndentedCodeBuilder
         Line($"public {_recordName} Build()");
         Braces(() =>
         {
+            Line("OnBeforeBuild();");
             Line("return _record with");
             Braces(
                 () =>
@@ -151,6 +154,22 @@ public class MutableWrapperTemplate(RecordModel tokens) : IndentedCodeBuilder
                 },
                 ";");
         });
+    }
+
+    private void GenerateToImmutableAlias()
+    {
+        EmptyLine();
+        Summary($"Builds a new instance of the <see cref=\"{_recordName}\"/> record. Alias for <see cref=\"Build\"/>.");
+        Line($"public {_recordName} ToImmutable()");
+        Braces(() => Line("return Build();"));
+    }
+
+    private void GenerateOnBeforeBuildHook()
+    {
+        EmptyLine();
+        Summary("Called at the start of <see cref=\"Build\"/>, before the immutable record is produced.");
+        Line("/// Implement this method in a user-defined partial class to validate or normalise state.");
+        Line("partial void OnBeforeBuild();");
     }
 
     private void GenerateProperties()

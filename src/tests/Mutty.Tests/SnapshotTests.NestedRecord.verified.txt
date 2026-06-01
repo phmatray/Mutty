@@ -35,12 +35,27 @@ namespace Mutty.Tests
         /// </summary>
         public Address Build()
         {
+            OnBeforeBuild();
             return _record with
             {
                 Street = this.Street,
                 City = this.City,
             };
         }
+
+        /// <summary>
+        /// Builds a new instance of the <see cref="Address"/> record. Alias for <see cref="Build"/>.
+        /// </summary>
+        public Address ToImmutable()
+        {
+            return Build();
+        }
+
+        /// <summary>
+        /// Called at the start of <see cref="Build"/>, before the immutable record is produced.
+        /// </summary>
+        /// Implement this method in a user-defined partial class to validate or normalise state.
+        partial void OnBeforeBuild();
 
         /// <summary>
         /// Performs an implicit conversion from <see cref="Address"/> to <see cref="MutableAddress"/>.
@@ -106,12 +121,27 @@ namespace Mutty.Tests
         /// </summary>
         public Person Build()
         {
+            OnBeforeBuild();
             return _record with
             {
                 Name = this.Name,
                 HomeAddress = this.HomeAddress,
             };
         }
+
+        /// <summary>
+        /// Builds a new instance of the <see cref="Person"/> record. Alias for <see cref="Build"/>.
+        /// </summary>
+        public Person ToImmutable()
+        {
+            return Build();
+        }
+
+        /// <summary>
+        /// Called at the start of <see cref="Build"/>, before the immutable record is produced.
+        /// </summary>
+        /// Implement this method in a user-defined partial class to validate or normalise state.
+        partial void OnBeforeBuild();
 
         /// <summary>
         /// Performs an implicit conversion from <see cref="Person"/> to <see cref="MutablePerson"/>.

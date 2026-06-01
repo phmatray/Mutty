@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for full license information.
 
 using System;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 
 namespace Mutty.Models;
@@ -36,9 +37,13 @@ public sealed record PropertyModel(string Name, string Type, PropertyType Proper
     /// <returns>The property type.</returns>
     private static PropertyType GetPropertyType(ITypeSymbol type)
     {
+        // Only treat a nested record as a mutable wrapper when it is itself annotated with
+        // [MutableGeneration] — otherwise the generated code would reference a Mutable{X} type that was
+        // never generated (CS0246). Un-annotated records round-trip by reference like any other type.
         // Use the symbol's IsRecord flag instead of inspecting syntax: it is allocation-free and also
         // recognises record types declared in referenced assemblies (which have no syntax references).
-        if (type is INamedTypeSymbol { IsRecord: true, TypeKind: TypeKind.Class })
+        if (type is INamedTypeSymbol { IsRecord: true, TypeKind: TypeKind.Class } namedType
+            && HasMutableGenerationAttribute(namedType))
         {
             return PropertyType.Record;
         }
@@ -48,5 +53,19 @@ public sealed record PropertyModel(string Name, string Type, PropertyType Proper
         return (originalDefinition.StartsWith("System.Collections.Immutable.", StringComparison.Ordinal))
             ? PropertyType.ImmutableCollection
             : PropertyType.Other;
+    }
+
+    private static bool HasMutableGenerationAttribute(ISymbol type)
+    {
+        return type.GetAttributes().Any(static a =>
+            a.AttributeClass is
+            {
+                Name: "MutableGenerationAttribute",
+                ContainingNamespace:
+                {
+                    Name: "Mutty",
+                    ContainingNamespace.IsGlobalNamespace: true
+                }
+            });
     }
 }

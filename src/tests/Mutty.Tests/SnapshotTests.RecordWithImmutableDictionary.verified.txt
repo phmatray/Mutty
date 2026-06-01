@@ -33,12 +33,27 @@ namespace Mutty.Tests
         /// </summary>
         public Configuration Build()
         {
+            OnBeforeBuild();
             return _record with
             {
                 Name = this.Name,
                 Settings = this.Settings.ToImmutableDictionary(),
             };
         }
+
+        /// <summary>
+        /// Builds a new instance of the <see cref="Configuration"/> record. Alias for <see cref="Build"/>.
+        /// </summary>
+        public Configuration ToImmutable()
+        {
+            return Build();
+        }
+
+        /// <summary>
+        /// Called at the start of <see cref="Build"/>, before the immutable record is produced.
+        /// </summary>
+        /// Implement this method in a user-defined partial class to validate or normalise state.
+        partial void OnBeforeBuild();
 
         /// <summary>
         /// Performs an implicit conversion from <see cref="Configuration"/> to <see cref="MutableConfiguration"/>.

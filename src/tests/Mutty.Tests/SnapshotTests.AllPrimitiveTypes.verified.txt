@@ -45,6 +45,7 @@ namespace Mutty.Tests
         /// </summary>
         public AllTypes Build()
         {
+            OnBeforeBuild();
             return _record with
             {
                 BoolValue = this.BoolValue,
@@ -63,6 +64,20 @@ namespace Mutty.Tests
                 StringValue = this.StringValue,
             };
         }
+
+        /// <summary>
+        /// Builds a new instance of the <see cref="AllTypes"/> record. Alias for <see cref="Build"/>.
+        /// </summary>
+        public AllTypes ToImmutable()
+        {
+            return Build();
+        }
+
+        /// <summary>
+        /// Called at the start of <see cref="Build"/>, before the immutable record is produced.
+        /// </summary>
+        /// Implement this method in a user-defined partial class to validate or normalise state.
+        partial void OnBeforeBuild();
 
         /// <summary>
         /// Performs an implicit conversion from <see cref="AllTypes"/> to <see cref="MutableAllTypes"/>.

@@ -155,12 +155,27 @@ public class MutableRecordGeneratorTests
                     /// </summary>
                     public StudentDetails Build()
                     {
+                        OnBeforeBuild();
                         return _record with
                         {
                             Name = this.Name,
                             Age = this.Age,
                         };
                     }
+
+                    /// <summary>
+                    /// Builds a new instance of the <see cref="StudentDetails"/> record. Alias for <see cref="Build"/>.
+                    /// </summary>
+                    public StudentDetails ToImmutable()
+                    {
+                        return Build();
+                    }
+
+                    /// <summary>
+                    /// Called at the start of <see cref="Build"/>, before the immutable record is produced.
+                    /// </summary>
+                    /// Implement this method in a user-defined partial class to validate or normalise state.
+                    partial void OnBeforeBuild();
 
                     /// <summary>
                     /// Performs an implicit conversion from <see cref="StudentDetails"/> to <see cref="MutableStudentDetails"/>.
