@@ -24,6 +24,8 @@ on:
       - 'releases/**'
   pull_request:
     branches:
+      - main
+      - develop
       - 'releases/**'
   workflow_dispatch:
 

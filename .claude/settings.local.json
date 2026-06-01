@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(nuke Compile)",
+      "Bash(dotnet test:*)",
+      "Bash(find:*)",
+      "Bash(ls:*)",
+      "Bash(mkdir:*)",
+      "Bash(dotnet build:*)",
+      "Bash(./build.sh:*)",
+      "Bash(mv:*)",
+      "Bash(touch:*)",
+      "Bash(dotnet run:*)",
+      "Bash(cp:*)",
+      "Bash(rg:*)",
+      "Bash(dotnet clean:*)",
+      "Bash(grep:*)"
+    ],
+    "deny": []
+  }
+}

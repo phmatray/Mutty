@@ -7,3 +7,4 @@
 
 Rule ID | Category | Severity | Notes
 --------|----------|----------|-------
+MUTTY001 | Usage | Error | MutableGenerationAttributeAnalyzer

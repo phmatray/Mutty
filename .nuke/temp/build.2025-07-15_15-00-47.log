@@ -1,0 +1,221 @@
+V |                      | ArgumentsFromParametersFile.OnBuildCreated (150)
+V |                      | HandleReSharperSurrogateArguments.OnBuildCreated (150)
+V |                      | InjectParameterValues.OnBuildCreated (100)
+V |                      | HandleShellCompletion.OnBuildCreated (75)
+V |                      | GenerateBuildServerConfigurations.OnBuildCreated (50)
+V |                      | InvokeBuildServerConfigurationGeneration.OnBuildCreated (45)
+V |                      | UpdateNotification.OnBuildCreated (10)
+V |                      | UnsetVisualStudioEnvironmentVariables.OnBuildCreated (0)
+V |                      | HandleVisualStudioDebugging.OnBuildCreated (0)
+V |                      | EventInvoker.OnBuildCreated (-3.4028235E+38)
+V |                      | HandlePlanRequests.OnBuildInitialized (10)
+V |                      | HandleHelpRequests.OnBuildInitialized (5)
+V |                      | Telemetry.OnBuildInitialized (0)
+V |                      | Sending BuildStarted telemetry event ...
+V |                      |   build_components         = 
+V |                      |   build_type               = Project
+V |                      |   compile_time             = <null>
+V |                      |   config_generators        = GitHubActions
+V |                      |   host                     = Rider
+V |                      |   num_custom_components    = 0
+V |                      |   num_custom_extensions    = 0
+V |                      |   num_partitioned_targets  = 0
+V |                      |   num_secrets              = 1
+V |                      |   num_targets              = 9
+V |                      |   os_architecture          = Arm64
+V |                      |   os_platform              = OSX
+V |                      |   repo_branch              = main
+V |                      |   repo_commit              = 126402
+V |                      |   repo_provider            = GitHub
+V |                      |   repo_url                 = b37034
+V |                      |   target_framework         = .NETCoreApp,Version=v9.0
+V |                      |   version_dotnet_sdk       = 9.0.302
+V |                      |   version_nuke_common      = 9.0.4
+V |                      |   version_nuke_global_tool = <null>
+V |                      | InjectNonParameterValues.OnBuildInitialized (-100)
+I |                      | > /opt/homebrew/bin/dotnet /Users/philippe/.nuget/packages/octopus.octoversion.tool/1.0.9/tools/net9.0/any/OctoVersion.Tool.dll octoversion --OutputJsonFile /Users/philippe/repo/github/Mutty/.nuke/temp/octoversion.4104f2ff-2a66-41f2-bd43-e033e37fbe22.json --DetectEnvironment true --CurrentBranch main --Major 1
+V |                      | @ /Users/philippe/repo/github/Mutty
+D |                      | [15:00:48 DBG] Running OctoVersion 1.0.9+Branch.main.Sha.bc7affed7aa3d6702f7dfd4a435644e70fa4f943.bc7affed7aa3d6702f7dfd4a435644e70fa4f943 with AppSettings {CurrentBranch="main", NonPreReleaseTags=["main", "master"], NonPreReleaseTagsRegex="", RepositoryPath="", Major=1, Minor=null, Patch=null, PreReleaseTag=null, BuildMetadata=null, FullSemVer=null, OutputFormats=[], DetectEnvironment=True, OutputJsonFile="/Users/philippe/repo/github/Mutty/.nuke/temp/octoversion.4104f2ff-2a66-41f2-bd43-e033e37fbe22.json"}
+D |                      | [15:00:48 DBG] Executing in /Users/philippe/repo/github/Mutty
+D |                      | [15:00:48 DBG] Writing build output using JsonFileOutputFormatter
+D |                      | [15:00:48 INF] Beginning operation c7cb4f0e-ceb6-4be2-814f-992957bdfd00: Calculating version
+D |                      | [15:00:48 DBG] Located Git repository in /Users/philippe/repo/github/Mutty/.git/
+D |                      | [15:00:48 INF] Beginning operation 149fc2d1-e9d1-44a7-bed6-7d3ce8a602aa: Loading commits
+D |                      | [15:00:48 DBG] Repository contains 53 commits
+D |                      | [15:00:48 INF] Completed operation 149fc2d1-e9d1-44a7-bed6-7d3ce8a602aa: Loading commits in 00:00:00.0146188 (14 ms)
+D |                      | [15:00:48 INF] Beginning operation d8724bbe-f6df-472c-9552-40870fe19831: Mapping commits into internal representation
+D |                      | [15:00:48 INF] Completed operation d8724bbe-f6df-472c-9552-40870fe19831: Mapping commits into internal representation in 00:00:00.0028545 (2 ms)
+D |                      | [15:00:48 INF] Beginning operation b1fce209-e124-4913-a7a2-f2848c7cec8f: Establishing parent/child relationships
+D |                      | [15:00:48 INF] Completed operation b1fce209-e124-4913-a7a2-f2848c7cec8f: Establishing parent/child relationships in 00:00:00.0012570 (1 ms)
+D |                      | [15:00:48 INF] Beginning operation 17f1ed6f-51ba-4da4-ba5b-7114bdae627e: Loading tags
+D |                      | [15:00:48 DBG] Repository contains 5 tags
+D |                      | [15:00:48 INF] Completed operation 17f1ed6f-51ba-4da4-ba5b-7114bdae627e: Loading tags in 00:00:00.0038965 (3 ms)
+D |                      | [15:00:48 INF] Beginning operation 532645db-252e-4a9f-b8d7-ea1e9b278a37: Applying relevant version tags to each commit
+D |                      | [15:00:48 INF] Completed operation 532645db-252e-4a9f-b8d7-ea1e9b278a37: Applying relevant version tags to each commit in 00:00:00.0005470 (0 ms)
+D |                      | [15:00:48 DBG] main is contained within the set of non-pre-release branches ["main", "master"]; no pre-release tag is being added
+D |                      | [15:00:48 DBG] Overriding derived major version 1 with 1
+D |                      | [15:00:48 DBG] Using build metadata Branch.main.Sha.f29e4964eed61c2e387b39280804d630771d25f6
+D |                      | [15:00:48 INF] Completed operation c7cb4f0e-ceb6-4be2-814f-992957bdfd00: Calculating version in 00:00:00.0416755 (41 ms)
+D |                      | [15:00:48 INF] Version is 1.0.49
+D |                      | [15:00:48 INF] Writing version info to /Users/philippe/repo/github/Mutty/.nuke/temp/octoversion.4104f2ff-2a66-41f2-bd43-e033e37fbe22.json
+V |                      | EventInvoker.OnBuildInitialized (-3.4028235E+38)
+V | Clean                | EventInvoker.OnTargetRunning (-3.4028235E+38)
+I | Clean                | > /opt/homebrew/bin/dotnet clean /Users/philippe/repo/github/Mutty/src/library/Mutty/Mutty.csproj
+V | Clean                | @ /Users/philippe/repo/github/Mutty
+D | Clean                | Build started 7/15/2025 3:00:49 PM.
+D | Clean                |      1>Project "/Users/philippe/repo/github/Mutty/src/library/Mutty/Mutty.csproj" on node 1 (Clean target(s)).
+D | Clean                |      1>CoreClean:
+D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/library/Mutty/bin/Debug/netstandard2.0/Mutty.deps.json".
+D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/library/Mutty/bin/Debug/netstandard2.0/Mutty.dll".
+D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/library/Mutty/bin/Debug/netstandard2.0/Mutty.xml".
+D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/library/Mutty/obj/Debug/netstandard2.0/Mutty.csproj.AssemblyReference.cache".
+D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/library/Mutty/obj/Debug/netstandard2.0/Mutty.GeneratedMSBuildEditorConfig.editorconfig".
+D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/library/Mutty/obj/Debug/netstandard2.0/Mutty.AssemblyInfoInputs.cache".
+D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/library/Mutty/obj/Debug/netstandard2.0/Mutty.AssemblyInfo.cs".
+D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/library/Mutty/obj/Debug/netstandard2.0/Mutty.csproj.CoreCompileInputs.cache".
+D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/library/Mutty/obj/Debug/netstandard2.0/Mutty.sourcelink.json".
+D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/library/Mutty/obj/Debug/netstandard2.0/Mutty.dll".
+D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/library/Mutty/obj/Debug/netstandard2.0/Mutty.xml".
+D | Clean                |      1>Done Building Project "/Users/philippe/repo/github/Mutty/src/library/Mutty/Mutty.csproj" (Clean target(s)).
+D | Clean                | 
+D | Clean                | Build succeeded.
+D | Clean                |     0 Warning(s)
+D | Clean                |     0 Error(s)
+D | Clean                | 
+D | Clean                | Time Elapsed 00:00:00.24
+I | Clean                | > /opt/homebrew/bin/dotnet clean /Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/Mutty.Tests.csproj
+V | Clean                | @ /Users/philippe/repo/github/Mutty
+D | Clean                | Build started 7/15/2025 3:00:49 PM.
+D | Clean                |      1>Project "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/Mutty.Tests.csproj" on node 1 (Clean target(s)).
+D | Clean                |      1>CoreClean:
+D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/.msCoverageSourceRootsMapping_Mutty.Tests".
+D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/CoverletSourceRootsMapping_Mutty.Tests".
+D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/obj/Debug/net9.0/Mutty.Tests.csproj.AssemblyReference.cache".
+D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/obj/Debug/net9.0/Mutty.Tests.GeneratedMSBuildEditorConfig.editorconfig".
+D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/obj/Debug/net9.0/Mutty.Tests.AssemblyInfoInputs.cache".
+D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/obj/Debug/net9.0/Mutty.Tests.AssemblyInfo.cs".
+D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/obj/Debug/net9.0/Mutty.Tests.csproj.CoreCompileInputs.cache".
+D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/obj/Debug/net9.0/Mutty.Tests.sourcelink.json".
+D | Clean                |      1>Done Building Project "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/Mutty.Tests.csproj" (Clean target(s)).
+D | Clean                | 
+D | Clean                | Build succeeded.
+D | Clean                |     0 Warning(s)
+D | Clean                |     0 Error(s)
+D | Clean                | 
+D | Clean                | Time Elapsed 00:00:00.35
+I | Clean                | > /opt/homebrew/bin/dotnet clean /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj
+V | Clean                | @ /Users/philippe/repo/github/Mutty
+D | Clean                | Build started 7/15/2025 3:00:49 PM.
+D | Clean                |      1>Project "/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj" on node 1 (Clean target(s)).
+D | Clean                |      1>CoreClean:
+D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/obj/Debug/net9.0/ConsoleApp.csproj.AssemblyReference.cache".
+D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/obj/Debug/net9.0/ConsoleApp.GeneratedMSBuildEditorConfig.editorconfig".
+D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/obj/Debug/net9.0/ConsoleApp.AssemblyInfoInputs.cache".
+D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/obj/Debug/net9.0/ConsoleApp.AssemblyInfo.cs".
+D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/obj/Debug/net9.0/ConsoleApp.csproj.CoreCompileInputs.cache".
+D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/obj/Debug/net9.0/ConsoleApp.sourcelink.json".
+D | Clean                |      1>Done Building Project "/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj" (Clean target(s)).
+D | Clean                | 
+D | Clean                | Build succeeded.
+D | Clean                |     0 Warning(s)
+D | Clean                |     0 Error(s)
+D | Clean                | 
+D | Clean                | Time Elapsed 00:00:00.31
+V | Clean                | Telemetry.OnTargetSucceeded (0)
+V | Clean                | EventInvoker.OnTargetSucceeded (-3.4028235E+38)
+V | Restore              | EventInvoker.OnTargetRunning (-3.4028235E+38)
+I | Restore              | Restoring NuGet packages
+I | Restore              | > /opt/homebrew/bin/dotnet restore /Users/philippe/repo/github/Mutty/Mutty.sln --verbosity minimal --no-cache
+V | Restore              | @ /Users/philippe/repo/github/Mutty
+D | Restore              |   Determining projects to restore...
+D | Restore              |   Restored /Users/philippe/repo/github/Mutty/src/library/Mutty/Mutty.csproj (in 143 ms).
+D | Restore              |   Restored /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj (in 140 ms).
+D | Restore              |   Restored /Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/Mutty.Tests.csproj (in 179 ms).
+I | Restore              | NuGet packages restored successfully
+V | Restore              | Telemetry.OnTargetSucceeded (0)
+V | Restore              | Sending TargetSucceeded telemetry event ...
+V | Restore              |   build_components         = 
+V | Restore              |   build_type               = Project
+V | Restore              |   compile_time             = <null>
+V | Restore              |   config_generators        = GitHubActions
+V | Restore              |   host                     = Rider
+V | Restore              |   num_custom_components    = 0
+V | Restore              |   num_custom_extensions    = 0
+V | Restore              |   num_partitioned_targets  = 0
+V | Restore              |   num_secrets              = 1
+V | Restore              |   num_targets              = 9
+V | Restore              |   os_architecture          = Arm64
+V | Restore              |   os_platform              = OSX
+V | Restore              |   repo_branch              = main
+V | Restore              |   repo_commit              = 126402
+V | Restore              |   repo_provider            = GitHub
+V | Restore              |   repo_url                 = b37034
+V | Restore              |   target_current_partition = 1
+V | Restore              |   target_duration          = 1
+V | Restore              |   target_framework         = .NETCoreApp,Version=v9.0
+V | Restore              |   target_name              = Restore
+V | Restore              |   target_total_partitions  = 1
+V | Restore              |   version_dotnet_sdk       = 9.0.302
+V | Restore              |   version_nuke_common      = 9.0.4
+V | Restore              |   version_nuke_global_tool = <null>
+V | Restore              | EventInvoker.OnTargetSucceeded (-3.4028235E+38)
+V | Compile              | EventInvoker.OnTargetRunning (-3.4028235E+38)
+I | Compile              | Building solution /Users/philippe/repo/github/Mutty/Mutty.sln with configuration Debug
+I | Compile              | > /opt/homebrew/bin/dotnet build /Users/philippe/repo/github/Mutty/Mutty.sln --configuration Debug --property:Version=1.0.49 --property:AssemblyVersion=1.0.49 --property:InformationalVersion=1.0.49+Branch.main.Sha.f29e4964eed61c2e387b39280804d630771d25f6 --property:FileVersion=1.0.49 --property:Deterministic=true --no-restore
+V | Compile              | @ /Users/philippe/repo/github/Mutty
+D | Compile              |   Mutty -> /Users/philippe/repo/github/Mutty/src/library/Mutty/bin/Debug/netstandard2.0/Mutty.dll
+E | Compile              | /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/obj/Debug/net9.0/Mutty/Mutty.MutableRecordGenerator/ConsoleApp.Models.MutableTreeNode.g.cs(63,21): error CS0305: Using the generic type 'MutableTreeNode<T>' requires 1 type arguments [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
+E | Compile              | /Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/Analyzers_backup/MutableGenerationAttributeAnalyzerTests.cs(7,13): error CS0234: The type or namespace name 'Analyzers' does not exist in the namespace 'Mutty' (are you missing an assembly reference?) [/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/Mutty.Tests.csproj]
+E | Compile              | /Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/Analyzers_backup/MutableMethodUsageAnalyzerTests.cs(11,13): error CS0234: The type or namespace name 'Analyzers' does not exist in the namespace 'Mutty' (are you missing an assembly reference?) [/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/Mutty.Tests.csproj]
+E | Compile              | /Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/Analyzers_backup/MuttyDiagnosticAnalyzerTests.cs(11,11): error CS0234: The type or namespace name 'Analyzers' does not exist in the namespace 'Mutty' (are you missing an assembly reference?) [/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/Mutty.Tests.csproj]
+E | Compile              | /Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/Analyzers_backup/MuttyDiagnosticAnalyzerTests.cs(8,13): error CS0234: The type or namespace name 'Analyzers' does not exist in the namespace 'Mutty' (are you missing an assembly reference?) [/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/Mutty.Tests.csproj]
+E | Compile              | /Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/Analyzers_backup/MutableGenerationAttributeAnalyzerTests.cs(15,39): error CS0246: The type or namespace name 'MutableGenerationAttributeAnalyzer' could not be found (are you missing a using directive or an assembly reference?) [/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/Mutty.Tests.csproj]
+D | Compile              | 
+D | Compile              | Build FAILED.
+D | Compile              | 
+E | Compile              | /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/obj/Debug/net9.0/Mutty/Mutty.MutableRecordGenerator/ConsoleApp.Models.MutableTreeNode.g.cs(63,21): error CS0305: Using the generic type 'MutableTreeNode<T>' requires 1 type arguments [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
+E | Compile              | /Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/Analyzers_backup/MutableGenerationAttributeAnalyzerTests.cs(7,13): error CS0234: The type or namespace name 'Analyzers' does not exist in the namespace 'Mutty' (are you missing an assembly reference?) [/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/Mutty.Tests.csproj]
+E | Compile              | /Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/Analyzers_backup/MutableMethodUsageAnalyzerTests.cs(11,13): error CS0234: The type or namespace name 'Analyzers' does not exist in the namespace 'Mutty' (are you missing an assembly reference?) [/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/Mutty.Tests.csproj]
+E | Compile              | /Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/Analyzers_backup/MuttyDiagnosticAnalyzerTests.cs(11,11): error CS0234: The type or namespace name 'Analyzers' does not exist in the namespace 'Mutty' (are you missing an assembly reference?) [/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/Mutty.Tests.csproj]
+E | Compile              | /Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/Analyzers_backup/MuttyDiagnosticAnalyzerTests.cs(8,13): error CS0234: The type or namespace name 'Analyzers' does not exist in the namespace 'Mutty' (are you missing an assembly reference?) [/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/Mutty.Tests.csproj]
+E | Compile              | /Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/Analyzers_backup/MutableGenerationAttributeAnalyzerTests.cs(15,39): error CS0246: The type or namespace name 'MutableGenerationAttributeAnalyzer' could not be found (are you missing a using directive or an assembly reference?) [/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/Mutty.Tests.csproj]
+D | Compile              |     0 Warning(s)
+D | Compile              |     6 Error(s)
+D | Compile              | 
+D | Compile              | Time Elapsed 00:00:00.56
+E | Compile              | Target Compile has thrown an exception
+Nuke.Common.Tooling.ProcessException: Process 'dotnet' exited with code 1.
+   > /opt/homebrew/bin/dotnet build /Users/philippe/repo/github/Mutty/Mutty.sln --configuration Debug --property:Version=1.0.49 --property:AssemblyVersion=1.0.49 --property:InformationalVersion=1.0.49+Branch.main.Sha.f29e4964eed61c2e387b39280804d630771d25f6 --property:FileVersion=1.0.49 --property:Deterministic=true --no-restore
+   @ /Users/philippe/repo/github/Mutty
+Standard output:
+     Mutty -> /Users/philippe/repo/github/Mutty/src/library/Mutty/bin/Debug/netstandard2.0/Mutty.dll
+   /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/obj/Debug/net9.0/Mutty/Mutty.MutableRecordGenerator/ConsoleApp.Models.MutableTreeNode.g.cs(63,21): error CS0305: Using the generic type 'MutableTreeNode<T>' requires 1 type arguments [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
+   /Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/Analyzers_backup/MutableGenerationAttributeAnalyzerTests.cs(7,13): error CS0234: The type or namespace name 'Analyzers' does not exist in the namespace 'Mutty' (are you missing an assembly reference?) [/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/Mutty.Tests.csproj]
+   /Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/Analyzers_backup/MutableMethodUsageAnalyzerTests.cs(11,13): error CS0234: The type or namespace name 'Analyzers' does not exist in the namespace 'Mutty' (are you missing an assembly reference?) [/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/Mutty.Tests.csproj]
+   /Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/Analyzers_backup/MuttyDiagnosticAnalyzerTests.cs(11,11): error CS0234: The type or namespace name 'Analyzers' does not exist in the namespace 'Mutty' (are you missing an assembly reference?) [/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/Mutty.Tests.csproj]
+   /Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/Analyzers_backup/MuttyDiagnosticAnalyzerTests.cs(8,13): error CS0234: The type or namespace name 'Analyzers' does not exist in the namespace 'Mutty' (are you missing an assembly reference?) [/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/Mutty.Tests.csproj]
+   /Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/Analyzers_backup/MutableGenerationAttributeAnalyzerTests.cs(15,39): error CS0246: The type or namespace name 'MutableGenerationAttributeAnalyzer' could not be found (are you missing a using directive or an assembly reference?) [/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/Mutty.Tests.csproj]
+   
+   Build FAILED.
+   
+   /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/obj/Debug/net9.0/Mutty/Mutty.MutableRecordGenerator/ConsoleApp.Models.MutableTreeNode.g.cs(63,21): error CS0305: Using the generic type 'MutableTreeNode<T>' requires 1 type arguments [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
+   /Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/Analyzers_backup/MutableGenerationAttributeAnalyzerTests.cs(7,13): error CS0234: The type or namespace name 'Analyzers' does not exist in the namespace 'Mutty' (are you missing an assembly reference?) [/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/Mutty.Tests.csproj]
+   /Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/Analyzers_backup/MutableMethodUsageAnalyzerTests.cs(11,13): error CS0234: The type or namespace name 'Analyzers' does not exist in the namespace 'Mutty' (are you missing an assembly reference?) [/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/Mutty.Tests.csproj]
+   /Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/Analyzers_backup/MuttyDiagnosticAnalyzerTests.cs(11,11): error CS0234: The type or namespace name 'Analyzers' does not exist in the namespace 'Mutty' (are you missing an assembly reference?) [/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/Mutty.Tests.csproj]
+   /Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/Analyzers_backup/MuttyDiagnosticAnalyzerTests.cs(8,13): error CS0234: The type or namespace name 'Analyzers' does not exist in the namespace 'Mutty' (are you missing an assembly reference?) [/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/Mutty.Tests.csproj]
+   /Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/Analyzers_backup/MutableGenerationAttributeAnalyzerTests.cs(15,39): error CS0246: The type or namespace name 'MutableGenerationAttributeAnalyzer' could not be found (are you missing a using directive or an assembly reference?) [/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/Mutty.Tests.csproj]
+       0 Warning(s)
+       6 Error(s)
+   
+   Time Elapsed 00:00:00.56
+
+   at Nuke.Common.Tooling.ProcessExtensions.AssertZeroExitCode(IProcess process) in /_/source/Nuke.Tooling/ProcessExtensions.cs:line 38
+   at Nuke.Common.Tooling.ToolTasks.<>c.<GetExitHandler>b__4_0(ToolOptions _, IProcess p) in /_/source/Nuke.Tooling/ToolTasks.ExitHandler.cs:line 27
+   at Nuke.Common.Tooling.ToolTasks.<>c__DisplayClass8_0.<GetExitHandlerInternal>b__3(ToolOptions o, IProcess p) in /_/source/Nuke.Tooling/ToolTasks.ExitHandler.cs:line 22
+   at Nuke.Common.Tooling.ToolTasks.Run[T](T options) in /_/source/Nuke.Tooling/ToolTasks.Run.cs:line 36
+   at Nuke.Common.Tools.DotNet.DotNetTasks.DotNetBuild(Configure`1 configurator) in /_/source/Nuke.Common/Tools/DotNet/DotNet.Generated.cs:line 62
+   at Build.<get_Compile>b__31_1() in /Users/philippe/repo/github/Mutty/build/Build.cs:line 140
+   at Nuke.Common.Execution.BuildExecutor.<>c.<Execute>b__4_2(Action x) in /_/source/Nuke.Build/Execution/BuildExecutor.cs:line 120
+   at System.Collections.Generic.List`1.ForEach(Action`1 action)
+   at Nuke.Common.Execution.BuildExecutor.Execute(NukeBuild build, ExecutableTarget target, IReadOnlyCollection`1 previouslyExecutedTargets, Boolean failureMode) in /_/source/Nuke.Build/Execution/BuildExecutor.cs:line 120
+V | Compile              | EventInvoker.OnTargetFailed (-3.4028235E+38)

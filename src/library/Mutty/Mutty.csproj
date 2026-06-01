@@ -8,25 +8,29 @@
     <DebugSymbols>True</DebugSymbols>
     <DebugType>Embedded</DebugType>
     <DisableImplicitNamespaceImports>true</DisableImplicitNamespaceImports>
-    <BaseOutputPath>bin\$(RoslynVersion)\</BaseOutputPath>
     <IsRoslynComponent>true</IsRoslynComponent>
 
     <AppendTargetFrameworkToOutputPath>true</AppendTargetFrameworkToOutputPath>
-    
+
     <DevelopmentDependency>true</DevelopmentDependency>
     <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
 
     <RootNamespace>Mutty</RootNamespace>
     <PackageId>Mutty</PackageId>
-    
-<!--    <IncludeBuildOutput>false</IncludeBuildOutput>-->
+
+    <!-- This is an analyzer/source-generator: ship only the analyzer asset, never a lib/ assembly. -->
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <!-- All build-time references are PrivateAssets=all; emit no dependency group at all so the
+         package is a pure analyzer (also avoids the NU5128 empty-group/no-lib mismatch). -->
+    <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <NoWarn>CA1822;NU5128</NoWarn>
+    <NoWarn>CA1822</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
+    <!-- All Roslyn references are PrivateAssets=all: the generator builds against them but must
+         never expose them as NuGet dependencies a consumer would restore. -->
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" PrivateAssets="all"/>
-    <PackageReference Include="Microsoft.CodeAnalysis.AnalyzerUtilities" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" PrivateAssets="all"/>
   </ItemGroup>
   

@@ -30,7 +30,7 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
     AutoGenerate = false,
     FetchDepth = 0,
     OnPushBranches = [MainBranch, DevelopBranch, ReleasesBranch],
-    OnPullRequestBranches = [ReleasesBranch],
+    OnPullRequestBranches = [MainBranch, DevelopBranch, ReleasesBranch],
     InvokedTargets = [nameof(Pack)],
     EnableGitHubToken = true,
     ImportSecrets = [nameof(NuGetApiKey)]
