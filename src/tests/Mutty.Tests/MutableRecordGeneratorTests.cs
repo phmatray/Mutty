@@ -53,12 +53,10 @@ public class MutableRecordGeneratorTests
             references,
             new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
 
-        // Source Generator to test
-        Attributes attributesGenerator = new();
-        MutableRecordGenerator mutableRecordGenerator = new();
-        MutableExtensionsGenerator mutableExtensionsGenerator = new();
+        // Single source generator under test
+        MuttyGenerator generator = new();
 
-        _ = CSharpGeneratorDriver.Create(attributesGenerator, mutableRecordGenerator, mutableExtensionsGenerator)
+        _ = CSharpGeneratorDriver.Create(generator)
             .RunGeneratorsAndUpdateCompilation(
                 compilation,
                 out Compilation outputCompilation,

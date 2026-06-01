@@ -3,50 +3,49 @@
 // See the LICENSE file in the project root for full license information.
 
 using System;
-using System.Linq;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Mutty.Models;
 
 /// <summary>
-/// Represents a property of a class.
+/// A value-equatable description of a record property, extracted from the symbol model so it can flow
+/// through the incremental generator pipeline without rooting any Roslyn symbols or syntax.
 /// </summary>
-/// <param name="propertySymbol">The property symbol.</param>
-public class PropertyModel(IPropertySymbol propertySymbol)
+/// <param name="Name">The name of the property.</param>
+/// <param name="Type">The fully-qualified display type of the property.</param>
+/// <param name="PropertyType">The category the property falls into for code generation.</param>
+public sealed record PropertyModel(string Name, string Type, PropertyType PropertyType)
 {
     /// <summary>
-    /// Gets the name of the property.
+    /// Projects an <see cref="IPropertySymbol"/> into an equatable <see cref="PropertyModel"/>.
     /// </summary>
-    public string Name { get; } = propertySymbol.Name;
+    /// <param name="propertySymbol">The property symbol.</param>
+    /// <returns>The equatable property model.</returns>
+    public static PropertyModel FromSymbol(IPropertySymbol propertySymbol)
+    {
+        return new(
+            propertySymbol.Name,
+            propertySymbol.Type.ToDisplayString(),
+            GetPropertyType(propertySymbol.Type));
+    }
 
     /// <summary>
-    /// Gets the type of the property.
-    /// </summary>
-    public string Type { get; } = propertySymbol.Type.ToDisplayString();
-
-    /// <summary>
-    /// Gets the type of the property.
-    /// </summary>
-    public PropertyType PropertyType { get; } = GetPropertyType(propertySymbol.Type);
-
-    /// <summary>
-    /// Gets the property type.
+    /// Determines the code-generation category of a property type.
     /// </summary>
     /// <param name="type">The type symbol.</param>
     /// <returns>The property type.</returns>
     private static PropertyType GetPropertyType(ITypeSymbol type)
     {
-        if (type.TypeKind == TypeKind.Class
-            && type.DeclaringSyntaxReferences.FirstOrDefault()?.GetSyntax() is RecordDeclarationSyntax)
+        // Use the symbol's IsRecord flag instead of inspecting syntax: it is allocation-free and also
+        // recognises record types declared in referenced assemblies (which have no syntax references).
+        if (type is INamedTypeSymbol { IsRecord: true, TypeKind: TypeKind.Class })
         {
             return PropertyType.Record;
         }
 
-        // Detect immutable collections
-        return (type.OriginalDefinition
-            .ToDisplayString()
-            .StartsWith("System.Collections.Immutable.", StringComparison.Ordinal))
+        // Detect immutable collections by their originating definition's namespace.
+        string originalDefinition = type.OriginalDefinition.ToDisplayString();
+        return (originalDefinition.StartsWith("System.Collections.Immutable.", StringComparison.Ordinal))
             ? PropertyType.ImmutableCollection
             : PropertyType.Other;
     }

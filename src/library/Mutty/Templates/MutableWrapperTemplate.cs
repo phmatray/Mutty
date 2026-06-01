@@ -14,13 +14,13 @@ namespace Mutty.Templates;
 /// <summary>
 /// A template that generates the mutable wrapper for a record.
 /// </summary>
-/// <param name="tokens">The tokens for the record.</param>
-public class MutableWrapperTemplate(RecordTokens tokens) : IndentedCodeBuilder
+/// <param name="tokens">The model for the record.</param>
+public class MutableWrapperTemplate(RecordModel tokens) : IndentedCodeBuilder
 {
     private readonly string? _namespaceName = tokens.NamespaceName;
     private readonly string _recordName = tokens.RecordName;
     private readonly string _mutableRecordName = tokens.MutableRecordName;
-    private readonly ImmutableArray<PropertyModel> _properties = tokens.Properties;
+    private readonly ImmutableArray<PropertyModel> _properties = tokens.Properties.AsImmutableArray();
 
     /// <summary>
     /// Generates the code for the mutable wrapper.

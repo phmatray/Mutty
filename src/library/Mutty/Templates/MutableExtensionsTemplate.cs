@@ -10,8 +10,8 @@ namespace Mutty.Templates;
 /// <summary>
 /// A template that generates the mutable extensions for a record.
 /// </summary>
-/// <param name="tokens">The tokens for the record.</param>
-public class MutableExtensionsTemplate(RecordTokens tokens) : IndentedCodeBuilder
+/// <param name="tokens">The model for the record.</param>
+public class MutableExtensionsTemplate(RecordModel tokens) : IndentedCodeBuilder
 {
     private readonly string _recordName = tokens.RecordName;
     private readonly string _mutableRecordName = tokens.MutableRecordName;

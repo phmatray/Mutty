@@ -20,7 +20,7 @@ public class PropertyModelTests
     {
         // Arrange & Act
         IPropertySymbol? propertySymbol = GetPropertySymbol("public string Name { get; }", "Name");
-        PropertyModel? model = propertySymbol is not null ? new PropertyModel(propertySymbol) : null;
+        PropertyModel? model = propertySymbol is not null ? PropertyModel.FromSymbol(propertySymbol) : null;
 
         // Assert
         model.ShouldNotBeNull();
@@ -36,7 +36,7 @@ public class PropertyModelTests
         IPropertySymbol? propertySymbol = GetPropertySymbol(
             "public System.Collections.Immutable.ImmutableArray<int> Items { get; }",
             "Items");
-        PropertyModel? model = propertySymbol is not null ? new PropertyModel(propertySymbol) : null;
+        PropertyModel? model = propertySymbol is not null ? PropertyModel.FromSymbol(propertySymbol) : null;
 
         // Assert
         model.ShouldNotBeNull();
@@ -51,7 +51,7 @@ public class PropertyModelTests
         IPropertySymbol? propertySymbol = GetPropertySymbol(
             "public System.Collections.Immutable.ImmutableList<string> Tags { get; }",
             "Tags");
-        PropertyModel? model = propertySymbol is not null ? new PropertyModel(propertySymbol) : null;
+        PropertyModel? model = propertySymbol is not null ? PropertyModel.FromSymbol(propertySymbol) : null;
 
         // Assert
         model.ShouldNotBeNull();
@@ -66,7 +66,7 @@ public class PropertyModelTests
         IPropertySymbol? propertySymbol = GetPropertySymbol(
             "public System.Collections.Immutable.ImmutableHashSet<int> UniqueIds { get; }",
             "UniqueIds");
-        PropertyModel? model = propertySymbol is not null ? new PropertyModel(propertySymbol) : null;
+        PropertyModel? model = propertySymbol is not null ? PropertyModel.FromSymbol(propertySymbol) : null;
 
         // Assert
         model.ShouldNotBeNull();
@@ -81,7 +81,7 @@ public class PropertyModelTests
         IPropertySymbol? propertySymbol = GetPropertySymbol(
             "public System.Collections.Immutable.ImmutableDictionary<string, int> Map { get; }",
             "Map");
-        PropertyModel? model = propertySymbol is not null ? new PropertyModel(propertySymbol) : null;
+        PropertyModel? model = propertySymbol is not null ? PropertyModel.FromSymbol(propertySymbol) : null;
 
         // Assert
         model.ShouldNotBeNull();
@@ -94,7 +94,7 @@ public class PropertyModelTests
     {
         // Arrange & Act
         IPropertySymbol? propertySymbol = GetPropertySymbol("public string? OptionalName { get; }", "OptionalName");
-        PropertyModel? model = propertySymbol is not null ? new PropertyModel(propertySymbol) : null;
+        PropertyModel? model = propertySymbol is not null ? PropertyModel.FromSymbol(propertySymbol) : null;
 
         // Assert
         model.ShouldNotBeNull();
