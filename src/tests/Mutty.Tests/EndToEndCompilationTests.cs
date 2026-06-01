@@ -252,6 +252,27 @@ public class EndToEndCompilationTests : GeneratorTests
     }
 
     [Test]
+    public void DefaultImmutableArray_DoesNotThrowOnWrap()
+    {
+        // A record constructed with default(ImmutableArray<T>) must wrap without throwing
+        // (default ImmutableArray throws on enumeration); the wrapper should yield an empty list.
+        string source = CreateInput("public partial record Bag(ImmutableArray<int> Items);");
+        Assembly assembly = CompileToAssembly(source);
+
+        Type bagType = assembly.GetType("Mutty.Tests.Bag").ShouldNotBeNull();
+        object bag = Activator.CreateInstance(bagType, default(ImmutableArray<int>))!;
+
+        object mutable = ToMutable(assembly, "Mutty.Tests.Bag", bag);
+        object? items = mutable.GetType().GetProperty("Items")!.GetValue(mutable);
+
+        items.ShouldBeOfType<List<int>>();
+        ((List<int>)items!).Count.ShouldBe(0);
+
+        object rebuilt = Build(mutable);
+        bagType.GetProperty("Items")!.GetValue(rebuilt).ShouldBeOfType<ImmutableArray<int>>();
+    }
+
+    [Test]
     public void InheritedRecordProperties_AreExposedAndRoundTrip()
     {
         // Dog inherits Name from Animal; the mutable wrapper must expose and round-trip both the

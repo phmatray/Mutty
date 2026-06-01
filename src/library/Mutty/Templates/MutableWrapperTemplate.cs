@@ -240,9 +240,18 @@ public class MutableWrapperTemplate(RecordModel tokens) : IndentedCodeBuilder
         if (IsListLikeImmutable(property.Type))
         {
             string itemType = GetMutableItemType(property.Type);
-            return (IsBuiltInType(itemType))
+            string conversion = (IsBuiltInType(itemType))
                 ? $"{source}.ToList()"
                 : $"{source}.AsMutable()";
+
+            // A default(ImmutableArray<T>) throws on enumeration; fall back to an empty list.
+            if (GetImmutableShortName(property.Type) == "ImmutableArray")
+            {
+                string mutableArgs = ConvertGenericTypeArguments(itemType);
+                return $"({source}.IsDefault) ? new List<{mutableArgs}>() : {conversion}";
+            }
+
+            return conversion;
         }
 
         // Dictionary / set / queue / stack: construct the concrete mutable collection from the source.

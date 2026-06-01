@@ -114,7 +114,8 @@ public class CollectionOfBasicTypesTests
         string[] generatedOutputs = GetGeneratedOutput(input);
         string resultMutable = generatedOutputs.First(x => x.Contains("class MutableStudentWithScores"));
 
-        resultMutable.ShouldContain("Scores = _record.Scores.ToList();");
+        // A default(ImmutableArray<int>) throws on enumeration, so ingest is guarded.
+        resultMutable.ShouldContain("Scores = (_record.Scores.IsDefault) ? new List<int>() : _record.Scores.ToList();");
         resultMutable.ShouldNotContain(".AsMutable()");
     }
 
