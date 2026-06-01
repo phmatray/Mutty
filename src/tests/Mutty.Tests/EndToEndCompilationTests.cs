@@ -307,6 +307,51 @@ public class EndToEndCompilationTests : GeneratorTests
     }
 
     [Test]
+    public void ArrayProperty_IsCopiedNotAliased()
+    {
+        string source = CreateInput("public partial record Tags(string[] Values);");
+        Assembly assembly = CompileToAssembly(source);
+
+        Type tagsType = assembly.GetType("Mutty.Tests.Tags").ShouldNotBeNull();
+        string[] original = ["a", "b"];
+        // Wrap in object[] so the string[] is one constructor argument, not the argument list.
+        object tags = Activator.CreateInstance(tagsType, new object[] { original })!;
+
+        object mutable = ToMutable(assembly, "Mutty.Tests.Tags", tags);
+        var mutableArray = (string[])mutable.GetType().GetProperty("Values")!.GetValue(mutable)!;
+
+        mutableArray.ShouldNotBeSameAs(original);  // ingest copied
+        mutableArray[0] = "z";
+        original[0].ShouldBe("a");                 // source record not corrupted
+
+        object rebuilt = Build(mutable);
+        var rebuiltArray = (string[])tagsType.GetProperty("Values")!.GetValue(rebuilt)!;
+        rebuiltArray[0].ShouldBe("z");
+        rebuiltArray.ShouldNotBeSameAs(mutableArray);  // build copied
+    }
+
+    [Test]
+    public void ReadOnlyListProperty_IsExposedAsMutableList()
+    {
+        string source = CreateInput("public partial record Bag(System.Collections.Generic.IReadOnlyList<int> Items);");
+        Assembly assembly = CompileToAssembly(source);
+
+        Type bagType = assembly.GetType("Mutty.Tests.Bag").ShouldNotBeNull();
+        object bag = Activator.CreateInstance(bagType, new List<int> { 1, 2 })!;
+
+        object mutable = ToMutable(assembly, "Mutty.Tests.Bag", bag);
+        object? items = mutable.GetType().GetProperty("Items")!.GetValue(mutable);
+
+        items.ShouldBeOfType<List<int>>();
+        ((List<int>)items!).Add(3);
+
+        object rebuilt = Build(mutable);
+        var rebuiltItems = (IReadOnlyList<int>)bagType.GetProperty("Items")!.GetValue(rebuilt)!;
+        rebuiltItems.Count.ShouldBe(3);
+        rebuiltItems[2].ShouldBe(3);
+    }
+
+    [Test]
     public void DefaultImmutableArray_DoesNotThrowOnWrap()
     {
         // A record constructed with default(ImmutableArray<T>) must wrap without throwing

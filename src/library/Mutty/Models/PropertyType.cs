@@ -20,6 +20,18 @@ public enum PropertyType
     ImmutableCollection,
 
     /// <summary>
+    /// The property is an array (<c>T[]</c>). Exposed as a mutable copy so mutating the wrapper does not
+    /// alias the source record's array.
+    /// </summary>
+    Array,
+
+    /// <summary>
+    /// The property is a read-only collection interface (<c>IReadOnlyList&lt;T&gt;</c> /
+    /// <c>IReadOnlyCollection&lt;T&gt;</c>). Exposed as a mutable <c>List&lt;T&gt;</c>.
+    /// </summary>
+    ReadOnlyCollection,
+
+    /// <summary>
     /// The property is of another type.
     /// </summary>
     Other

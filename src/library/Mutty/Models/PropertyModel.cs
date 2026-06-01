@@ -76,11 +76,27 @@ public sealed record PropertyModel(
             return PropertyType.Record;
         }
 
+        // Plain arrays are mutable and shared by reference; expose a defensive copy.
+        if (type is IArrayTypeSymbol)
+        {
+            return PropertyType.Array;
+        }
+
         // Detect immutable collections by their originating definition's namespace.
         string originalDefinition = type.OriginalDefinition.ToDisplayString();
-        return (originalDefinition.StartsWith("System.Collections.Immutable.", StringComparison.Ordinal))
-            ? PropertyType.ImmutableCollection
-            : PropertyType.Other;
+        if (originalDefinition.StartsWith("System.Collections.Immutable.", StringComparison.Ordinal))
+        {
+            return PropertyType.ImmutableCollection;
+        }
+
+        // Read-only collection interfaces become a mutable List<T>.
+        if (originalDefinition is "System.Collections.Generic.IReadOnlyList<T>"
+            or "System.Collections.Generic.IReadOnlyCollection<T>")
+        {
+            return PropertyType.ReadOnlyCollection;
+        }
+
+        return PropertyType.Other;
     }
 
     private static bool HasMutableGenerationAttribute(ISymbol type)
