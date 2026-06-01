@@ -4,6 +4,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+### Added
+- `ToImmutable()` instance method on generated wrappers as a discoverable alias for `Build()`.
+- `partial void OnBeforeBuild()` hook on generated wrappers, called at the start of `Build()`, as a validation/normalisation seam.
+- BenchmarkDotNet harness (`Mutty.Benchmarks`) measuring cold vs incremental generator runs.
+- Incremental-generator caching regression test asserting the record-model transform is cached on unrelated edits.
+
+### Changed
+- **Performance:** rebuilt the incremental pipeline around value-equatable models (`RecordModel`, `PropertyModel`, `EquatableArray<T>`) instead of flowing Roslyn symbols and `Collect()`-ing them. The generator now caches correctly and only regenerates records that actually changed.
+- Merged the three generators into a single `MuttyGenerator` using `ForAttributeWithMetadataName`.
+- Lowered the `Microsoft.CodeAnalysis.CSharp` floor from 5.0.0 to 4.8.0 so the generator runs on a much broader range of SDKs and Visual Studio versions.
+
+### Fixed
+- Generated files now emit the `using` directives they need, so they compile when the consumer has `ImplicitUsings` disabled.
+- `ImmutableDictionary`, `ImmutableSortedDictionary`, `ImmutableHashSet`, `ImmutableSortedSet`, `ImmutableQueue` and `ImmutableStack` properties now generate code that compiles and round-trips (previously CS1929).
+- A nested record property is only treated as a mutable wrapper when that record is `[MutableGeneration]`-annotated; un-annotated nested records no longer cause CS0246.
+- Packaging: the analyzer DLL is no longer double-shipped to `lib/`, and the package no longer carries an unused `Microsoft.CodeAnalysis.AnalyzerUtilities` dependency.
+- Re-enabled the end-to-end compilation tests (rewritten against the real generated API) and CI now runs on pull requests to `main`/`develop`.
+
 ## 1.0.50 / 2026-02-20
 ### Fixed
 - Fixed codegen to not add 'Mutable' prefix to built-in types in generic collections (#66)
