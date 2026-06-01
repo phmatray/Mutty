@@ -17,9 +17,14 @@ namespace Mutty.Analyzers;
 public class MutableGenerationAttributeAnalyzer : DiagnosticAnalyzer
 {
     /// <summary>
-    /// The diagnostic ID for this analyzer.
+    /// The diagnostic ID for applying the attribute to a non-record type.
     /// </summary>
     public const string DiagnosticId = "MUTTY001";
+
+    /// <summary>
+    /// The diagnostic ID for applying the attribute to a generic record.
+    /// </summary>
+    public const string GenericRecordDiagnosticId = "MUTTY002";
 
     private const string Category = "Usage";
 
@@ -34,8 +39,20 @@ public class MutableGenerationAttributeAnalyzer : DiagnosticAnalyzer
         description:
         "The MutableGeneration attribute is designed to work only with record types. Applying it to classes, structs, or interfaces will not generate the expected mutable wrapper.");
 
+    private static readonly DiagnosticDescriptor GenericRule = new(
+        GenericRecordDiagnosticId,
+        title: "MutableGeneration does not support generic records",
+        messageFormat:
+        "The [MutableGeneration] attribute does not support generic records, but was applied to '{0}'",
+        Category,
+        DiagnosticSeverity.Error,
+        isEnabledByDefault: true,
+        description:
+        "Mutty cannot generate a mutable wrapper for an open generic record. Remove the type parameters or the attribute.");
+
     /// <inheritdoc />
-    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        => ImmutableArray.Create(Rule, GenericRule);
 
     /// <inheritdoc />
     public override void Initialize(AnalysisContext context)
@@ -75,9 +92,18 @@ public class MutableGenerationAttributeAnalyzer : DiagnosticAnalyzer
         }
 
         // Check if it's applied to a record
-        if (targetSyntax is RecordDeclarationSyntax)
+        if (targetSyntax is RecordDeclarationSyntax recordDeclaration)
         {
-            // Valid usage - it's on a record
+            // Generic records are not supported by the generator — report MUTTY002.
+            if (recordDeclaration.TypeParameterList is { Parameters.Count: > 0 })
+            {
+                context.ReportDiagnostic(Diagnostic.Create(
+                    GenericRule,
+                    attributeSyntax.GetLocation(),
+                    recordDeclaration.Identifier.Text));
+            }
+
+            // Otherwise it's valid usage - it's on a non-generic record.
             return;
         }
 

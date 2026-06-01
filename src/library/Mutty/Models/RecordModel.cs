@@ -27,12 +27,20 @@ public sealed record RecordModel(
     public string MutableRecordName => $"Mutable{RecordName}";
 
     /// <summary>
-    /// Projects a record's <see cref="INamedTypeSymbol"/> into an equatable <see cref="RecordModel"/>.
+    /// Projects a record's <see cref="INamedTypeSymbol"/> into an equatable <see cref="RecordModel"/>,
+    /// or <see langword="null"/> when the record is unsupported (e.g. an open generic record, which is
+    /// reported as MUTTY002 by the analyzer).
     /// </summary>
     /// <param name="recordSymbol">The record type symbol.</param>
-    /// <returns>The equatable record model.</returns>
-    public static RecordModel FromSymbol(INamedTypeSymbol recordSymbol)
+    /// <returns>The equatable record model, or <see langword="null"/> if unsupported.</returns>
+    public static RecordModel? FromSymbol(INamedTypeSymbol recordSymbol)
     {
+        // Open generic records cannot be wrapped (the generated class/ctor/operators would be malformed).
+        if (recordSymbol.IsGenericType)
+        {
+            return null;
+        }
+
         string? namespaceName = (recordSymbol.ContainingNamespace.IsGlobalNamespace)
             ? null
             : recordSymbol.ContainingNamespace.ToString();

@@ -94,6 +94,44 @@ public class MutableGenerationAttributeAnalyzerTests
     }
 
     [Test]
+    public async Task GenericRecord_ProducesMutty002DiagnosticAsync()
+    {
+        const string source = """
+
+                              using Mutty;
+
+                              namespace TestNamespace
+                              {
+                                  [{|MUTTY002:MutableGeneration|}]
+                                  public record Box<T>(T Value);
+                              }
+
+                              """;
+
+        CSharpAnalyzerTest<MutableGenerationAttributeAnalyzer, DefaultVerifier> test = CreateTest(source);
+        await test.RunAsync().ConfigureAwait(false);
+    }
+
+    [Test]
+    public async Task GenericRecordWithConstraints_ProducesMutty002DiagnosticAsync()
+    {
+        const string source = """
+
+                              using Mutty;
+
+                              namespace TestNamespace
+                              {
+                                  [{|MUTTY002:MutableGeneration|}]
+                                  public record Repository<T>(T Entity, int Id) where T : class;
+                              }
+
+                              """;
+
+        CSharpAnalyzerTest<MutableGenerationAttributeAnalyzer, DefaultVerifier> test = CreateTest(source);
+        await test.RunAsync().ConfigureAwait(false);
+    }
+
+    [Test]
     public async Task InvalidUsage_OnClass_ProducesDiagnosticAsync()
     {
         const string source = """

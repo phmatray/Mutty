@@ -47,11 +47,15 @@ public sealed class MuttyGenerator : IIncrementalGenerator
                 SourceText.From(new MutableGenerationAttributeTemplate().GenerateCode(), Encoding.UTF8)));
 
         // Find every record annotated with [MutableGeneration] and project it to an equatable model.
+        // Unsupported records (e.g. generic ones) project to null and are filtered out — the analyzer
+        // surfaces the corresponding diagnostic to the user.
         IncrementalValuesProvider<RecordModel> models = context.SyntaxProvider
             .ForAttributeWithMetadataName(
                 MarkerAttributeFullName,
                 predicate: static (node, _) => node is RecordDeclarationSyntax,
                 transform: static (ctx, _) => RecordModel.FromSymbol((INamedTypeSymbol)ctx.TargetSymbol))
+            .Where(static model => model is not null)
+            .Select(static (model, _) => model!)
             .WithTrackingName(RecordModelTrackingName);
 
         // Emit the wrapper and extensions for each record independently.

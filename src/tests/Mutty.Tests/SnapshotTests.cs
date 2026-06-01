@@ -152,37 +152,19 @@ public class SnapshotTests : GeneratorTests
     }
 
     /// <summary>
-    /// Test: Generic record
-    /// Verifies code generation for records with generic type parameters.
+    /// Test: Generic records are unsupported.
+    /// The generator must skip generic records (the analyzer reports MUTTY002) rather than emit a
+    /// malformed wrapper. No Mutable wrapper class should be generated for them.
     /// </summary>
     [Test]
-    public Task GeneratesCorrectCodeForGenericRecordAsync()
+    public void GenericRecord_IsSkipped_NoWrapperGenerated()
     {
-        string source = CreateInput("""
-            public record Container<T>(T Value, string Label);
-            """);
+        string[] container = GetGeneratedOutput(CreateInput("public record Container<T>(T Value, string Label);"));
+        container.ShouldNotContain(static x => x.Contains("class MutableContainer"));
 
-        string[] generated = GetGeneratedOutput(source);
-
-        return Verify(GetMutableCode(generated, "Container"))
-            .UseMethodName("GenericRecord");
-    }
-
-    /// <summary>
-    /// Test: Generic record with constraints
-    /// Verifies code generation for generic records with where constraints.
-    /// </summary>
-    [Test]
-    public Task GeneratesCorrectCodeForGenericRecordWithConstraintsAsync()
-    {
-        string source = CreateInput("""
-            public record Repository<T>(T Entity, int Id) where T : class;
-            """);
-
-        string[] generated = GetGeneratedOutput(source);
-
-        return Verify(GetMutableCode(generated, "Repository"))
-            .UseMethodName("GenericRecordWithConstraints");
+        string[] repository = GetGeneratedOutput(
+            CreateInput("public record Repository<T>(T Entity, int Id) where T : class;"));
+        repository.ShouldNotContain(static x => x.Contains("class MutableRepository"));
     }
 
     /// <summary>
