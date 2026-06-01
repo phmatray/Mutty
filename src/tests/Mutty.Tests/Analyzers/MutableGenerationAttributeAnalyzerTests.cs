@@ -132,6 +132,28 @@ public class MutableGenerationAttributeAnalyzerTests
     }
 
     [Test]
+    public async Task NestedRecord_ProducesMutty003DiagnosticAsync()
+    {
+        const string source = """
+
+                              using Mutty;
+
+                              namespace TestNamespace
+                              {
+                                  public class Outer
+                                  {
+                                      [{|MUTTY003:MutableGeneration|}]
+                                      public record Item(int Value);
+                                  }
+                              }
+
+                              """;
+
+        CSharpAnalyzerTest<MutableGenerationAttributeAnalyzer, DefaultVerifier> test = CreateTest(source);
+        await test.RunAsync().ConfigureAwait(false);
+    }
+
+    [Test]
     public async Task InvalidUsage_OnClass_ProducesDiagnosticAsync()
     {
         const string source = """

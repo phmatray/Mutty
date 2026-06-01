@@ -41,6 +41,13 @@ public sealed record RecordModel(
             return null;
         }
 
+        // Records nested in another type are unsupported: the wrapper is emitted at namespace scope and
+        // could not reference the nested record. Reported as MUTTY003 by the analyzer.
+        if (recordSymbol.ContainingType is not null)
+        {
+            return null;
+        }
+
         string? namespaceName = (recordSymbol.ContainingNamespace.IsGlobalNamespace)
             ? null
             : recordSymbol.ContainingNamespace.ToString();

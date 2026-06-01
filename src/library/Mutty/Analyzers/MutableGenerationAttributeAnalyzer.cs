@@ -26,6 +26,11 @@ public class MutableGenerationAttributeAnalyzer : DiagnosticAnalyzer
     /// </summary>
     public const string GenericRecordDiagnosticId = "MUTTY002";
 
+    /// <summary>
+    /// The diagnostic ID for applying the attribute to a record nested in another type.
+    /// </summary>
+    public const string NestedRecordDiagnosticId = "MUTTY003";
+
     private const string Category = "Usage";
 
     private static readonly DiagnosticDescriptor Rule = new(
@@ -50,9 +55,20 @@ public class MutableGenerationAttributeAnalyzer : DiagnosticAnalyzer
         description:
         "Mutty cannot generate a mutable wrapper for an open generic record. Remove the type parameters or the attribute.");
 
+    private static readonly DiagnosticDescriptor NestedRule = new(
+        NestedRecordDiagnosticId,
+        title: "MutableGeneration does not support records nested in another type",
+        messageFormat:
+        "The [MutableGeneration] attribute does not support nested records, but was applied to '{0}'",
+        Category,
+        DiagnosticSeverity.Error,
+        isEnabledByDefault: true,
+        description:
+        "Mutty generates the mutable wrapper at namespace scope, so it cannot wrap a record nested inside another type. Move the record to namespace scope.");
+
     /// <inheritdoc />
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-        => ImmutableArray.Create(Rule, GenericRule);
+        => ImmutableArray.Create(Rule, GenericRule, NestedRule);
 
     /// <inheritdoc />
     public override void Initialize(AnalysisContext context)
@@ -103,7 +119,16 @@ public class MutableGenerationAttributeAnalyzer : DiagnosticAnalyzer
                     recordDeclaration.Identifier.Text));
             }
 
-            // Otherwise it's valid usage - it's on a non-generic record.
+            // Records nested in another type are not supported — report MUTTY003.
+            if (recordDeclaration.Parent is TypeDeclarationSyntax)
+            {
+                context.ReportDiagnostic(Diagnostic.Create(
+                    NestedRule,
+                    attributeSyntax.GetLocation(),
+                    recordDeclaration.Identifier.Text));
+            }
+
+            // Otherwise it's valid usage - it's on a top-level, non-generic record.
             return;
         }
 

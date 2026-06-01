@@ -106,6 +106,122 @@ public class EndToEndCompilationTests : GeneratorTests
     }
 
     [Test]
+    public void NominalRecordWithInitProperties_RoundTrips()
+    {
+        string source = CreateInput(
+            """
+            public partial record Person
+            {
+                public string Name { get; init; }
+                public int Age { get; init; }
+            }
+            """);
+        Assembly assembly = CompileToAssembly(source);
+
+        Type personType = assembly.GetType("Mutty.Tests.Person").ShouldNotBeNull();
+        object person = Activator.CreateInstance(personType)!;
+        personType.GetProperty("Name")!.SetValue(person, "John");
+        personType.GetProperty("Age")!.SetValue(person, 20);
+
+        object mutable = ToMutable(assembly, "Mutty.Tests.Person", person);
+        mutable.GetType().GetProperty("Name")!.SetValue(mutable, "Jane");
+
+        object rebuilt = Build(mutable);
+        personType.GetProperty("Name")!.GetValue(rebuilt).ShouldBe("Jane");
+        personType.GetProperty("Age")!.GetValue(rebuilt).ShouldBe(20);
+    }
+
+    [Test]
+    public void RequiredMembers_CompileAndRoundTrip()
+    {
+        // The generated wrapper must compile for a record with required members and round-trip it.
+        string source =
+            """
+            using Mutty;
+
+            namespace Demo
+            {
+                [MutableGeneration]
+                public partial record Person
+                {
+                    public required string Name { get; init; }
+                    public int Age { get; init; }
+                }
+
+                public static class Factory
+                {
+                    public static Person Create() => new Person { Name = "John", Age = 20 };
+                }
+            }
+            """;
+
+        Assembly assembly = CompileToAssembly(source);
+
+        Type personType = assembly.GetType("Demo.Person").ShouldNotBeNull();
+        object person = assembly.GetType("Demo.Factory")!.GetMethod("Create")!.Invoke(null, null)!;
+
+        object mutable = ToMutable(assembly, "Demo.Person", person);
+        mutable.GetType().GetProperty("Age")!.SetValue(mutable, 21);
+
+        object rebuilt = Build(mutable);
+        personType.GetProperty("Name")!.GetValue(rebuilt).ShouldBe("John");
+        personType.GetProperty("Age")!.GetValue(rebuilt).ShouldBe(21);
+    }
+
+    [Test]
+    public void GetOnlyComputedProperty_IsNotWrapped()
+    {
+        string source = CreateInput(
+            """
+            public partial record Person(string First, string Last)
+            {
+                public string Full => First + " " + Last;
+            }
+            """);
+        Assembly assembly = CompileToAssembly(source);
+
+        Type personType = assembly.GetType("Mutty.Tests.Person").ShouldNotBeNull();
+        Type mutableType = assembly.GetType("Mutty.Tests.MutablePerson").ShouldNotBeNull();
+
+        // The computed, get-only property must not appear on the wrapper.
+        mutableType.GetProperty("Full").ShouldBeNull();
+        mutableType.GetMethod("WithFull").ShouldBeNull();
+
+        object person = Activator.CreateInstance(personType, "John", "Doe")!;
+        object mutable = ToMutable(assembly, "Mutty.Tests.Person", person);
+        mutableType.GetProperty("Last")!.SetValue(mutable, "Smith");
+
+        object rebuilt = Build(mutable);
+        personType.GetProperty("Full")!.GetValue(rebuilt).ShouldBe("John Smith");
+    }
+
+    [Test]
+    public void RecordNestedInAType_IsSkipped_NoWrapperGenerated()
+    {
+        // A record nested in a class is unsupported (MUTTY003); no wrapper should be generated, but the
+        // attribute file itself still compiles.
+        string source =
+            """
+            using Mutty;
+
+            namespace Demo
+            {
+                public class Outer
+                {
+                    [MutableGeneration]
+                    public partial record Item(int Value);
+                }
+            }
+            """;
+
+        // The analyzer reports MUTTY003 (tested separately); the generator just skips it. The compilation
+        // here runs the generator (not the analyzer), so it succeeds and emits no MutableItem.
+        Assembly assembly = CompileToAssembly(source);
+        assembly.GetType("Demo.Outer+MutableItem").ShouldBeNull();
+        assembly.GetType("Demo.MutableItem").ShouldBeNull();
+    }
+
+    [Test]
     public void BasicRecord_RoundTripsThroughTheMutableWrapper()
     {
         string source = CreateInput("public partial record Person(string Name, int Age);");
