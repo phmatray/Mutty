@@ -3,6 +3,7 @@
 
 #nullable enable
 
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 
@@ -24,7 +25,7 @@ namespace Mutty.Tests
             _record = record;
 
             Name = _record.Name;
-            Settings = _record.Settings.AsMutable();
+            Settings = new Dictionary<string, string>(_record.Settings);
         }
 
         /// <summary>
@@ -35,7 +36,7 @@ namespace Mutty.Tests
             return _record with
             {
                 Name = this.Name,
-                Settings = this.Settings.ToImmutable(),
+                Settings = this.Settings.ToImmutableDictionary(),
             };
         }
 

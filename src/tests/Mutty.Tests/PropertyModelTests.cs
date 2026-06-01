@@ -116,7 +116,7 @@ namespace TestNamespace
 
         SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(code);
         IEnumerable<MetadataReference> references = AppDomain.CurrentDomain.GetAssemblies()
-            .Where(static assembly => !assembly.IsDynamic)
+            .Where(static assembly => !assembly.IsDynamic && !string.IsNullOrWhiteSpace(assembly.Location))
             .Select(static assembly => MetadataReference.CreateFromFile(assembly.Location));
 
         CSharpCompilation compilation = CSharpCompilation.Create(

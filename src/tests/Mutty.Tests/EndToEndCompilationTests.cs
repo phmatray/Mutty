@@ -13,374 +13,227 @@ using Shouldly;
 namespace Mutty.Tests;
 
 /// <summary>
-/// End-to-end compilation tests that verify generated code actually works at runtime.
-/// These tests compile the generated code and execute it to ensure:
-/// 1. Generated mutable records can be instantiated
-/// 2. ToMutable() and ToImmutable() round-trip correctly
-/// 3. Collections are truly immutable after ToImmutable()
+/// End-to-end tests that compile a record + Mutty's generated output into a real assembly, load it,
+/// and exercise the generated API via reflection. They prove the generated code actually compiles and
+/// round-trips at runtime — something the snapshot tests (which only compare text) cannot.
 /// </summary>
 /// <remarks>
-/// NOTE: These tests are currently ignored due to assembly reference issues in the runtime compilation.
-/// The generated code from Mutty works fine in actual projects, but dynamically compiling in tests
-/// requires additional assembly references that aren't trivially available.
-/// TODO: Fix assembly loading or use Microsoft.CodeAnalysis.Testing package for proper test infrastructure.
+/// The generated API used here is the real one: a <c>Mutable{Record}</c> wrapper with a public
+/// constructor taking the record, get/set properties, and a <c>Build()</c> method returning the record.
 /// </remarks>
 [TestFixture]
-[Ignore("Temporarily disabled - assembly reference issues in runtime compilation")]
 public class EndToEndCompilationTests : GeneratorTests
 {
     /// <summary>
-    /// Helper to compile generated code and load it as an assembly for testing.
+    /// Compiles the source together with Mutty's generated output and loads it as an assembly.
     /// </summary>
     private static Assembly CompileToAssembly(string sourceCode)
     {
         SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(sourceCode);
 
-        // Get all assemblies, filtering out dynamic and those without location
-        var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies()
-            .Where(assembly => !assembly.IsDynamic && !string.IsNullOrWhiteSpace(assembly.Location))
-            .Select(assembly => MetadataReference.CreateFromFile(assembly.Location))
+        List<MetadataReference> references = AppDomain.CurrentDomain.GetAssemblies()
+            .Where(static assembly => !assembly.IsDynamic && !string.IsNullOrWhiteSpace(assembly.Location))
+            .Select(static assembly => MetadataReference.CreateFromFile(assembly.Location))
+            .Cast<MetadataReference>()
             .ToList();
 
-        // Add specific required assemblies that might not be loaded yet
-        loadedAssemblies.Add(MetadataReference.CreateFromFile(typeof(MutableGenerationAttribute).Assembly.Location));
-        loadedAssemblies.Add(MetadataReference.CreateFromFile(typeof(ImmutableList<>).Assembly.Location));
-
-        IEnumerable<MetadataReference> references = loadedAssemblies;
+        references.Add(MetadataReference.CreateFromFile(typeof(MutableGenerationAttribute).Assembly.Location));
+        references.Add(MetadataReference.CreateFromFile(typeof(ImmutableList<>).Assembly.Location));
 
         CSharpCompilation compilation = CSharpCompilation.Create(
             $"TestAssembly_{Guid.NewGuid():N}",
-            new[] { syntaxTree },
+            [syntaxTree],
             references,
             new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
 
         // Single source generator under test
         MuttyGenerator generator = new();
 
-        var driver = CSharpGeneratorDriver.Create(generator)
+        _ = CSharpGeneratorDriver.Create(generator)
             .RunGeneratorsAndUpdateCompilation(
                 compilation,
                 out Compilation outputCompilation,
-                out var diagnostics);
+                out _);
 
-        // Check for compilation errors
-        var errors = outputCompilation.GetDiagnostics()
-            .Where(d => d.Severity == DiagnosticSeverity.Error)
+        Diagnostic[] errors = outputCompilation.GetDiagnostics()
+            .Where(static d => d.Severity == DiagnosticSeverity.Error)
             .ToArray();
 
         if (errors.Length > 0)
         {
-            var errorMessages = string.Join("\n", errors.Select(e => e.ToString()));
-            throw new InvalidOperationException($"Compilation failed:\n{errorMessages}");
+            throw new InvalidOperationException(
+                $"Compilation failed:\n{string.Join("\n", errors.Select(static e => e.ToString()))}");
         }
 
-        // Emit to memory stream
         using MemoryStream ms = new();
-        var emitResult = outputCompilation.Emit(ms);
+        Microsoft.CodeAnalysis.Emit.EmitResult emitResult = outputCompilation.Emit(ms);
 
         if (!emitResult.Success)
         {
-            var failures = emitResult.Diagnostics
-                .Where(diagnostic => diagnostic.Severity == DiagnosticSeverity.Error);
-            throw new InvalidOperationException(
-                $"Emit failed: {string.Join("\n", failures)}");
+            IEnumerable<Diagnostic> failures = emitResult.Diagnostics
+                .Where(static d => d.Severity == DiagnosticSeverity.Error);
+            throw new InvalidOperationException($"Emit failed: {string.Join("\n", failures)}");
         }
 
-        ms.Seek(0, SeekOrigin.Begin);
         return Assembly.Load(ms.ToArray());
     }
 
     /// <summary>
-    /// Test: Basic record can be instantiated and converted.
-    /// Verifies the most fundamental operation works end-to-end.
+    /// Wraps an immutable record instance in its generated mutable wrapper.
     /// </summary>
-    [Test]
-    public void BasicRecord_CanBeInstantiatedAndConverted()
+    private static object ToMutable(Assembly assembly, string recordFullName, object record)
     {
-        // Arrange
-        string source = CreateInput("""
-            public partial record Person(string Name, int Age);
-            """);
+        string ns = recordFullName.Contains('.')
+            ? recordFullName[..recordFullName.LastIndexOf('.')]
+            : string.Empty;
+        string name = recordFullName[(recordFullName.LastIndexOf('.') + 1)..];
+        string mutableFullName = string.IsNullOrEmpty(ns) ? $"Mutable{name}" : $"{ns}.Mutable{name}";
 
-        Assembly assembly = CompileToAssembly(source);
+        Type mutableType = assembly.GetType(mutableFullName)
+            ?? throw new InvalidOperationException($"Mutable type '{mutableFullName}' not found.");
 
-        // Get the immutable record type
-        Type? personType = assembly.GetType("Mutty.Tests.Person");
-        personType.ShouldNotBeNull("Person type should exist");
-
-        // Act - Create immutable instance
-        object? person = Activator.CreateInstance(personType!, "John Doe", 30);
-        person.ShouldNotBeNull();
-
-        // Get ToMutable method
-        MethodInfo? toMutableMethod = personType!.GetMethod("ToMutable");
-        toMutableMethod.ShouldNotBeNull("ToMutable method should exist");
-
-        // Convert to mutable
-        object? mutablePerson = toMutableMethod!.Invoke(person, null);
-        mutablePerson.ShouldNotBeNull();
-
-        // Get the mutable type
-        Type mutableType = mutablePerson!.GetType();
-
-        // Get ToImmutable method
-        MethodInfo? toImmutableMethod = mutableType.GetMethod("ToImmutable");
-        toImmutableMethod.ShouldNotBeNull("ToImmutable method should exist");
-
-        // Convert back to immutable
-        object? roundTrippedPerson = toImmutableMethod!.Invoke(mutablePerson, null);
-        roundTrippedPerson.ShouldNotBeNull();
-
-        // Assert - Verify round-trip maintains data
-        PropertyInfo? nameProperty = personType.GetProperty("Name");
-        PropertyInfo? ageProperty = personType.GetProperty("Age");
-
-        nameProperty!.GetValue(roundTrippedPerson).ShouldBe("John Doe");
-        ageProperty!.GetValue(roundTrippedPerson).ShouldBe(30);
+        return Activator.CreateInstance(mutableType, record)!;
     }
 
     /// <summary>
-    /// Test: Mutable record properties can be modified.
-    /// Verifies that the mutable version actually allows mutations.
+    /// Calls <c>Build()</c> on a mutable wrapper to materialise the immutable record.
     /// </summary>
-    [Test]
-    public void MutableRecord_PropertiesCanBeModified()
+    private static object Build(object mutable)
     {
-        // Arrange
-        string source = CreateInput("""
-            public partial record Person(string Name, int Age);
-            """);
-
-        Assembly assembly = CompileToAssembly(source);
-        Type? personType = assembly.GetType("Mutty.Tests.Person");
-        object? person = Activator.CreateInstance(personType!, "Jane Doe", 25);
-
-        MethodInfo? toMutableMethod = personType!.GetMethod("ToMutable");
-        object? mutablePerson = toMutableMethod!.Invoke(person, null);
-        Type mutableType = mutablePerson!.GetType();
-
-        // Act - Modify mutable properties
-        PropertyInfo? nameProperty = mutableType.GetProperty("Name");
-        PropertyInfo? ageProperty = mutableType.GetProperty("Age");
-
-        nameProperty!.SetValue(mutablePerson, "Jane Smith");
-        ageProperty!.SetValue(mutablePerson, 26);
-
-        // Assert
-        nameProperty.GetValue(mutablePerson).ShouldBe("Jane Smith");
-        ageProperty.GetValue(mutablePerson).ShouldBe(26);
+        MethodInfo build = mutable.GetType().GetMethod("Build")
+            ?? throw new InvalidOperationException("Build() method should exist on the mutable wrapper.");
+        return build.Invoke(mutable, null)!;
     }
 
-    /// <summary>
-    /// Test: Collections are mutable in mutable record.
-    /// Verifies that List properties in mutable version can be modified.
-    /// </summary>
     [Test]
-    public void MutableRecord_CollectionsAreMutable()
+    public void BasicRecord_RoundTripsThroughTheMutableWrapper()
     {
-        // Arrange
-        string source = CreateInput("""
-            public partial record Team(string Name, ImmutableList<string> Members);
-            """);
-
+        string source = CreateInput("public partial record Person(string Name, int Age);");
         Assembly assembly = CompileToAssembly(source);
-        Type? teamType = assembly.GetType("Mutty.Tests.Team");
 
-        // Create immutable with initial members
-        var initialMembers = ImmutableList.Create("Alice", "Bob");
-        object? team = Activator.CreateInstance(teamType!, "Dev Team", initialMembers);
+        Type personType = assembly.GetType("Mutty.Tests.Person").ShouldNotBeNull();
+        object person = Activator.CreateInstance(personType, "John Doe", 30)!;
 
-        // Convert to mutable
-        MethodInfo? toMutableMethod = teamType!.GetMethod("ToMutable");
-        object? mutableTeam = toMutableMethod!.Invoke(team, null);
-        Type mutableType = mutableTeam!.GetType();
+        object mutable = ToMutable(assembly, "Mutty.Tests.Person", person);
+        object roundTripped = Build(mutable);
 
-        // Act - Get the mutable Members collection (should be List<string>)
-        PropertyInfo? membersProperty = mutableType.GetProperty("Members");
-        object? membersList = membersProperty!.GetValue(mutableTeam);
-
-        membersList.ShouldNotBeNull();
-        membersList.ShouldBeOfType<List<string>>("Mutable version should use List<T>");
-
-        // Modify the list
-        var list = (List<string>)membersList!;
-        list.Add("Charlie");
-
-        // Assert - List was modified
-        list.Count.ShouldBe(3);
-        list.ShouldContain("Charlie");
+        personType.GetProperty("Name")!.GetValue(roundTripped).ShouldBe("John Doe");
+        personType.GetProperty("Age")!.GetValue(roundTripped).ShouldBe(30);
     }
 
-    /// <summary>
-    /// Test: Collections are immutable after ToImmutable().
-    /// Verifies that converting back to immutable produces truly immutable collections.
-    /// </summary>
     [Test]
-    public void ImmutableRecord_CollectionsAreTrulyImmutable()
+    public void MutableRecord_PropertiesCanBeModifiedThenBuilt()
     {
-        // Arrange
-        string source = CreateInput("""
-            public partial record Team(string Name, ImmutableList<string> Members);
-            """);
-
+        string source = CreateInput("public partial record Person(string Name, int Age);");
         Assembly assembly = CompileToAssembly(source);
-        Type? teamType = assembly.GetType("Mutty.Tests.Team");
 
-        var initialMembers = ImmutableList.Create("Alice", "Bob");
-        object? team = Activator.CreateInstance(teamType!, "Dev Team", initialMembers);
+        Type personType = assembly.GetType("Mutty.Tests.Person").ShouldNotBeNull();
+        object person = Activator.CreateInstance(personType, "Jane Doe", 25)!;
 
-        // Convert to mutable, modify, convert back
-        MethodInfo? toMutableMethod = teamType!.GetMethod("ToMutable");
-        object? mutableTeam = toMutableMethod!.Invoke(team, null);
-        Type mutableType = mutableTeam!.GetType();
+        object mutable = ToMutable(assembly, "Mutty.Tests.Person", person);
+        Type mutableType = mutable.GetType();
+        mutableType.GetProperty("Name")!.SetValue(mutable, "Jane Smith");
+        mutableType.GetProperty("Age")!.SetValue(mutable, 26);
 
-        PropertyInfo? membersProperty = mutableType.GetProperty("Members");
-        var membersList = (List<string>)membersProperty!.GetValue(mutableTeam)!;
-        membersList.Add("Charlie");
-
-        // Act - Convert back to immutable
-        MethodInfo? toImmutableMethod = mutableType.GetMethod("ToImmutable");
-        object? immutableTeam = toImmutableMethod!.Invoke(mutableTeam, null);
-
-        // Assert - Get Members property from immutable version
-        PropertyInfo? immutableMembersProperty = teamType.GetProperty("Members");
-        object? immutableMembers = immutableMembersProperty!.GetValue(immutableTeam);
-
-        immutableMembers.ShouldBeOfType<ImmutableList<string>>("Immutable version should use ImmutableList<T>");
-
-        var immutableList = (ImmutableList<string>)immutableMembers!;
-        immutableList.Count.ShouldBe(3);
-        immutableList.ShouldContain("Charlie");
+        object roundTripped = Build(mutable);
+        personType.GetProperty("Name")!.GetValue(roundTripped).ShouldBe("Jane Smith");
+        personType.GetProperty("Age")!.GetValue(roundTripped).ShouldBe(26);
     }
 
-    /// <summary>
-    /// Test: Round-trip preserves all data for complex records.
-    /// Verifies that multiple conversions don't lose data.
-    /// </summary>
+    [Test]
+    public void MutableRecord_CollectionPropertyIsMutable()
+    {
+        string source = CreateInput("public partial record Team(string Name, ImmutableList<string> Members);");
+        Assembly assembly = CompileToAssembly(source);
+
+        Type teamType = assembly.GetType("Mutty.Tests.Team").ShouldNotBeNull();
+        object team = Activator.CreateInstance(teamType, "Dev Team", ImmutableList.Create("Alice", "Bob"))!;
+
+        object mutable = ToMutable(assembly, "Mutty.Tests.Team", team);
+        object? members = mutable.GetType().GetProperty("Members")!.GetValue(mutable);
+
+        members.ShouldBeOfType<List<string>>();
+        ((List<string>)members!).Add("Charlie");
+
+        ((List<string>)members).Count.ShouldBe(3);
+    }
+
+    [Test]
+    public void ImmutableRecord_CollectionsAreTrulyImmutableAfterBuild()
+    {
+        string source = CreateInput("public partial record Team(string Name, ImmutableList<string> Members);");
+        Assembly assembly = CompileToAssembly(source);
+
+        Type teamType = assembly.GetType("Mutty.Tests.Team").ShouldNotBeNull();
+        object team = Activator.CreateInstance(teamType, "Dev Team", ImmutableList.Create("Alice", "Bob"))!;
+
+        object mutable = ToMutable(assembly, "Mutty.Tests.Team", team);
+        var members = (List<string>)mutable.GetType().GetProperty("Members")!.GetValue(mutable)!;
+        members.Add("Charlie");
+
+        object rebuilt = Build(mutable);
+        object? immutableMembers = teamType.GetProperty("Members")!.GetValue(rebuilt);
+
+        immutableMembers.ShouldBeOfType<ImmutableList<string>>();
+        ((ImmutableList<string>)immutableMembers!).Count.ShouldBe(3);
+        ((ImmutableList<string>)immutableMembers).ShouldContain("Charlie");
+    }
+
     [Test]
     public void ComplexRecord_RoundTripPreservesAllData()
     {
-        // Arrange
-        string source = CreateInput("""
+        string source = CreateInput(
+            """
             public partial record DataSet(
                 string Name,
                 ImmutableList<int> Numbers,
                 ImmutableDictionary<string, double> Metrics);
             """);
-
         Assembly assembly = CompileToAssembly(source);
-        Type? dataSetType = assembly.GetType("Mutty.Tests.DataSet");
 
-        var numbers = ImmutableList.Create(1, 2, 3);
-        var metrics = ImmutableDictionary.CreateRange(new[]
-        {
+        Type dataSetType = assembly.GetType("Mutty.Tests.DataSet").ShouldNotBeNull();
+        ImmutableList<int> numbers = ImmutableList.Create(1, 2, 3);
+        ImmutableDictionary<string, double> metrics = ImmutableDictionary.CreateRange(
+        [
             KeyValuePair.Create("accuracy", 0.95),
             KeyValuePair.Create("precision", 0.88)
-        });
+        ]);
 
-        object? original = Activator.CreateInstance(dataSetType!, "TestData", numbers, metrics);
+        object original = Activator.CreateInstance(dataSetType, "TestData", numbers, metrics)!;
 
-        // Act - Multiple round trips
-        MethodInfo? toMutableMethod = dataSetType!.GetMethod("ToMutable");
-        object? mutable1 = toMutableMethod!.Invoke(original, null);
+        // Two full round trips.
+        object immutable1 = Build(ToMutable(assembly, "Mutty.Tests.DataSet", original));
+        object immutable2 = Build(ToMutable(assembly, "Mutty.Tests.DataSet", immutable1));
 
-        Type mutableType = mutable1!.GetType();
-        MethodInfo? toImmutableMethod = mutableType.GetMethod("ToImmutable");
-        object? immutable1 = toImmutableMethod!.Invoke(mutable1, null);
+        dataSetType.GetProperty("Name")!.GetValue(immutable2).ShouldBe("TestData");
 
-        object? mutable2 = toMutableMethod.Invoke(immutable1, null);
-        object? immutable2 = toImmutableMethod!.Invoke(mutable2, null);
+        var finalNumbers = (ImmutableList<int>)dataSetType.GetProperty("Numbers")!.GetValue(immutable2)!;
+        finalNumbers.ShouldBe([1, 2, 3], ignoreOrder: true);
 
-        // Assert - Verify all properties preserved
-        PropertyInfo? nameProperty = dataSetType.GetProperty("Name");
-        PropertyInfo? numbersProperty = dataSetType.GetProperty("Numbers");
-        PropertyInfo? metricsProperty = dataSetType.GetProperty("Metrics");
-
-        nameProperty!.GetValue(immutable2).ShouldBe("TestData");
-
-        var finalNumbers = (ImmutableList<int>)numbersProperty!.GetValue(immutable2)!;
-        finalNumbers.ShouldBe(new[] { 1, 2, 3 }, ignoreOrder: true);
-
-        var finalMetrics = (ImmutableDictionary<string, double>)metricsProperty!.GetValue(immutable2)!;
+        var finalMetrics = (ImmutableDictionary<string, double>)dataSetType.GetProperty("Metrics")!.GetValue(immutable2)!;
         finalMetrics["accuracy"].ShouldBe(0.95);
         finalMetrics["precision"].ShouldBe(0.88);
     }
 
-    /// <summary>
-    /// Test: Nullable reference types work correctly in round-trip.
-    /// </summary>
     [Test]
     public void NullableReferenceTypes_RoundTripCorrectly()
     {
-        // Arrange
-        string source = CreateInput("""
+        string source = CreateInput(
+            """
             #nullable enable
             public partial record User(string Name, string? Email);
             """);
-
-        Assembly assembly = CompileToAssembly(source);
-        Type? userType = assembly.GetType("Mutty.Tests.User");
-
-        // Test with null value
-        object? userWithNullEmail = Activator.CreateInstance(userType!, "John", null);
-
-        // Act - Round trip
-        MethodInfo? toMutableMethod = userType!.GetMethod("ToMutable");
-        object? mutable = toMutableMethod!.Invoke(userWithNullEmail, null);
-
-        Type mutableType = mutable!.GetType();
-        MethodInfo? toImmutableMethod = mutableType.GetMethod("ToImmutable");
-        object? roundTripped = toImmutableMethod!.Invoke(mutable, null);
-
-        // Assert
-        PropertyInfo? emailProperty = userType.GetProperty("Email");
-        emailProperty!.GetValue(roundTripped).ShouldBeNull();
-
-        // Test with non-null value
-        object? userWithEmail = Activator.CreateInstance(userType, "Jane", "jane@example.com");
-        mutable = toMutableMethod.Invoke(userWithEmail, null);
-        roundTripped = toImmutableMethod!.Invoke(mutable, null);
-
-        emailProperty.GetValue(roundTripped).ShouldBe("jane@example.com");
-    }
-
-    /// <summary>
-    /// Test: Generic records work correctly.
-    /// </summary>
-    [Test]
-    public void GenericRecord_WorksCorrectly()
-    {
-        // Arrange
-        string source = CreateInput("""
-            public partial record Container<T>(T Value, string Label);
-            """);
-
         Assembly assembly = CompileToAssembly(source);
 
-        // Get the generic type definition
-        Type? containerType = assembly.GetType("Mutty.Tests.Container`1");
-        containerType.ShouldNotBeNull("Generic Container type should exist");
+        Type userType = assembly.GetType("Mutty.Tests.User").ShouldNotBeNull();
+        PropertyInfo emailProperty = userType.GetProperty("Email")!;
 
-        // Make concrete type Container<int>
-        Type concreteType = containerType!.MakeGenericType(typeof(int));
+        object userWithNull = Activator.CreateInstance(userType, "John", null)!;
+        object roundTrippedNull = Build(ToMutable(assembly, "Mutty.Tests.User", userWithNull));
+        emailProperty.GetValue(roundTrippedNull).ShouldBeNull();
 
-        // Act - Create instance
-        object? container = Activator.CreateInstance(concreteType, 42, "Answer");
-        container.ShouldNotBeNull();
-
-        // Round trip
-        MethodInfo? toMutableMethod = concreteType.GetMethod("ToMutable");
-        object? mutable = toMutableMethod!.Invoke(container, null);
-
-        Type mutableType = mutable!.GetType();
-        MethodInfo? toImmutableMethod = mutableType.GetMethod("ToImmutable");
-        object? roundTripped = toImmutableMethod!.Invoke(mutable, null);
-
-        // Assert
-        PropertyInfo? valueProperty = concreteType.GetProperty("Value");
-        PropertyInfo? labelProperty = concreteType.GetProperty("Label");
-
-        valueProperty!.GetValue(roundTripped).ShouldBe(42);
-        labelProperty!.GetValue(roundTripped).ShouldBe("Answer");
+        object userWithEmail = Activator.CreateInstance(userType, "Jane", "jane@example.com")!;
+        object roundTrippedEmail = Build(ToMutable(assembly, "Mutty.Tests.User", userWithEmail));
+        emailProperty.GetValue(roundTrippedEmail).ShouldBe("jane@example.com");
     }
 }

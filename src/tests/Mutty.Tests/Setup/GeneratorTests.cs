@@ -15,7 +15,7 @@ public abstract class GeneratorTests
     {
         SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(sourceCode);
         IEnumerable<MetadataReference> references = AppDomain.CurrentDomain.GetAssemblies()
-            .Where(static assembly => !assembly.IsDynamic)
+            .Where(static assembly => !assembly.IsDynamic && !string.IsNullOrWhiteSpace(assembly.Location))
             .Select(static assembly => MetadataReference.CreateFromFile(assembly.Location))
             .Cast<MetadataReference>()
             .Concat([MetadataReference.CreateFromFile(typeof(MutableGenerationAttribute).Assembly.Location)]);
