@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <!-- Benchmark code is throwaway harness code; don't subject it to the library's strict analyzers. -->
+    <IncludeAnalyzers>false</IncludeAnalyzers>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Reference the generator as a normal library so the benchmark can drive it directly. -->
+    <ProjectReference Include="..\..\library\Mutty\Mutty.csproj" />
+    <PackageReference Include="BenchmarkDotNet" />
+    <!-- The benchmark host runs a newer Roslyn than the library's shipping floor (4.8.0);
+         BenchmarkDotNet requires >= 4.14.0. This does not affect the package consumers see. -->
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" VersionOverride="4.14.0" />
+  </ItemGroup>
+
+</Project>
