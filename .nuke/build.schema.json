@@ -27,11 +27,13 @@
         "Clean",
         "Compile",
         "CreateRelease",
+        "InstallNuGetValidator",
         "Pack",
         "PublishToGithub",
         "PublishToNuGet",
         "Restore",
         "UnitTests",
+        "ValidateNuGetPackage",
         "Version"
       ]
     },

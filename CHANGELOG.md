@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## 2.0.0 / 2026-06-01
 ### Breaking
 - The `Mutable{Record}` → `{Record}` conversion is now an **explicit** operator instead of implicit. This prevents hidden allocations (e.g. `record == mutable` silently built a record). Update call sites to an explicit cast `(Record)mutable`, or — preferably — call `mutable.Build()` / `mutable.ToImmutable()`. The `{Record}` → `Mutable{Record}` direction stays implicit.
 

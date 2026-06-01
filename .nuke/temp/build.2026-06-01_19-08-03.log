@@ -1,0 +1,68 @@
+V |                      | ArgumentsFromParametersFile.OnBuildCreated (150)
+V |                      | HandleReSharperSurrogateArguments.OnBuildCreated (150)
+V |                      | InjectParameterValues.OnBuildCreated (100)
+V |                      | HandleShellCompletion.OnBuildCreated (75)
+V |                      | GenerateBuildServerConfigurations.OnBuildCreated (50)
+V |                      | InvokeBuildServerConfigurationGeneration.OnBuildCreated (45)
+V |                      | UpdateNotification.OnBuildCreated (10)
+V |                      | UnsetVisualStudioEnvironmentVariables.OnBuildCreated (0)
+V |                      | HandleVisualStudioDebugging.OnBuildCreated (0)
+V |                      | EventInvoker.OnBuildCreated (-3.4028235E+38)
+V |                      | HandlePlanRequests.OnBuildInitialized (10)
+V |                      | HandleHelpRequests.OnBuildInitialized (5)
+V |                      | Telemetry.OnBuildInitialized (0)
+V |                      | Sending BuildStarted telemetry event ...
+V |                      |   build_components         = 
+V |                      |   build_type               = Project
+V |                      |   compile_time             = <null>
+V |                      |   config_generators        = GitHubActions
+V |                      |   host                     = Terminal
+V |                      |   num_custom_components    = 0
+V |                      |   num_custom_extensions    = 0
+V |                      |   num_partitioned_targets  = 0
+V |                      |   num_secrets              = 1
+V |                      |   num_targets              = 11
+V |                      |   os_architecture          = Arm64
+V |                      |   os_platform              = OSX
+V |                      |   repo_branch              = release
+V |                      |   repo_commit              = e7609d
+V |                      |   repo_provider            = GitHub
+V |                      |   repo_url                 = b37034
+V |                      |   target_framework         = .NETCoreApp,Version=v10.0
+V |                      |   version_dotnet_sdk       = 10.0.203
+V |                      |   version_nuke_common      = 10.1.0
+V |                      |   version_nuke_global_tool = <null>
+V |                      | InjectNonParameterValues.OnBuildInitialized (-100)
+I |                      | > /opt/homebrew/bin/dotnet /Users/philippe/.nuget/packages/octopus.octoversion.tool/1.0.21/tools/net10.0/any/OctoVersion.Tool.dll octoversion --OutputJsonFile /Users/philippe/repo/github/Mutty/.nuke/temp/octoversion.ee05dbe1-a077-4e0b-a1ec-dc8f42c37100.json --DetectEnvironment true --CurrentBranch release/v2.0.0 --Major 2
+V |                      | @ /Users/philippe/repo/github/Mutty
+D |                      | [19:08:04 DBG] Running OctoVersion 1.0.21+Branch.main.Sha.c83b8432da2528c66314c7bdeaf81e602185dc25.c83b8432da2528c66314c7bdeaf81e602185dc25 with AppSettings {CurrentBranch="release/v2.0.0", NonPreReleaseTags=["main", "master"], NonPreReleaseTagsRegex="", RepositoryPath="", Major=2, Minor=null, Patch=null, PreReleaseTag=null, BuildMetadata=null, FullSemVer=null, OutputFormats=[], DetectEnvironment=True, OutputJsonFile="/Users/philippe/repo/github/Mutty/.nuke/temp/octoversion.ee05dbe1-a077-4e0b-a1ec-dc8f42c37100.json"}
+D |                      | [19:08:05 DBG] Executing in /Users/philippe/repo/github/Mutty
+D |                      | [19:08:05 DBG] Writing build output using JsonFileOutputFormatter
+D |                      | [19:08:05 INF] Beginning operation 05b47462-82aa-4004-9870-ee93d267759e: Calculating version
+D |                      | [19:08:05 DBG] Located Git repository in /Users/philippe/repo/github/Mutty/.git/
+D |                      | [19:08:05 INF] Beginning operation 24c38dd2-a556-4f8d-a616-b3241148381e: Loading commits
+D |                      | [19:08:05 DBG] Repository contains 139 commits
+D |                      | [19:08:05 INF] Completed operation 24c38dd2-a556-4f8d-a616-b3241148381e: Loading commits in 00:00:00.0170150 (17 ms)
+D |                      | [19:08:05 INF] Beginning operation f262f55d-0688-4dcc-a1f8-daf2fb0c32b5: Mapping commits into internal representation
+D |                      | [19:08:05 INF] Completed operation f262f55d-0688-4dcc-a1f8-daf2fb0c32b5: Mapping commits into internal representation in 00:00:00.0041010 (4 ms)
+D |                      | [19:08:05 INF] Beginning operation 66c5348d-287c-4667-ac25-96ee5e02d6c8: Establishing parent/child relationships
+D |                      | [19:08:05 INF] Completed operation 66c5348d-287c-4667-ac25-96ee5e02d6c8: Establishing parent/child relationships in 00:00:00.0013745 (1 ms)
+D |                      | [19:08:05 INF] Beginning operation 79296e5d-2462-46e0-83c0-b21402b2bcb9: Loading tags
+D |                      | [19:08:05 DBG] Repository contains 36 tags
+D |                      | [19:08:05 INF] Completed operation 79296e5d-2462-46e0-83c0-b21402b2bcb9: Loading tags in 00:00:00.0045792 (4 ms)
+D |                      | [19:08:05 INF] Beginning operation cc736f43-3003-4b8f-bc62-477c14a1cac4: Applying relevant version tags to each commit
+D |                      | [19:08:05 INF] Completed operation cc736f43-3003-4b8f-bc62-477c14a1cac4: Applying relevant version tags to each commit in 00:00:00.0007955 (0 ms)
+D |                      | [19:08:05 DBG] Using pre-release tag release-v2.0.0
+D |                      | [19:08:05 DBG] Overriding derived major version 2 with 2
+D |                      | [19:08:05 DBG] Using build metadata Branch.release-v2.0.0.Sha.31d7865dcdd6bb83e598dfc39087150153f0ad26
+D |                      | [19:08:05 INF] Completed operation 05b47462-82aa-4004-9870-ee93d267759e: Calculating version in 00:00:00.0456009 (45 ms)
+D |                      | [19:08:05 INF] Version is 2.0.0-release-v2.0.0
+D |                      | [19:08:05 INF] Writing version info to /Users/philippe/repo/github/Mutty/.nuke/temp/octoversion.ee05dbe1-a077-4e0b-a1ec-dc8f42c37100.json
+V |                      | EventInvoker.OnBuildInitialized (-3.4028235E+38)
+V | Version              | EventInvoker.OnTargetRunning (-3.4028235E+38)
+I | Version              | GitVersion = 2.0.0-release-v2.0.0
+V | Version              | Telemetry.OnTargetSucceeded (0)
+V | Version              | EventInvoker.OnTargetSucceeded (-3.4028235E+38)
+V |                      | UpdateNotification.OnBuildFinished (10)
+V |                      | SerializeBuildServerState.OnBuildFinished (0)
+V |                      | EventInvoker.OnBuildFinished (-3.4028235E+38)

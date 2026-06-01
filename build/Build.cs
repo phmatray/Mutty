@@ -70,7 +70,7 @@ class Build : NukeBuild
         AutoDetectBranch = true,
         UpdateBuildNumber = true,
         Framework = "net10.0",
-        Major = 1)]
+        Major = 2)]
     readonly OctoVersionInfo OctoVersionInfo;
 
     [GitRepository]

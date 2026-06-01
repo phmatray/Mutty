@@ -5,5 +5,3 @@
 
 Rule ID | Category | Severity | Notes
 --------|----------|----------|-------
-MUTTY002 | Usage | Error | MutableGenerationAttributeAnalyzer
-MUTTY003 | Usage | Error | MutableGenerationAttributeAnalyzer

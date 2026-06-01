@@ -1,543 +1,68 @@
-15:09:56.210 | V |                      | ArgumentsFromParametersFile.OnBuildCreated (150)
-15:09:56.224 | V |                      | HandleReSharperSurrogateArguments.OnBuildCreated (150)
-15:09:56.225 | V |                      | InjectParameterValues.OnBuildCreated (100)
-15:09:56.241 | V |                      | HandleShellCompletion.OnBuildCreated (75)
-15:09:56.406 | V |                      | GenerateBuildServerConfigurations.OnBuildCreated (50)
-15:09:56.406 | V |                      | InvokeBuildServerConfigurationGeneration.OnBuildCreated (45)
-15:09:56.411 | V |                      | UpdateNotification.OnBuildCreated (10)
-15:09:56.411 | V |                      | UnsetVisualStudioEnvironmentVariables.OnBuildCreated (0)
-15:09:56.411 | V |                      | HandleVisualStudioDebugging.OnBuildCreated (0)
-15:09:56.412 | V |                      | EventInvoker.OnBuildCreated (-3.4028235E+38)
-15:09:56.421 | V |                      | HandlePlanRequests.OnBuildInitialized (10)
-15:09:56.421 | V |                      | HandleHelpRequests.OnBuildInitialized (5)
-15:09:56.421 | V |                      | Telemetry.OnBuildInitialized (0)
-15:09:56.734 | V |                      | Sending BuildStarted telemetry event ...
-15:09:56.735 | V |                      |   build_components         = 
-15:09:56.735 | V |                      |   build_type               = Project
-15:09:56.735 | V |                      |   compile_time             = <null>
-15:09:56.735 | V |                      |   config_generators        = GitHubActions
-15:09:56.735 | V |                      |   host                     = Rider
-15:09:56.735 | V |                      |   num_custom_components    = 0
-15:09:56.735 | V |                      |   num_custom_extensions    = 0
-15:09:56.735 | V |                      |   num_partitioned_targets  = 0
-15:09:56.735 | V |                      |   num_secrets              = 1
-15:09:56.735 | V |                      |   num_targets              = 9
-15:09:56.735 | V |                      |   os_architecture          = Arm64
-15:09:56.735 | V |                      |   os_platform              = OSX
-15:09:56.735 | V |                      |   repo_branch              = main
-15:09:56.735 | V |                      |   repo_commit              = 126402
-15:09:56.735 | V |                      |   repo_provider            = GitHub
-15:09:56.735 | V |                      |   repo_url                 = b37034
-15:09:56.735 | V |                      |   target_framework         = .NETCoreApp,Version=v9.0
-15:09:56.735 | V |                      |   version_dotnet_sdk       = 9.0.302
-15:09:56.735 | V |                      |   version_nuke_common      = 9.0.4
-15:09:56.735 | V |                      |   version_nuke_global_tool = <null>
-15:09:57.189 | V |                      | InjectNonParameterValues.OnBuildInitialized (-100)
-15:09:57.251 | I |                      | > /opt/homebrew/bin/dotnet /Users/philippe/.nuget/packages/octopus.octoversion.tool/1.0.9/tools/net9.0/any/OctoVersion.Tool.dll octoversion --OutputJsonFile /Users/philippe/repo/github/Mutty/.nuke/temp/octoversion.10a3b254-29ef-4f3f-a2d6-4f84a1899e47.json --DetectEnvironment true --CurrentBranch main --Major 1
-15:09:57.254 | V |                      | @ /Users/philippe/repo/github/Mutty
-15:09:57.373 | D |                      | [15:09:57 DBG] Running OctoVersion 1.0.9+Branch.main.Sha.bc7affed7aa3d6702f7dfd4a435644e70fa4f943.bc7affed7aa3d6702f7dfd4a435644e70fa4f943 with AppSettings {CurrentBranch="main", NonPreReleaseTags=["main", "master"], NonPreReleaseTagsRegex="", RepositoryPath="", Major=1, Minor=null, Patch=null, PreReleaseTag=null, BuildMetadata=null, FullSemVer=null, OutputFormats=[], DetectEnvironment=True, OutputJsonFile="/Users/philippe/repo/github/Mutty/.nuke/temp/octoversion.10a3b254-29ef-4f3f-a2d6-4f84a1899e47.json"}
-15:09:57.374 | D |                      | [15:09:57 DBG] Executing in /Users/philippe/repo/github/Mutty
-15:09:57.374 | D |                      | [15:09:57 DBG] Writing build output using JsonFileOutputFormatter
-15:09:57.374 | D |                      | [15:09:57 INF] Beginning operation 187a2847-7229-4889-a56b-6649d19029e3: Calculating version
-15:09:57.378 | D |                      | [15:09:57 DBG] Located Git repository in /Users/philippe/repo/github/Mutty/.git/
-15:09:57.383 | D |                      | [15:09:57 INF] Beginning operation c7e3e6cb-d06a-4bd5-b575-9b2aec5e7b32: Loading commits
-15:09:57.398 | D |                      | [15:09:57 DBG] Repository contains 53 commits
-15:09:57.398 | D |                      | [15:09:57 INF] Completed operation c7e3e6cb-d06a-4bd5-b575-9b2aec5e7b32: Loading commits in 00:00:00.0153061 (15 ms)
-15:09:57.398 | D |                      | [15:09:57 INF] Beginning operation 52a10b26-0b6b-4222-a73a-69d60f10a362: Mapping commits into internal representation
-15:09:57.401 | D |                      | [15:09:57 INF] Completed operation 52a10b26-0b6b-4222-a73a-69d60f10a362: Mapping commits into internal representation in 00:00:00.0029524 (2 ms)
-15:09:57.401 | D |                      | [15:09:57 INF] Beginning operation 604a4dfa-75e8-4dcc-a654-366be1c10696: Establishing parent/child relationships
-15:09:57.402 | D |                      | [15:09:57 INF] Completed operation 604a4dfa-75e8-4dcc-a654-366be1c10696: Establishing parent/child relationships in 00:00:00.0009921 (0 ms)
-15:09:57.402 | D |                      | [15:09:57 INF] Beginning operation 4c52caac-6c1c-465e-be02-b0f02fd7b8da: Loading tags
-15:09:57.407 | D |                      | [15:09:57 DBG] Repository contains 5 tags
-15:09:57.407 | D |                      | [15:09:57 INF] Completed operation 4c52caac-6c1c-465e-be02-b0f02fd7b8da: Loading tags in 00:00:00.0042316 (4 ms)
-15:09:57.407 | D |                      | [15:09:57 INF] Beginning operation a6642099-fb7b-445c-9a17-61fa02435225: Applying relevant version tags to each commit
-15:09:57.407 | D |                      | [15:09:57 INF] Completed operation a6642099-fb7b-445c-9a17-61fa02435225: Applying relevant version tags to each commit in 00:00:00.0005898 (0 ms)
-15:09:57.410 | D |                      | [15:09:57 DBG] main is contained within the set of non-pre-release branches ["main", "master"]; no pre-release tag is being added
-15:09:57.410 | D |                      | [15:09:57 DBG] Overriding derived major version 1 with 1
-15:09:57.415 | D |                      | [15:09:57 DBG] Using build metadata Branch.main.Sha.f29e4964eed61c2e387b39280804d630771d25f6
-15:09:57.415 | D |                      | [15:09:57 INF] Completed operation 187a2847-7229-4889-a56b-6649d19029e3: Calculating version in 00:00:00.0423341 (42 ms)
-15:09:57.415 | D |                      | [15:09:57 INF] Version is 1.0.49
-15:09:57.416 | D |                      | [15:09:57 INF] Writing version info to /Users/philippe/repo/github/Mutty/.nuke/temp/octoversion.10a3b254-29ef-4f3f-a2d6-4f84a1899e47.json
-15:09:57.473 | V |                      | EventInvoker.OnBuildInitialized (-3.4028235E+38)
-15:09:57.477 | V | Clean                | EventInvoker.OnTargetRunning (-3.4028235E+38)
-15:09:57.480 | I | Clean                | > /opt/homebrew/bin/dotnet clean /Users/philippe/repo/github/Mutty/src/library/Mutty/Mutty.csproj
-15:09:57.481 | V | Clean                | @ /Users/philippe/repo/github/Mutty
-15:09:57.600 | D | Clean                | Build started 7/15/2025 3:09:57 PM.
-15:09:57.802 | D | Clean                |      1>Project "/Users/philippe/repo/github/Mutty/src/library/Mutty/Mutty.csproj" on node 1 (Clean target(s)).
-15:09:57.802 | D | Clean                |      1>CoreClean:
-15:09:57.802 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/library/Mutty/bin/Debug/netstandard2.0/Mutty.deps.json".
-15:09:57.803 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/library/Mutty/bin/Debug/netstandard2.0/Mutty.dll".
-15:09:57.803 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/library/Mutty/bin/Debug/netstandard2.0/Mutty.xml".
-15:09:57.803 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/library/Mutty/obj/Debug/netstandard2.0/Mutty.csproj.AssemblyReference.cache".
-15:09:57.803 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/library/Mutty/obj/Debug/netstandard2.0/Mutty.GeneratedMSBuildEditorConfig.editorconfig".
-15:09:57.803 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/library/Mutty/obj/Debug/netstandard2.0/Mutty.AssemblyInfoInputs.cache".
-15:09:57.809 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/library/Mutty/obj/Debug/netstandard2.0/Mutty.AssemblyInfo.cs".
-15:09:57.809 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/library/Mutty/obj/Debug/netstandard2.0/Mutty.csproj.CoreCompileInputs.cache".
-15:09:57.809 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/library/Mutty/obj/Debug/netstandard2.0/Mutty.sourcelink.json".
-15:09:57.809 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/library/Mutty/obj/Debug/netstandard2.0/Mutty.dll".
-15:09:57.809 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/library/Mutty/obj/Debug/netstandard2.0/Mutty.xml".
-15:09:57.850 | D | Clean                |      1>Done Building Project "/Users/philippe/repo/github/Mutty/src/library/Mutty/Mutty.csproj" (Clean target(s)).
-15:09:57.851 | D | Clean                | 
-15:09:57.851 | D | Clean                | Build succeeded.
-15:09:57.851 | D | Clean                |     0 Warning(s)
-15:09:57.851 | D | Clean                |     0 Error(s)
-15:09:57.851 | D | Clean                | 
-15:09:57.851 | D | Clean                | Time Elapsed 00:00:00.25
-15:09:57.861 | I | Clean                | > /opt/homebrew/bin/dotnet clean /Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/Mutty.Tests.csproj
-15:09:57.861 | V | Clean                | @ /Users/philippe/repo/github/Mutty
-15:09:57.980 | D | Clean                | Build started 7/15/2025 3:09:57 PM.
-15:09:58.201 | D | Clean                |      1>Project "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/Mutty.Tests.csproj" on node 1 (Clean target(s)).
-15:09:58.201 | D | Clean                |      1>CoreClean:
-15:09:58.201 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/.msCoverageSourceRootsMapping_Mutty.Tests".
-15:09:58.202 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/CoverletSourceRootsMapping_Mutty.Tests".
-15:09:58.202 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/NUnit3.TestAdapter.pdb".
-15:09:58.202 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/nunit.engine.dll".
-15:09:58.202 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/nunit.engine.api.dll".
-15:09:58.202 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/nunit.engine.core.dll".
-15:09:58.202 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/testcentric.engine.metadata.dll".
-15:09:58.203 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/NUnit3.TestAdapter.dll".
-15:09:58.203 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/Mutty.Tests.deps.json".
-15:09:58.203 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/Mutty.Tests.runtimeconfig.json".
-15:09:58.203 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/Mutty.Tests.dll".
-15:09:58.203 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/Castle.Core.dll".
-15:09:58.203 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/DiffPlex.dll".
-15:09:58.203 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/FluentAssertions.dll".
-15:09:58.203 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/Humanizer.dll".
-15:09:58.203 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/Microsoft.ApplicationInsights.dll".
-15:09:58.203 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/Microsoft.CodeAnalysis.Analyzer.Testing.dll".
-15:09:58.203 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/Microsoft.CodeAnalysis.AnalyzerUtilities.dll".
-15:09:58.203 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/Microsoft.CodeAnalysis.CodeFix.Testing.dll".
-15:09:58.203 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/Microsoft.CodeAnalysis.CodeRefactoring.Testing.dll".
-15:09:58.203 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/Microsoft.CodeAnalysis.dll".
-15:09:58.203 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/Microsoft.CodeAnalysis.CSharp.dll".
-15:09:58.203 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/Microsoft.CodeAnalysis.CSharp.Analyzer.Testing.dll".
-15:09:58.203 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/Microsoft.CodeAnalysis.CSharp.Analyzer.Testing.NUnit.dll".
-15:09:58.203 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/Microsoft.CodeAnalysis.CSharp.CodeFix.Testing.dll".
-15:09:58.203 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/Microsoft.CodeAnalysis.CSharp.CodeFix.Testing.NUnit.dll".
-15:09:58.203 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/Microsoft.CodeAnalysis.CSharp.CodeRefactoring.Testing.dll".
-15:09:58.204 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/Microsoft.CodeAnalysis.CSharp.CodeRefactoring.Testing.NUnit.dll".
-15:09:58.204 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/Microsoft.CodeAnalysis.CSharp.Workspaces.dll".
-15:09:58.204 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/Microsoft.CodeAnalysis.Testing.Verifiers.NUnit.dll".
-15:09:58.204 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/Microsoft.CodeAnalysis.Workspaces.dll".
-15:09:58.204 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/Microsoft.VisualStudio.CodeCoverage.Shim.dll".
-15:09:58.204 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/Microsoft.Testing.Extensions.Telemetry.dll".
-15:09:58.204 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/Microsoft.Testing.Extensions.TrxReport.Abstractions.dll".
-15:09:58.204 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/Microsoft.Testing.Extensions.VSTestBridge.dll".
-15:09:58.204 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/Microsoft.Testing.Platform.dll".
-15:09:58.204 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/Microsoft.Testing.Extensions.MSBuild.dll".
-15:09:58.204 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/Microsoft.TestPlatform.CoreUtilities.dll".
-15:09:58.204 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/Microsoft.TestPlatform.PlatformAbstractions.dll".
-15:09:58.204 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/Microsoft.VisualStudio.TestPlatform.ObjectModel.dll".
-15:09:58.204 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/Microsoft.TestPlatform.CommunicationUtilities.dll".
-15:09:58.204 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/Microsoft.TestPlatform.CrossPlatEngine.dll".
-15:09:58.204 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/Microsoft.TestPlatform.Utilities.dll".
-15:09:58.204 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/Microsoft.VisualStudio.TestPlatform.Common.dll".
-15:09:58.204 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/testhost.dll".
-15:09:58.204 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/Microsoft.VisualStudio.Composition.dll".
-15:09:58.204 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/Microsoft.VisualStudio.Composition.NetFxAttributes.dll".
-15:09:58.204 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/Microsoft.VisualStudio.Validation.dll".
-15:09:58.204 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/Moq.dll".
-15:09:58.205 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/Newtonsoft.Json.dll".
-15:09:58.205 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/NuGet.Common.dll".
-15:09:58.205 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/NuGet.Configuration.dll".
-15:09:58.205 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/NuGet.Frameworks.dll".
-15:09:58.205 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/NuGet.Packaging.dll".
-15:09:58.205 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/NuGet.Protocol.dll".
-15:09:58.205 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/NuGet.Resolver.dll".
-15:09:58.205 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/NuGet.Versioning.dll".
-15:09:58.205 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/nunit.framework.dll".
-15:09:58.205 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/nunit.framework.legacy.dll".
-15:09:58.205 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/Snapshooter.dll".
-15:09:58.205 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/Snapshooter.Xunit.dll".
-15:09:58.205 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/System.ComponentModel.Composition.dll".
-15:09:58.205 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/System.Composition.AttributedModel.dll".
-15:09:58.205 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/System.Composition.Convention.dll".
-15:09:58.205 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/System.Composition.Hosting.dll".
-15:09:58.205 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/System.Composition.Runtime.dll".
-15:09:58.205 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/System.Composition.TypedParts.dll".
-15:09:58.205 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/System.Configuration.ConfigurationManager.dll".
-15:09:58.205 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/System.Diagnostics.EventLog.dll".
-15:09:58.206 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/System.Security.Cryptography.Pkcs.dll".
-15:09:58.206 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/System.Security.Cryptography.ProtectedData.dll".
-15:09:58.206 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/System.Security.Permissions.dll".
-15:09:58.206 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/xunit.abstractions.dll".
-15:09:58.206 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/xunit.assert.dll".
-15:09:58.206 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/xunit.core.dll".
-15:09:58.206 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/xunit.execution.dotnet.dll".
-15:09:58.206 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/cs/Microsoft.CodeAnalysis.resources.dll".
-15:09:58.206 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/de/Microsoft.CodeAnalysis.resources.dll".
-15:09:58.206 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/es/Microsoft.CodeAnalysis.resources.dll".
-15:09:58.206 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/fr/Microsoft.CodeAnalysis.resources.dll".
-15:09:58.206 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/it/Microsoft.CodeAnalysis.resources.dll".
-15:09:58.206 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/ja/Microsoft.CodeAnalysis.resources.dll".
-15:09:58.206 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/ko/Microsoft.CodeAnalysis.resources.dll".
-15:09:58.206 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/pl/Microsoft.CodeAnalysis.resources.dll".
-15:09:58.206 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/pt-BR/Microsoft.CodeAnalysis.resources.dll".
-15:09:58.206 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/ru/Microsoft.CodeAnalysis.resources.dll".
-15:09:58.206 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/tr/Microsoft.CodeAnalysis.resources.dll".
-15:09:58.206 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/zh-Hans/Microsoft.CodeAnalysis.resources.dll".
-15:09:58.206 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/zh-Hant/Microsoft.CodeAnalysis.resources.dll".
-15:09:58.206 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/cs/Microsoft.CodeAnalysis.CSharp.resources.dll".
-15:09:58.207 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/de/Microsoft.CodeAnalysis.CSharp.resources.dll".
-15:09:58.207 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/es/Microsoft.CodeAnalysis.CSharp.resources.dll".
-15:09:58.207 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/fr/Microsoft.CodeAnalysis.CSharp.resources.dll".
-15:09:58.207 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/it/Microsoft.CodeAnalysis.CSharp.resources.dll".
-15:09:58.207 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/ja/Microsoft.CodeAnalysis.CSharp.resources.dll".
-15:09:58.207 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/ko/Microsoft.CodeAnalysis.CSharp.resources.dll".
-15:09:58.207 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/pl/Microsoft.CodeAnalysis.CSharp.resources.dll".
-15:09:58.207 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/pt-BR/Microsoft.CodeAnalysis.CSharp.resources.dll".
-15:09:58.207 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/ru/Microsoft.CodeAnalysis.CSharp.resources.dll".
-15:09:58.207 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/tr/Microsoft.CodeAnalysis.CSharp.resources.dll".
-15:09:58.207 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/zh-Hans/Microsoft.CodeAnalysis.CSharp.resources.dll".
-15:09:58.207 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/zh-Hant/Microsoft.CodeAnalysis.CSharp.resources.dll".
-15:09:58.207 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/cs/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll".
-15:09:58.207 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/de/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll".
-15:09:58.207 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/es/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll".
-15:09:58.207 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/fr/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll".
-15:09:58.207 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/it/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll".
-15:09:58.207 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/ja/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll".
-15:09:58.207 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/ko/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll".
-15:09:58.207 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/pl/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll".
-15:09:58.207 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/pt-BR/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll".
-15:09:58.207 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/ru/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll".
-15:09:58.207 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/tr/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll".
-15:09:58.207 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/zh-Hans/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll".
-15:09:58.208 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/zh-Hant/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll".
-15:09:58.208 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/cs/Microsoft.CodeAnalysis.Workspaces.resources.dll".
-15:09:58.208 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/de/Microsoft.CodeAnalysis.Workspaces.resources.dll".
-15:09:58.208 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/es/Microsoft.CodeAnalysis.Workspaces.resources.dll".
-15:09:58.208 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/fr/Microsoft.CodeAnalysis.Workspaces.resources.dll".
-15:09:58.208 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/it/Microsoft.CodeAnalysis.Workspaces.resources.dll".
-15:09:58.208 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/ja/Microsoft.CodeAnalysis.Workspaces.resources.dll".
-15:09:58.208 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/ko/Microsoft.CodeAnalysis.Workspaces.resources.dll".
-15:09:58.208 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/pl/Microsoft.CodeAnalysis.Workspaces.resources.dll".
-15:09:58.208 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/pt-BR/Microsoft.CodeAnalysis.Workspaces.resources.dll".
-15:09:58.208 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/ru/Microsoft.CodeAnalysis.Workspaces.resources.dll".
-15:09:58.208 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/tr/Microsoft.CodeAnalysis.Workspaces.resources.dll".
-15:09:58.208 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/zh-Hans/Microsoft.CodeAnalysis.Workspaces.resources.dll".
-15:09:58.208 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/zh-Hant/Microsoft.CodeAnalysis.Workspaces.resources.dll".
-15:09:58.208 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/cs/Microsoft.Testing.Extensions.Telemetry.resources.dll".
-15:09:58.208 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/de/Microsoft.Testing.Extensions.Telemetry.resources.dll".
-15:09:58.208 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/es/Microsoft.Testing.Extensions.Telemetry.resources.dll".
-15:09:58.208 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/fr/Microsoft.Testing.Extensions.Telemetry.resources.dll".
-15:09:58.208 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/it/Microsoft.Testing.Extensions.Telemetry.resources.dll".
-15:09:58.208 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/ja/Microsoft.Testing.Extensions.Telemetry.resources.dll".
-15:09:58.208 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/ko/Microsoft.Testing.Extensions.Telemetry.resources.dll".
-15:09:58.208 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/pl/Microsoft.Testing.Extensions.Telemetry.resources.dll".
-15:09:58.208 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/pt-BR/Microsoft.Testing.Extensions.Telemetry.resources.dll".
-15:09:58.209 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/ru/Microsoft.Testing.Extensions.Telemetry.resources.dll".
-15:09:58.209 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/tr/Microsoft.Testing.Extensions.Telemetry.resources.dll".
-15:09:58.209 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/zh-Hans/Microsoft.Testing.Extensions.Telemetry.resources.dll".
-15:09:58.209 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/zh-Hant/Microsoft.Testing.Extensions.Telemetry.resources.dll".
-15:09:58.209 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/cs/Microsoft.Testing.Extensions.VSTestBridge.resources.dll".
-15:09:58.209 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/de/Microsoft.Testing.Extensions.VSTestBridge.resources.dll".
-15:09:58.209 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/es/Microsoft.Testing.Extensions.VSTestBridge.resources.dll".
-15:09:58.209 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/fr/Microsoft.Testing.Extensions.VSTestBridge.resources.dll".
-15:09:58.209 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/it/Microsoft.Testing.Extensions.VSTestBridge.resources.dll".
-15:09:58.209 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/ja/Microsoft.Testing.Extensions.VSTestBridge.resources.dll".
-15:09:58.209 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/ko/Microsoft.Testing.Extensions.VSTestBridge.resources.dll".
-15:09:58.209 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/pl/Microsoft.Testing.Extensions.VSTestBridge.resources.dll".
-15:09:58.209 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/pt-BR/Microsoft.Testing.Extensions.VSTestBridge.resources.dll".
-15:09:58.209 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/ru/Microsoft.Testing.Extensions.VSTestBridge.resources.dll".
-15:09:58.209 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/tr/Microsoft.Testing.Extensions.VSTestBridge.resources.dll".
-15:09:58.209 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/zh-Hans/Microsoft.Testing.Extensions.VSTestBridge.resources.dll".
-15:09:58.209 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/zh-Hant/Microsoft.Testing.Extensions.VSTestBridge.resources.dll".
-15:09:58.209 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/cs/Microsoft.Testing.Platform.resources.dll".
-15:09:58.209 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/de/Microsoft.Testing.Platform.resources.dll".
-15:09:58.209 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/es/Microsoft.Testing.Platform.resources.dll".
-15:09:58.209 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/fr/Microsoft.Testing.Platform.resources.dll".
-15:09:58.210 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/it/Microsoft.Testing.Platform.resources.dll".
-15:09:58.210 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/ja/Microsoft.Testing.Platform.resources.dll".
-15:09:58.210 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/ko/Microsoft.Testing.Platform.resources.dll".
-15:09:58.210 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/pl/Microsoft.Testing.Platform.resources.dll".
-15:09:58.210 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/pt-BR/Microsoft.Testing.Platform.resources.dll".
-15:09:58.210 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/ru/Microsoft.Testing.Platform.resources.dll".
-15:09:58.210 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/tr/Microsoft.Testing.Platform.resources.dll".
-15:09:58.210 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/zh-Hans/Microsoft.Testing.Platform.resources.dll".
-15:09:58.210 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/zh-Hant/Microsoft.Testing.Platform.resources.dll".
-15:09:58.210 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/cs/Microsoft.Testing.Extensions.MSBuild.resources.dll".
-15:09:58.210 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/de/Microsoft.Testing.Extensions.MSBuild.resources.dll".
-15:09:58.210 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/es/Microsoft.Testing.Extensions.MSBuild.resources.dll".
-15:09:58.210 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/fr/Microsoft.Testing.Extensions.MSBuild.resources.dll".
-15:09:58.210 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/it/Microsoft.Testing.Extensions.MSBuild.resources.dll".
-15:09:58.210 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/ja/Microsoft.Testing.Extensions.MSBuild.resources.dll".
-15:09:58.210 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/ko/Microsoft.Testing.Extensions.MSBuild.resources.dll".
-15:09:58.210 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/pl/Microsoft.Testing.Extensions.MSBuild.resources.dll".
-15:09:58.210 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/pt-BR/Microsoft.Testing.Extensions.MSBuild.resources.dll".
-15:09:58.210 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/ru/Microsoft.Testing.Extensions.MSBuild.resources.dll".
-15:09:58.210 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/tr/Microsoft.Testing.Extensions.MSBuild.resources.dll".
-15:09:58.210 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/zh-Hans/Microsoft.Testing.Extensions.MSBuild.resources.dll".
-15:09:58.210 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/zh-Hant/Microsoft.Testing.Extensions.MSBuild.resources.dll".
-15:09:58.210 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/cs/Microsoft.TestPlatform.CoreUtilities.resources.dll".
-15:09:58.211 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/cs/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll".
-15:09:58.211 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/de/Microsoft.TestPlatform.CoreUtilities.resources.dll".
-15:09:58.211 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/de/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll".
-15:09:58.211 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/es/Microsoft.TestPlatform.CoreUtilities.resources.dll".
-15:09:58.211 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/es/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll".
-15:09:58.211 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/fr/Microsoft.TestPlatform.CoreUtilities.resources.dll".
-15:09:58.211 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/fr/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll".
-15:09:58.211 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/it/Microsoft.TestPlatform.CoreUtilities.resources.dll".
-15:09:58.211 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/it/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll".
-15:09:58.211 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/ja/Microsoft.TestPlatform.CoreUtilities.resources.dll".
-15:09:58.211 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/ja/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll".
-15:09:58.211 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/ko/Microsoft.TestPlatform.CoreUtilities.resources.dll".
-15:09:58.211 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/ko/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll".
-15:09:58.211 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/pl/Microsoft.TestPlatform.CoreUtilities.resources.dll".
-15:09:58.211 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/pl/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll".
-15:09:58.211 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/pt-BR/Microsoft.TestPlatform.CoreUtilities.resources.dll".
-15:09:58.211 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/pt-BR/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll".
-15:09:58.211 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/ru/Microsoft.TestPlatform.CoreUtilities.resources.dll".
-15:09:58.211 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/ru/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll".
-15:09:58.211 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/tr/Microsoft.TestPlatform.CoreUtilities.resources.dll".
-15:09:58.211 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/tr/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll".
-15:09:58.212 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/zh-Hans/Microsoft.TestPlatform.CoreUtilities.resources.dll".
-15:09:58.212 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/zh-Hans/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll".
-15:09:58.212 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/zh-Hant/Microsoft.TestPlatform.CoreUtilities.resources.dll".
-15:09:58.212 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/zh-Hant/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll".
-15:09:58.212 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/cs/Microsoft.TestPlatform.CommunicationUtilities.resources.dll".
-15:09:58.212 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/cs/Microsoft.TestPlatform.CrossPlatEngine.resources.dll".
-15:09:58.212 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/cs/Microsoft.VisualStudio.TestPlatform.Common.resources.dll".
-15:09:58.212 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/de/Microsoft.TestPlatform.CommunicationUtilities.resources.dll".
-15:09:58.212 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/de/Microsoft.TestPlatform.CrossPlatEngine.resources.dll".
-15:09:58.212 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/de/Microsoft.VisualStudio.TestPlatform.Common.resources.dll".
-15:09:58.212 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/es/Microsoft.TestPlatform.CommunicationUtilities.resources.dll".
-15:09:58.212 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/es/Microsoft.TestPlatform.CrossPlatEngine.resources.dll".
-15:09:58.212 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/es/Microsoft.VisualStudio.TestPlatform.Common.resources.dll".
-15:09:58.212 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/fr/Microsoft.TestPlatform.CommunicationUtilities.resources.dll".
-15:09:58.212 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/fr/Microsoft.TestPlatform.CrossPlatEngine.resources.dll".
-15:09:58.212 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/fr/Microsoft.VisualStudio.TestPlatform.Common.resources.dll".
-15:09:58.212 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/it/Microsoft.TestPlatform.CommunicationUtilities.resources.dll".
-15:09:58.212 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/it/Microsoft.TestPlatform.CrossPlatEngine.resources.dll".
-15:09:58.212 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/it/Microsoft.VisualStudio.TestPlatform.Common.resources.dll".
-15:09:58.212 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/ja/Microsoft.TestPlatform.CommunicationUtilities.resources.dll".
-15:09:58.212 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/ja/Microsoft.TestPlatform.CrossPlatEngine.resources.dll".
-15:09:58.212 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/ja/Microsoft.VisualStudio.TestPlatform.Common.resources.dll".
-15:09:58.212 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/ko/Microsoft.TestPlatform.CommunicationUtilities.resources.dll".
-15:09:58.213 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/ko/Microsoft.TestPlatform.CrossPlatEngine.resources.dll".
-15:09:58.213 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/ko/Microsoft.VisualStudio.TestPlatform.Common.resources.dll".
-15:09:58.213 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/pl/Microsoft.TestPlatform.CommunicationUtilities.resources.dll".
-15:09:58.213 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/pl/Microsoft.TestPlatform.CrossPlatEngine.resources.dll".
-15:09:58.213 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/pl/Microsoft.VisualStudio.TestPlatform.Common.resources.dll".
-15:09:58.213 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/pt-BR/Microsoft.TestPlatform.CommunicationUtilities.resources.dll".
-15:09:58.213 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/pt-BR/Microsoft.TestPlatform.CrossPlatEngine.resources.dll".
-15:09:58.213 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/pt-BR/Microsoft.VisualStudio.TestPlatform.Common.resources.dll".
-15:09:58.213 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/ru/Microsoft.TestPlatform.CommunicationUtilities.resources.dll".
-15:09:58.213 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/ru/Microsoft.TestPlatform.CrossPlatEngine.resources.dll".
-15:09:58.213 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/ru/Microsoft.VisualStudio.TestPlatform.Common.resources.dll".
-15:09:58.213 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/tr/Microsoft.TestPlatform.CommunicationUtilities.resources.dll".
-15:09:58.213 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/tr/Microsoft.TestPlatform.CrossPlatEngine.resources.dll".
-15:09:58.213 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/tr/Microsoft.VisualStudio.TestPlatform.Common.resources.dll".
-15:09:58.213 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/zh-Hans/Microsoft.TestPlatform.CommunicationUtilities.resources.dll".
-15:09:58.213 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/zh-Hans/Microsoft.TestPlatform.CrossPlatEngine.resources.dll".
-15:09:58.213 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/zh-Hans/Microsoft.VisualStudio.TestPlatform.Common.resources.dll".
-15:09:58.213 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/zh-Hant/Microsoft.TestPlatform.CommunicationUtilities.resources.dll".
-15:09:58.213 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/zh-Hant/Microsoft.TestPlatform.CrossPlatEngine.resources.dll".
-15:09:58.213 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/zh-Hant/Microsoft.VisualStudio.TestPlatform.Common.resources.dll".
-15:09:58.213 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/cs/Microsoft.VisualStudio.Composition.resources.dll".
-15:09:58.213 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/de/Microsoft.VisualStudio.Composition.resources.dll".
-15:09:58.213 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/es/Microsoft.VisualStudio.Composition.resources.dll".
-15:09:58.214 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/fr/Microsoft.VisualStudio.Composition.resources.dll".
-15:09:58.214 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/it/Microsoft.VisualStudio.Composition.resources.dll".
-15:09:58.214 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/ja/Microsoft.VisualStudio.Composition.resources.dll".
-15:09:58.214 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/ko/Microsoft.VisualStudio.Composition.resources.dll".
-15:09:58.214 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/pl/Microsoft.VisualStudio.Composition.resources.dll".
-15:09:58.214 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/pt-BR/Microsoft.VisualStudio.Composition.resources.dll".
-15:09:58.214 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/ru/Microsoft.VisualStudio.Composition.resources.dll".
-15:09:58.214 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/tr/Microsoft.VisualStudio.Composition.resources.dll".
-15:09:58.214 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/zh-Hans/Microsoft.VisualStudio.Composition.resources.dll".
-15:09:58.214 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/zh-Hant/Microsoft.VisualStudio.Composition.resources.dll".
-15:09:58.214 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/cs/Microsoft.VisualStudio.Validation.resources.dll".
-15:09:58.214 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/de/Microsoft.VisualStudio.Validation.resources.dll".
-15:09:58.214 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/es/Microsoft.VisualStudio.Validation.resources.dll".
-15:09:58.214 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/fr/Microsoft.VisualStudio.Validation.resources.dll".
-15:09:58.214 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/it/Microsoft.VisualStudio.Validation.resources.dll".
-15:09:58.214 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/ja/Microsoft.VisualStudio.Validation.resources.dll".
-15:09:58.214 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/ko/Microsoft.VisualStudio.Validation.resources.dll".
-15:09:58.214 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/pl/Microsoft.VisualStudio.Validation.resources.dll".
-15:09:58.214 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/pt-BR/Microsoft.VisualStudio.Validation.resources.dll".
-15:09:58.214 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/ru/Microsoft.VisualStudio.Validation.resources.dll".
-15:09:58.214 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/tr/Microsoft.VisualStudio.Validation.resources.dll".
-15:09:58.214 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/zh-Hans/Microsoft.VisualStudio.Validation.resources.dll".
-15:09:58.214 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/zh-Hant/Microsoft.VisualStudio.Validation.resources.dll".
-15:09:58.214 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/runtimes/win/lib/net6.0/System.Diagnostics.EventLog.Messages.dll".
-15:09:58.215 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/runtimes/win/lib/net6.0/System.Diagnostics.EventLog.dll".
-15:09:58.215 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/runtimes/win/lib/netcoreapp3.0/System.Security.Cryptography.Pkcs.dll".
-15:09:58.215 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/runtimes/win/lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll".
-15:09:58.215 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/Mutty.dll".
-15:09:58.215 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/Mutty.xml".
-15:09:58.215 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/obj/Debug/net9.0/Mutty.Tests.csproj.AssemblyReference.cache".
-15:09:58.215 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/obj/Debug/net9.0/Mutty.Tests.GeneratedMSBuildEditorConfig.editorconfig".
-15:09:58.215 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/obj/Debug/net9.0/Mutty.Tests.AssemblyInfoInputs.cache".
-15:09:58.215 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/obj/Debug/net9.0/Mutty.Tests.AssemblyInfo.cs".
-15:09:58.215 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/obj/Debug/net9.0/Mutty.Tests.csproj.CoreCompileInputs.cache".
-15:09:58.215 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/obj/Debug/net9.0/Mutty.Tests.sourcelink.json".
-15:09:58.215 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/obj/Debug/net9.0/Mutty.Te.2D8D4B4C.Up2Date".
-15:09:58.215 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/obj/Debug/net9.0/Mutty.Tests.dll".
-15:09:58.215 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/obj/Debug/net9.0/refint/Mutty.Tests.dll".
-15:09:58.215 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/obj/Debug/net9.0/Mutty.Tests.genruntimeconfig.cache".
-15:09:58.215 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/obj/Debug/net9.0/ref/Mutty.Tests.dll".
-15:09:58.344 | D | Clean                |      1>Done Building Project "/Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/Mutty.Tests.csproj" (Clean target(s)).
-15:09:58.345 | D | Clean                | 
-15:09:58.345 | D | Clean                | Build succeeded.
-15:09:58.345 | D | Clean                |     0 Warning(s)
-15:09:58.345 | D | Clean                |     0 Error(s)
-15:09:58.346 | D | Clean                | 
-15:09:58.346 | D | Clean                | Time Elapsed 00:00:00.36
-15:09:58.355 | I | Clean                | > /opt/homebrew/bin/dotnet clean /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj
-15:09:58.356 | V | Clean                | @ /Users/philippe/repo/github/Mutty
-15:09:58.478 | D | Clean                | Build started 7/15/2025 3:09:58 PM.
-15:09:58.699 | D | Clean                |      1>Project "/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj" on node 1 (Clean target(s)).
-15:09:58.700 | D | Clean                |      1>CoreClean:
-15:09:58.700 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/obj/Debug/net9.0/ConsoleApp.csproj.AssemblyReference.cache".
-15:09:58.700 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/obj/Debug/net9.0/ConsoleApp.GeneratedMSBuildEditorConfig.editorconfig".
-15:09:58.700 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/obj/Debug/net9.0/ConsoleApp.AssemblyInfoInputs.cache".
-15:09:58.701 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/obj/Debug/net9.0/ConsoleApp.AssemblyInfo.cs".
-15:09:58.701 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/obj/Debug/net9.0/ConsoleApp.csproj.CoreCompileInputs.cache".
-15:09:58.701 | D | Clean                |          Deleting file "/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/obj/Debug/net9.0/ConsoleApp.sourcelink.json".
-15:09:58.795 | D | Clean                |      1>Done Building Project "/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj" (Clean target(s)).
-15:09:58.797 | D | Clean                | 
-15:09:58.797 | D | Clean                | Build succeeded.
-15:09:58.797 | D | Clean                |     0 Warning(s)
-15:09:58.797 | D | Clean                |     0 Error(s)
-15:09:58.797 | D | Clean                | 
-15:09:58.797 | D | Clean                | Time Elapsed 00:00:00.32
-15:09:58.806 | V | Clean                | Telemetry.OnTargetSucceeded (0)
-15:09:58.806 | V | Clean                | EventInvoker.OnTargetSucceeded (-3.4028235E+38)
-15:09:58.807 | V | Restore              | EventInvoker.OnTargetRunning (-3.4028235E+38)
-15:09:58.807 | I | Restore              | Restoring NuGet packages
-15:09:58.812 | I | Restore              | > /opt/homebrew/bin/dotnet restore /Users/philippe/repo/github/Mutty/Mutty.sln --verbosity minimal --no-cache
-15:09:58.812 | V | Restore              | @ /Users/philippe/repo/github/Mutty
-15:09:59.311 | D | Restore              |   Determining projects to restore...
-15:09:59.623 | D | Restore              |   Restored /Users/philippe/repo/github/Mutty/src/library/Mutty/Mutty.csproj (in 142 ms).
-15:09:59.623 | D | Restore              |   Restored /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj (in 140 ms).
-15:09:59.648 | D | Restore              |   Restored /Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/Mutty.Tests.csproj (in 177 ms).
-15:09:59.661 | I | Restore              | NuGet packages restored successfully
-15:09:59.661 | V | Restore              | Telemetry.OnTargetSucceeded (0)
-15:09:59.751 | V | Restore              | Sending TargetSucceeded telemetry event ...
-15:09:59.751 | V | Restore              |   build_components         = 
-15:09:59.751 | V | Restore              |   build_type               = Project
-15:09:59.751 | V | Restore              |   compile_time             = <null>
-15:09:59.751 | V | Restore              |   config_generators        = GitHubActions
-15:09:59.751 | V | Restore              |   host                     = Rider
-15:09:59.751 | V | Restore              |   num_custom_components    = 0
-15:09:59.751 | V | Restore              |   num_custom_extensions    = 0
-15:09:59.751 | V | Restore              |   num_partitioned_targets  = 0
-15:09:59.751 | V | Restore              |   num_secrets              = 1
-15:09:59.751 | V | Restore              |   num_targets              = 9
-15:09:59.751 | V | Restore              |   os_architecture          = Arm64
-15:09:59.751 | V | Restore              |   os_platform              = OSX
-15:09:59.751 | V | Restore              |   repo_branch              = main
-15:09:59.751 | V | Restore              |   repo_commit              = 126402
-15:09:59.751 | V | Restore              |   repo_provider            = GitHub
-15:09:59.751 | V | Restore              |   repo_url                 = b37034
-15:09:59.751 | V | Restore              |   target_current_partition = 1
-15:09:59.751 | V | Restore              |   target_duration          = 1
-15:09:59.751 | V | Restore              |   target_framework         = .NETCoreApp,Version=v9.0
-15:09:59.751 | V | Restore              |   target_name              = Restore
-15:09:59.751 | V | Restore              |   target_total_partitions  = 1
-15:09:59.751 | V | Restore              |   version_dotnet_sdk       = 9.0.302
-15:09:59.751 | V | Restore              |   version_nuke_common      = 9.0.4
-15:09:59.751 | V | Restore              |   version_nuke_global_tool = <null>
-15:09:59.786 | V | Restore              | EventInvoker.OnTargetSucceeded (-3.4028235E+38)
-15:09:59.787 | V | Compile              | EventInvoker.OnTargetRunning (-3.4028235E+38)
-15:09:59.787 | I | Compile              | Building solution /Users/philippe/repo/github/Mutty/Mutty.sln with configuration Debug
-15:09:59.795 | I | Compile              | > /opt/homebrew/bin/dotnet build /Users/philippe/repo/github/Mutty/Mutty.sln --configuration Debug --property:Version=1.0.49 --property:AssemblyVersion=1.0.49 --property:InformationalVersion=1.0.49+Branch.main.Sha.f29e4964eed61c2e387b39280804d630771d25f6 --property:FileVersion=1.0.49 --property:Deterministic=true --no-restore
-15:09:59.795 | V | Compile              | @ /Users/philippe/repo/github/Mutty
-15:10:01.382 | D | Compile              |   Mutty -> /Users/philippe/repo/github/Mutty/src/library/Mutty/bin/Debug/netstandard2.0/Mutty.dll
-15:10:02.365 | E | Compile              | /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/obj/Debug/net9.0/Mutty/Mutty.MutableRecordGenerator/ConsoleApp.Models.MutableRepository.g.cs(23,35): error CS1061: 'ImmutableDictionary<int, T>' does not contain a definition for 'AsMutable' and no accessible extension method 'AsMutable' accepting a first argument of type 'ImmutableDictionary<int, T>' could be found (are you missing a using directive or an assembly reference?) [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-15:10:02.366 | E | Compile              | /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/obj/Debug/net9.0/Mutty/Mutty.MutableRecordGenerator/ConsoleApp.Models.MutableRepository.g.cs(35,36): error CS1061: 'Dictionary<int, T>' does not contain a definition for 'ToImmutable' and no accessible extension method 'ToImmutable' accepting a first argument of type 'Dictionary<int, T>' could be found (are you missing a using directive or an assembly reference?) [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-15:10:02.366 | E | Compile              | /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/obj/Debug/net9.0/Mutty/Mutty.MutableRecordGenerator/ConsoleApp.Models.MutableRepository.g.cs(46,24): error CS0305: Using the generic type 'MutableRepository<T>' requires 1 type arguments [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-15:10:02.366 | E | Compile              | /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/obj/Debug/net9.0/Mutty/Mutty.MutableRecordGenerator/ConsoleApp.Models.MutableTreeNode.g.cs(44,24): error CS0305: Using the generic type 'MutableTreeNode<T>' requires 1 type arguments [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-15:10:02.366 | E | Compile              | /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/obj/Debug/net9.0/Mutty/Mutty.MutableRecordGenerator/ConsoleApp.Models.MutableContainer.g.cs(46,24): error CS0305: Using the generic type 'MutableContainer<T>' requires 1 type arguments [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-15:10:02.366 | E | Compile              | /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/obj/Debug/net9.0/Mutty/Mutty.MutableRecordGenerator/ConsoleApp.Models.MutablePair.g.cs(44,24): error CS0305: Using the generic type 'MutablePair<TFirst, TSecond>' requires 2 type arguments [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-15:10:02.366 | E | Compile              | /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/obj/Debug/net9.0/Mutty/Mutty.MutableRecordGenerator/ConsoleApp.Models.MutableBox.g.cs(44,24): error CS0305: Using the generic type 'MutableBox<T>' requires 1 type arguments [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-15:10:02.366 | E | Compile              | /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/Models/GenericModels.cs(108,57): error CS0023: Operator '.' cannot be applied to operand of type 'void' [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-15:10:02.366 | E | Compile              | /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/Models/GenericModels.cs(58,26): error RCS1250: Simplify object creation (https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1250) [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-15:10:02.366 | E | Compile              | /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/Models/GenericModels.cs(71,29): error RCS1250: Simplify object creation (https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1250) [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-15:10:02.366 | E | Compile              | /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/Models/GenericModels.cs(97,25): error RCS1250: Simplify object creation (https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1250) [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-15:10:02.366 | E | Compile              | /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/Models/GenericModels.cs(98,25): error RCS1250: Simplify object creation (https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1250) [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-15:10:02.366 | E | Compile              | /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/Models/GenericModels.cs(99,26): error RCS1250: Simplify object creation (https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1250) [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-15:10:02.366 | E | Compile              | /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/Models/GenericModels.cs(100,24): error RCS1250: Simplify object creation (https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1250) [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-15:10:02.366 | E | Compile              | /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/Models/GenericModels.cs(107,31): error RCS1250: Simplify object creation (https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1250) [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-15:10:02.366 | E | Compile              | /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/Models/GenericModels.cs(82,24): error RCS1250: Simplify object creation (https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1250) [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-15:10:02.712 | D | Compile              |   Mutty.Tests -> /Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/Mutty.Tests.dll
-15:10:02.721 | D | Compile              | 
-15:10:02.722 | D | Compile              | Build FAILED.
-15:10:02.722 | D | Compile              | 
-15:10:02.722 | E | Compile              | /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/obj/Debug/net9.0/Mutty/Mutty.MutableRecordGenerator/ConsoleApp.Models.MutableRepository.g.cs(23,35): error CS1061: 'ImmutableDictionary<int, T>' does not contain a definition for 'AsMutable' and no accessible extension method 'AsMutable' accepting a first argument of type 'ImmutableDictionary<int, T>' could be found (are you missing a using directive or an assembly reference?) [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-15:10:02.722 | E | Compile              | /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/obj/Debug/net9.0/Mutty/Mutty.MutableRecordGenerator/ConsoleApp.Models.MutableRepository.g.cs(35,36): error CS1061: 'Dictionary<int, T>' does not contain a definition for 'ToImmutable' and no accessible extension method 'ToImmutable' accepting a first argument of type 'Dictionary<int, T>' could be found (are you missing a using directive or an assembly reference?) [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-15:10:02.722 | E | Compile              | /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/obj/Debug/net9.0/Mutty/Mutty.MutableRecordGenerator/ConsoleApp.Models.MutableRepository.g.cs(46,24): error CS0305: Using the generic type 'MutableRepository<T>' requires 1 type arguments [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-15:10:02.722 | E | Compile              | /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/obj/Debug/net9.0/Mutty/Mutty.MutableRecordGenerator/ConsoleApp.Models.MutableTreeNode.g.cs(44,24): error CS0305: Using the generic type 'MutableTreeNode<T>' requires 1 type arguments [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-15:10:02.722 | E | Compile              | /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/obj/Debug/net9.0/Mutty/Mutty.MutableRecordGenerator/ConsoleApp.Models.MutableContainer.g.cs(46,24): error CS0305: Using the generic type 'MutableContainer<T>' requires 1 type arguments [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-15:10:02.722 | E | Compile              | /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/obj/Debug/net9.0/Mutty/Mutty.MutableRecordGenerator/ConsoleApp.Models.MutablePair.g.cs(44,24): error CS0305: Using the generic type 'MutablePair<TFirst, TSecond>' requires 2 type arguments [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-15:10:02.722 | E | Compile              | /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/obj/Debug/net9.0/Mutty/Mutty.MutableRecordGenerator/ConsoleApp.Models.MutableBox.g.cs(44,24): error CS0305: Using the generic type 'MutableBox<T>' requires 1 type arguments [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-15:10:02.722 | E | Compile              | /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/Models/GenericModels.cs(108,57): error CS0023: Operator '.' cannot be applied to operand of type 'void' [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-15:10:02.722 | E | Compile              | /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/Models/GenericModels.cs(58,26): error RCS1250: Simplify object creation (https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1250) [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-15:10:02.722 | E | Compile              | /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/Models/GenericModels.cs(71,29): error RCS1250: Simplify object creation (https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1250) [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-15:10:02.722 | E | Compile              | /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/Models/GenericModels.cs(97,25): error RCS1250: Simplify object creation (https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1250) [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-15:10:02.722 | E | Compile              | /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/Models/GenericModels.cs(98,25): error RCS1250: Simplify object creation (https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1250) [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-15:10:02.722 | E | Compile              | /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/Models/GenericModels.cs(99,26): error RCS1250: Simplify object creation (https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1250) [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-15:10:02.722 | E | Compile              | /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/Models/GenericModels.cs(100,24): error RCS1250: Simplify object creation (https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1250) [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-15:10:02.722 | E | Compile              | /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/Models/GenericModels.cs(107,31): error RCS1250: Simplify object creation (https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1250) [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-15:10:02.722 | E | Compile              | /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/Models/GenericModels.cs(82,24): error RCS1250: Simplify object creation (https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1250) [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-15:10:02.722 | D | Compile              |     0 Warning(s)
-15:10:02.722 | D | Compile              |     16 Error(s)
-15:10:02.722 | D | Compile              | 
-15:10:02.722 | D | Compile              | Time Elapsed 00:00:02.80
-15:10:02.737 | E | Compile              | Target Compile has thrown an exception
-Nuke.Common.Tooling.ProcessException: Process 'dotnet' exited with code 1.
-   > /opt/homebrew/bin/dotnet build /Users/philippe/repo/github/Mutty/Mutty.sln --configuration Debug --property:Version=1.0.49 --property:AssemblyVersion=1.0.49 --property:InformationalVersion=1.0.49+Branch.main.Sha.f29e4964eed61c2e387b39280804d630771d25f6 --property:FileVersion=1.0.49 --property:Deterministic=true --no-restore
-   @ /Users/philippe/repo/github/Mutty
-Standard output:
-     Mutty -> /Users/philippe/repo/github/Mutty/src/library/Mutty/bin/Debug/netstandard2.0/Mutty.dll
-   /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/obj/Debug/net9.0/Mutty/Mutty.MutableRecordGenerator/ConsoleApp.Models.MutableRepository.g.cs(23,35): error CS1061: 'ImmutableDictionary<int, T>' does not contain a definition for 'AsMutable' and no accessible extension method 'AsMutable' accepting a first argument of type 'ImmutableDictionary<int, T>' could be found (are you missing a using directive or an assembly reference?) [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-   /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/obj/Debug/net9.0/Mutty/Mutty.MutableRecordGenerator/ConsoleApp.Models.MutableRepository.g.cs(35,36): error CS1061: 'Dictionary<int, T>' does not contain a definition for 'ToImmutable' and no accessible extension method 'ToImmutable' accepting a first argument of type 'Dictionary<int, T>' could be found (are you missing a using directive or an assembly reference?) [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-   /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/obj/Debug/net9.0/Mutty/Mutty.MutableRecordGenerator/ConsoleApp.Models.MutableRepository.g.cs(46,24): error CS0305: Using the generic type 'MutableRepository<T>' requires 1 type arguments [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-   /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/obj/Debug/net9.0/Mutty/Mutty.MutableRecordGenerator/ConsoleApp.Models.MutableTreeNode.g.cs(44,24): error CS0305: Using the generic type 'MutableTreeNode<T>' requires 1 type arguments [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-   /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/obj/Debug/net9.0/Mutty/Mutty.MutableRecordGenerator/ConsoleApp.Models.MutableContainer.g.cs(46,24): error CS0305: Using the generic type 'MutableContainer<T>' requires 1 type arguments [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-   /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/obj/Debug/net9.0/Mutty/Mutty.MutableRecordGenerator/ConsoleApp.Models.MutablePair.g.cs(44,24): error CS0305: Using the generic type 'MutablePair<TFirst, TSecond>' requires 2 type arguments [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-   /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/obj/Debug/net9.0/Mutty/Mutty.MutableRecordGenerator/ConsoleApp.Models.MutableBox.g.cs(44,24): error CS0305: Using the generic type 'MutableBox<T>' requires 1 type arguments [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-   /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/Models/GenericModels.cs(108,57): error CS0023: Operator '.' cannot be applied to operand of type 'void' [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-   /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/Models/GenericModels.cs(58,26): error RCS1250: Simplify object creation (https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1250) [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-   /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/Models/GenericModels.cs(71,29): error RCS1250: Simplify object creation (https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1250) [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-   /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/Models/GenericModels.cs(97,25): error RCS1250: Simplify object creation (https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1250) [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-   /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/Models/GenericModels.cs(98,25): error RCS1250: Simplify object creation (https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1250) [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-   /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/Models/GenericModels.cs(99,26): error RCS1250: Simplify object creation (https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1250) [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-   /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/Models/GenericModels.cs(100,24): error RCS1250: Simplify object creation (https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1250) [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-   /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/Models/GenericModels.cs(107,31): error RCS1250: Simplify object creation (https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1250) [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-   /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/Models/GenericModels.cs(82,24): error RCS1250: Simplify object creation (https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1250) [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-     Mutty.Tests -> /Users/philippe/repo/github/Mutty/src/tests/Mutty.Tests/bin/Debug/net9.0/Mutty.Tests.dll
-   
-   Build FAILED.
-   
-   /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/obj/Debug/net9.0/Mutty/Mutty.MutableRecordGenerator/ConsoleApp.Models.MutableRepository.g.cs(23,35): error CS1061: 'ImmutableDictionary<int, T>' does not contain a definition for 'AsMutable' and no accessible extension method 'AsMutable' accepting a first argument of type 'ImmutableDictionary<int, T>' could be found (are you missing a using directive or an assembly reference?) [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-   /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/obj/Debug/net9.0/Mutty/Mutty.MutableRecordGenerator/ConsoleApp.Models.MutableRepository.g.cs(35,36): error CS1061: 'Dictionary<int, T>' does not contain a definition for 'ToImmutable' and no accessible extension method 'ToImmutable' accepting a first argument of type 'Dictionary<int, T>' could be found (are you missing a using directive or an assembly reference?) [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-   /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/obj/Debug/net9.0/Mutty/Mutty.MutableRecordGenerator/ConsoleApp.Models.MutableRepository.g.cs(46,24): error CS0305: Using the generic type 'MutableRepository<T>' requires 1 type arguments [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-   /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/obj/Debug/net9.0/Mutty/Mutty.MutableRecordGenerator/ConsoleApp.Models.MutableTreeNode.g.cs(44,24): error CS0305: Using the generic type 'MutableTreeNode<T>' requires 1 type arguments [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-   /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/obj/Debug/net9.0/Mutty/Mutty.MutableRecordGenerator/ConsoleApp.Models.MutableContainer.g.cs(46,24): error CS0305: Using the generic type 'MutableContainer<T>' requires 1 type arguments [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-   /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/obj/Debug/net9.0/Mutty/Mutty.MutableRecordGenerator/ConsoleApp.Models.MutablePair.g.cs(44,24): error CS0305: Using the generic type 'MutablePair<TFirst, TSecond>' requires 2 type arguments [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-   /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/obj/Debug/net9.0/Mutty/Mutty.MutableRecordGenerator/ConsoleApp.Models.MutableBox.g.cs(44,24): error CS0305: Using the generic type 'MutableBox<T>' requires 1 type arguments [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-   /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/Models/GenericModels.cs(108,57): error CS0023: Operator '.' cannot be applied to operand of type 'void' [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-   /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/Models/GenericModels.cs(58,26): error RCS1250: Simplify object creation (https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1250) [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-   /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/Models/GenericModels.cs(71,29): error RCS1250: Simplify object creation (https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1250) [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-   /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/Models/GenericModels.cs(97,25): error RCS1250: Simplify object creation (https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1250) [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-   /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/Models/GenericModels.cs(98,25): error RCS1250: Simplify object creation (https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1250) [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-   /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/Models/GenericModels.cs(99,26): error RCS1250: Simplify object creation (https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1250) [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-   /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/Models/GenericModels.cs(100,24): error RCS1250: Simplify object creation (https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1250) [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-   /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/Models/GenericModels.cs(107,31): error RCS1250: Simplify object creation (https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1250) [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-   /Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/Models/GenericModels.cs(82,24): error RCS1250: Simplify object creation (https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1250) [/Users/philippe/repo/github/Mutty/src/demo/ConsoleApp/ConsoleApp.csproj]
-       0 Warning(s)
-       16 Error(s)
-   
-   Time Elapsed 00:00:02.80
-
-   at Nuke.Common.Tooling.ProcessExtensions.AssertZeroExitCode(IProcess process) in /_/source/Nuke.Tooling/ProcessExtensions.cs:line 38
-   at Nuke.Common.Tooling.ToolTasks.<>c.<GetExitHandler>b__4_0(ToolOptions _, IProcess p) in /_/source/Nuke.Tooling/ToolTasks.ExitHandler.cs:line 27
-   at Nuke.Common.Tooling.ToolTasks.<>c__DisplayClass8_0.<GetExitHandlerInternal>b__3(ToolOptions o, IProcess p) in /_/source/Nuke.Tooling/ToolTasks.ExitHandler.cs:line 22
-   at Nuke.Common.Tooling.ToolTasks.Run[T](T options) in /_/source/Nuke.Tooling/ToolTasks.Run.cs:line 36
-   at Nuke.Common.Tools.DotNet.DotNetTasks.DotNetBuild(Configure`1 configurator) in /_/source/Nuke.Common/Tools/DotNet/DotNet.Generated.cs:line 62
-   at Build.<get_Compile>b__31_1() in /Users/philippe/repo/github/Mutty/build/Build.cs:line 140
-   at Nuke.Common.Execution.BuildExecutor.<>c.<Execute>b__4_2(Action x) in /_/source/Nuke.Build/Execution/BuildExecutor.cs:line 120
-   at System.Collections.Generic.List`1.ForEach(Action`1 action)
-   at Nuke.Common.Execution.BuildExecutor.Execute(NukeBuild build, ExecutableTarget target, IReadOnlyCollection`1 previouslyExecutedTargets, Boolean failureMode) in /_/source/Nuke.Build/Execution/BuildExecutor.cs:line 120
-15:10:02.744 | V | Compile              | EventInvoker.OnTargetFailed (-3.4028235E+38)
+19:08:03.792 | V |                      | ArgumentsFromParametersFile.OnBuildCreated (150)
+19:08:03.801 | V |                      | HandleReSharperSurrogateArguments.OnBuildCreated (150)
+19:08:03.801 | V |                      | InjectParameterValues.OnBuildCreated (100)
+19:08:03.816 | V |                      | HandleShellCompletion.OnBuildCreated (75)
+19:08:04.007 | V |                      | GenerateBuildServerConfigurations.OnBuildCreated (50)
+19:08:04.007 | V |                      | InvokeBuildServerConfigurationGeneration.OnBuildCreated (45)
+19:08:04.012 | V |                      | UpdateNotification.OnBuildCreated (10)
+19:08:04.013 | V |                      | UnsetVisualStudioEnvironmentVariables.OnBuildCreated (0)
+19:08:04.013 | V |                      | HandleVisualStudioDebugging.OnBuildCreated (0)
+19:08:04.013 | V |                      | EventInvoker.OnBuildCreated (-3.4028235E+38)
+19:08:04.021 | V |                      | HandlePlanRequests.OnBuildInitialized (10)
+19:08:04.021 | V |                      | HandleHelpRequests.OnBuildInitialized (5)
+19:08:04.021 | V |                      | Telemetry.OnBuildInitialized (0)
+19:08:04.351 | V |                      | Sending BuildStarted telemetry event ...
+19:08:04.352 | V |                      |   build_components         = 
+19:08:04.352 | V |                      |   build_type               = Project
+19:08:04.352 | V |                      |   compile_time             = <null>
+19:08:04.352 | V |                      |   config_generators        = GitHubActions
+19:08:04.352 | V |                      |   host                     = Terminal
+19:08:04.352 | V |                      |   num_custom_components    = 0
+19:08:04.352 | V |                      |   num_custom_extensions    = 0
+19:08:04.352 | V |                      |   num_partitioned_targets  = 0
+19:08:04.352 | V |                      |   num_secrets              = 1
+19:08:04.352 | V |                      |   num_targets              = 11
+19:08:04.352 | V |                      |   os_architecture          = Arm64
+19:08:04.352 | V |                      |   os_platform              = OSX
+19:08:04.352 | V |                      |   repo_branch              = release
+19:08:04.352 | V |                      |   repo_commit              = e7609d
+19:08:04.352 | V |                      |   repo_provider            = GitHub
+19:08:04.352 | V |                      |   repo_url                 = b37034
+19:08:04.352 | V |                      |   target_framework         = .NETCoreApp,Version=v10.0
+19:08:04.352 | V |                      |   version_dotnet_sdk       = 10.0.203
+19:08:04.352 | V |                      |   version_nuke_common      = 10.1.0
+19:08:04.352 | V |                      |   version_nuke_global_tool = <null>
+19:08:04.831 | V |                      | InjectNonParameterValues.OnBuildInitialized (-100)
+19:08:04.898 | I |                      | > /opt/homebrew/bin/dotnet /Users/philippe/.nuget/packages/octopus.octoversion.tool/1.0.21/tools/net10.0/any/OctoVersion.Tool.dll octoversion --OutputJsonFile /Users/philippe/repo/github/Mutty/.nuke/temp/octoversion.ee05dbe1-a077-4e0b-a1ec-dc8f42c37100.json --DetectEnvironment true --CurrentBranch release/v2.0.0 --Major 2
+19:08:04.901 | V |                      | @ /Users/philippe/repo/github/Mutty
+19:08:05.011 | D |                      | [19:08:04 DBG] Running OctoVersion 1.0.21+Branch.main.Sha.c83b8432da2528c66314c7bdeaf81e602185dc25.c83b8432da2528c66314c7bdeaf81e602185dc25 with AppSettings {CurrentBranch="release/v2.0.0", NonPreReleaseTags=["main", "master"], NonPreReleaseTagsRegex="", RepositoryPath="", Major=2, Minor=null, Patch=null, PreReleaseTag=null, BuildMetadata=null, FullSemVer=null, OutputFormats=[], DetectEnvironment=True, OutputJsonFile="/Users/philippe/repo/github/Mutty/.nuke/temp/octoversion.ee05dbe1-a077-4e0b-a1ec-dc8f42c37100.json"}
+19:08:05.011 | D |                      | [19:08:05 DBG] Executing in /Users/philippe/repo/github/Mutty
+19:08:05.011 | D |                      | [19:08:05 DBG] Writing build output using JsonFileOutputFormatter
+19:08:05.011 | D |                      | [19:08:05 INF] Beginning operation 05b47462-82aa-4004-9870-ee93d267759e: Calculating version
+19:08:05.016 | D |                      | [19:08:05 DBG] Located Git repository in /Users/philippe/repo/github/Mutty/.git/
+19:08:05.020 | D |                      | [19:08:05 INF] Beginning operation 24c38dd2-a556-4f8d-a616-b3241148381e: Loading commits
+19:08:05.037 | D |                      | [19:08:05 DBG] Repository contains 139 commits
+19:08:05.038 | D |                      | [19:08:05 INF] Completed operation 24c38dd2-a556-4f8d-a616-b3241148381e: Loading commits in 00:00:00.0170150 (17 ms)
+19:08:05.038 | D |                      | [19:08:05 INF] Beginning operation f262f55d-0688-4dcc-a1f8-daf2fb0c32b5: Mapping commits into internal representation
+19:08:05.042 | D |                      | [19:08:05 INF] Completed operation f262f55d-0688-4dcc-a1f8-daf2fb0c32b5: Mapping commits into internal representation in 00:00:00.0041010 (4 ms)
+19:08:05.042 | D |                      | [19:08:05 INF] Beginning operation 66c5348d-287c-4667-ac25-96ee5e02d6c8: Establishing parent/child relationships
+19:08:05.043 | D |                      | [19:08:05 INF] Completed operation 66c5348d-287c-4667-ac25-96ee5e02d6c8: Establishing parent/child relationships in 00:00:00.0013745 (1 ms)
+19:08:05.043 | D |                      | [19:08:05 INF] Beginning operation 79296e5d-2462-46e0-83c0-b21402b2bcb9: Loading tags
+19:08:05.048 | D |                      | [19:08:05 DBG] Repository contains 36 tags
+19:08:05.048 | D |                      | [19:08:05 INF] Completed operation 79296e5d-2462-46e0-83c0-b21402b2bcb9: Loading tags in 00:00:00.0045792 (4 ms)
+19:08:05.048 | D |                      | [19:08:05 INF] Beginning operation cc736f43-3003-4b8f-bc62-477c14a1cac4: Applying relevant version tags to each commit
+19:08:05.049 | D |                      | [19:08:05 INF] Completed operation cc736f43-3003-4b8f-bc62-477c14a1cac4: Applying relevant version tags to each commit in 00:00:00.0007955 (0 ms)
+19:08:05.056 | D |                      | [19:08:05 DBG] Using pre-release tag release-v2.0.0
+19:08:05.056 | D |                      | [19:08:05 DBG] Overriding derived major version 2 with 2
+19:08:05.056 | D |                      | [19:08:05 DBG] Using build metadata Branch.release-v2.0.0.Sha.31d7865dcdd6bb83e598dfc39087150153f0ad26
+19:08:05.056 | D |                      | [19:08:05 INF] Completed operation 05b47462-82aa-4004-9870-ee93d267759e: Calculating version in 00:00:00.0456009 (45 ms)
+19:08:05.057 | D |                      | [19:08:05 INF] Version is 2.0.0-release-v2.0.0
+19:08:05.057 | D |                      | [19:08:05 INF] Writing version info to /Users/philippe/repo/github/Mutty/.nuke/temp/octoversion.ee05dbe1-a077-4e0b-a1ec-dc8f42c37100.json
+19:08:05.129 | V |                      | EventInvoker.OnBuildInitialized (-3.4028235E+38)
+19:08:05.134 | V | Version              | EventInvoker.OnTargetRunning (-3.4028235E+38)
+19:08:05.134 | I | Version              | GitVersion = 2.0.0-release-v2.0.0
+19:08:05.135 | V | Version              | Telemetry.OnTargetSucceeded (0)
+19:08:05.135 | V | Version              | EventInvoker.OnTargetSucceeded (-3.4028235E+38)
+19:08:05.137 | V |                      | UpdateNotification.OnBuildFinished (10)
+19:08:05.137 | V |                      | SerializeBuildServerState.OnBuildFinished (0)
+19:08:05.137 | V |                      | EventInvoker.OnBuildFinished (-3.4028235E+38)
