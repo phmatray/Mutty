@@ -252,6 +252,41 @@ public class EndToEndCompilationTests : GeneratorTests
     }
 
     [Test]
+    public void InheritedRecordProperties_AreExposedAndRoundTrip()
+    {
+        // Dog inherits Name from Animal; the mutable wrapper must expose and round-trip both the
+        // declared (Breed) and inherited (Name) properties.
+        string source =
+            """
+            using Mutty;
+
+            namespace Mutty.Tests;
+
+            public abstract record Animal(string Name);
+
+            [MutableGeneration]
+            public partial record Dog(string Name, string Breed) : Animal(Name);
+            """;
+
+        Assembly assembly = CompileToAssembly(source);
+
+        Type dogType = assembly.GetType("Mutty.Tests.Dog").ShouldNotBeNull();
+        Type mutableType = assembly.GetType("Mutty.Tests.MutableDog").ShouldNotBeNull();
+
+        mutableType.GetProperty("Name").ShouldNotBeNull();
+        mutableType.GetProperty("Breed").ShouldNotBeNull();
+
+        object dog = Activator.CreateInstance(dogType, "Rex", "Labrador")!;
+        object mutable = ToMutable(assembly, "Mutty.Tests.Dog", dog);
+        mutableType.GetProperty("Name")!.SetValue(mutable, "Max");
+        mutableType.GetProperty("Breed")!.SetValue(mutable, "Poodle");
+
+        object rebuilt = Build(mutable);
+        dogType.GetProperty("Name")!.GetValue(rebuilt).ShouldBe("Max");
+        dogType.GetProperty("Breed")!.GetValue(rebuilt).ShouldBe("Poodle");
+    }
+
+    [Test]
     public void NestedRecordInDifferentNamespace_CompilesAndRoundTrips()
     {
         // Person (namespace Company.App) nests Address (namespace Company.Domain). Both are annotated,

@@ -2,8 +2,8 @@
 // Atypical Consulting SRL licenses this file to you under the Apache 2.0 license.
 // See the LICENSE file in the project root for full license information.
 
+using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
 using Microsoft.CodeAnalysis;
 
 namespace Mutty.Models;
@@ -45,19 +45,39 @@ public sealed record RecordModel(
             ? null
             : recordSymbol.ContainingNamespace.ToString();
 
-        ImmutableArray<PropertyModel> properties = recordSymbol
-            .GetMembers()
-            .OfType<IPropertySymbol>()
-            .Where(static p =>
-                p is
-                {
-                    IsReadOnly: false,
-                    IsImplicitlyDeclared: false,
-                    DeclaredAccessibility: Accessibility.Public
-                })
-            .Select(PropertyModel.FromSymbol)
-            .ToImmutableArray();
+        EquatableArray<PropertyModel> properties = new(CollectProperties(recordSymbol));
 
-        return new RecordModel(recordSymbol.Name, namespaceName, new EquatableArray<PropertyModel>(properties));
+        return new RecordModel(recordSymbol.Name, namespaceName, properties);
+    }
+
+    /// <summary>
+    /// Collects the public, settable properties of a record, including those inherited from base records,
+    /// de-duplicated by name with the most-derived declaration winning.
+    /// </summary>
+    private static ImmutableArray<PropertyModel> CollectProperties(INamedTypeSymbol recordSymbol)
+    {
+        ImmutableArray<PropertyModel>.Builder builder = ImmutableArray.CreateBuilder<PropertyModel>();
+        HashSet<string> seen = new(System.StringComparer.Ordinal);
+
+        for (INamedTypeSymbol? current = recordSymbol;
+             current is not null && current.SpecialType != SpecialType.System_Object;
+             current = current.BaseType)
+        {
+            foreach (ISymbol member in current.GetMembers())
+            {
+                if (member is IPropertySymbol
+                    {
+                        IsReadOnly: false,
+                        IsImplicitlyDeclared: false,
+                        DeclaredAccessibility: Accessibility.Public
+                    } property
+                    && seen.Add(property.Name))
+                {
+                    builder.Add(PropertyModel.FromSymbol(property));
+                }
+            }
+        }
+
+        return builder.ToImmutable();
     }
 }
