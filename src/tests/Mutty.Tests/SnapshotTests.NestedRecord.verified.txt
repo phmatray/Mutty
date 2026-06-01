@@ -167,7 +167,7 @@ namespace Mutty.Tests
         /// <summary>
         /// Gets or sets the Record HomeAddress.
         /// </summary>
-        public MutableAddress HomeAddress { get; set; }
+        public global::Mutty.Tests.MutableAddress HomeAddress { get; set; }
     }
 }
 

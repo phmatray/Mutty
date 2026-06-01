@@ -15,7 +15,17 @@ namespace Mutty.Models;
 /// <param name="Name">The name of the property.</param>
 /// <param name="Type">The fully-qualified display type of the property.</param>
 /// <param name="PropertyType">The category the property falls into for code generation.</param>
-public sealed record PropertyModel(string Name, string Type, PropertyType PropertyType)
+/// <param name="RecordMutableTypeName">
+/// For <see cref="Mutty.Models.PropertyType.Record"/> properties, the namespace-qualified
+/// (<c>global::</c>) name of the nested mutable wrapper — e.g. <c>global::Other.MutableAddress</c>.
+/// <see langword="null"/> for every other kind. Computed from the symbol so cross-namespace nesting
+/// resolves correctly instead of relying on the bare simple name.
+/// </param>
+public sealed record PropertyModel(
+    string Name,
+    string Type,
+    PropertyType PropertyType,
+    string? RecordMutableTypeName = null)
 {
     /// <summary>
     /// Projects an <see cref="IPropertySymbol"/> into an equatable <see cref="PropertyModel"/>.
@@ -24,10 +34,28 @@ public sealed record PropertyModel(string Name, string Type, PropertyType Proper
     /// <returns>The equatable property model.</returns>
     public static PropertyModel FromSymbol(IPropertySymbol propertySymbol)
     {
-        return new(
+        ITypeSymbol type = propertySymbol.Type;
+        PropertyType kind = GetPropertyType(type);
+
+        string? recordMutableTypeName = (kind == PropertyType.Record)
+            ? BuildMutableTypeName((INamedTypeSymbol)type)
+            : null;
+
+        return new PropertyModel(
             propertySymbol.Name,
-            propertySymbol.Type.ToDisplayString(),
-            GetPropertyType(propertySymbol.Type));
+            type.ToDisplayString(),
+            kind,
+            recordMutableTypeName);
+    }
+
+    private static string BuildMutableTypeName(INamedTypeSymbol named)
+    {
+        // Nullability is carried on the property type string; here we only need the namespace + name of
+        // the wrapper, which is generated as Mutable{Name} inside the record's own namespace.
+        INamespaceSymbol containingNamespace = named.ContainingNamespace;
+        return (containingNamespace.IsGlobalNamespace)
+            ? $"global::Mutable{named.Name}"
+            : $"global::{containingNamespace.ToDisplayString()}.Mutable{named.Name}";
     }
 
     /// <summary>

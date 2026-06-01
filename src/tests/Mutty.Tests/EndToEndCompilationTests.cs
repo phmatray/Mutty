@@ -252,6 +252,46 @@ public class EndToEndCompilationTests : GeneratorTests
     }
 
     [Test]
+    public void NestedRecordInDifferentNamespace_CompilesAndRoundTrips()
+    {
+        // Person (namespace Company.App) nests Address (namespace Company.Domain). Both are annotated,
+        // so Person's wrapper must reference Company.Domain.MutableAddress — not a bare MutableAddress,
+        // which would not resolve across namespaces (CS0246).
+        string source =
+            """
+            using Mutty;
+
+            namespace Company.Domain
+            {
+                [MutableGeneration]
+                public partial record Address(string City);
+            }
+
+            namespace Company.App
+            {
+                [MutableGeneration]
+                public partial record Person(string Name, Company.Domain.Address Home);
+            }
+            """;
+
+        Assembly assembly = CompileToAssembly(source);
+
+        Type personType = assembly.GetType("Company.App.Person").ShouldNotBeNull();
+        Type addressType = assembly.GetType("Company.Domain.Address").ShouldNotBeNull();
+        Type mutableAddressType = assembly.GetType("Company.Domain.MutableAddress").ShouldNotBeNull();
+
+        Type mutablePersonType = assembly.GetType("Company.App.MutablePerson").ShouldNotBeNull();
+        mutablePersonType.GetProperty("Home")!.PropertyType.ShouldBe(mutableAddressType);
+
+        object address = Activator.CreateInstance(addressType, "Lyon")!;
+        object person = Activator.CreateInstance(personType, "Jane", address)!;
+        object roundTripped = Build(ToMutable(assembly, "Company.App.Person", person));
+
+        object? home = personType.GetProperty("Home")!.GetValue(roundTripped);
+        addressType.GetProperty("City")!.GetValue(home).ShouldBe("Lyon");
+    }
+
+    [Test]
     public void UnannotatedNestedRecord_CompilesAndRoundTripsByReference()
     {
         // Address is NOT annotated with [MutableGeneration], so Person.Home must be kept as-is

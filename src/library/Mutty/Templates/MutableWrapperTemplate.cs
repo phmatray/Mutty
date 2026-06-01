@@ -91,7 +91,7 @@ public class MutableWrapperTemplate(RecordModel tokens) : IndentedCodeBuilder
                             bool isNullable = property.Type.EndsWith("?", StringComparison.Ordinal);
                             if (isNullable)
                             {
-                                string mutableTypeName = $"Mutable{property.Type.TrimEnd('?').Split('.').Last()}";
+                                string mutableTypeName = property.RecordMutableTypeName!;
                                 Line($"{property.Name} = _record.{property.Name} != null");
                                 Indent(() =>
                                 {
@@ -210,8 +210,7 @@ public class MutableWrapperTemplate(RecordModel tokens) : IndentedCodeBuilder
     private void GenerateNestedMutableProperty(PropertyModel property)
     {
         bool isNullable = property.Type.EndsWith("?", StringComparison.Ordinal);
-        string baseType = (isNullable) ? property.Type.TrimEnd('?') : property.Type;
-        string mutableTypeName = $"Mutable{baseType.Split('.').Last()}";
+        string mutableTypeName = property.RecordMutableTypeName!;
         string finalType = (isNullable) ? $"{mutableTypeName}?" : mutableTypeName;
         string propertyType = property.PropertyType.ToString();
 
