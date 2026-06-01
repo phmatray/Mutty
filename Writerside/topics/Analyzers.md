@@ -145,15 +145,15 @@ This analyzer should not be suppressed as it indicates a fundamental misuse of t
 
 ## MUTTY002: Generic records are not supported
 
-### Description
+### Description {id="mutty002-description"}
 
 Mutty cannot generate a mutable wrapper for an open generic record (e.g. `record Box<T>`): the generated class, constructor, and conversion operators would be malformed. When `[MutableGeneration]` is applied to a generic record, the generator skips it and the analyzer reports this error.
 
-### Severity
+### Severity {id="mutty002-severity"}
 
 Error
 
-### Example
+### Example {id="mutty002-example"}
 
 ```C#
 using Mutty;
@@ -163,7 +163,7 @@ using Mutty;
 public record Box<T>(T Value);
 ```
 
-### How to Fix
+### How to Fix {id="mutty002-how-to-fix"}
 
 Either remove the type parameter(s) and use a concrete record, or remove the `[MutableGeneration]` attribute:
 
@@ -175,15 +175,15 @@ public record IntBox(int Value);
 
 ## MUTTY003: Nested records are not supported
 
-### Description
+### Description {id="mutty003-description"}
 
 Mutty emits the mutable wrapper at namespace scope, so it cannot wrap a record declared *inside* another type. When `[MutableGeneration]` is applied to a nested record, the generator skips it and the analyzer reports this error.
 
-### Severity
+### Severity {id="mutty003-severity"}
 
 Error
 
-### Example
+### Example {id="mutty003-example"}
 
 ```C#
 using Mutty;
@@ -196,7 +196,7 @@ public class Outer
 }
 ```
 
-### How to Fix
+### How to Fix {id="mutty003-how-to-fix"}
 
 Move the record to namespace (top-level) scope:
 
