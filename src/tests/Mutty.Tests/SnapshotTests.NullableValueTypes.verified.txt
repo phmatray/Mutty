@@ -88,5 +88,32 @@ namespace Mutty.Tests
         /// Gets or sets the Rating.
         /// </summary>
         public double? Rating { get; set; }
+
+        /// <summary>
+        /// Sets <see cref="Score"/> and returns this wrapper so calls can be chained.
+        /// </summary>
+        public MutableStats WithScore(int value)
+        {
+            Score = value;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets <see cref="OptionalScore"/> and returns this wrapper so calls can be chained.
+        /// </summary>
+        public MutableStats WithOptionalScore(int? value)
+        {
+            OptionalScore = value;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets <see cref="Rating"/> and returns this wrapper so calls can be chained.
+        /// </summary>
+        public MutableStats WithRating(double? value)
+        {
+            Rating = value;
+            return this;
+        }
     }
 }

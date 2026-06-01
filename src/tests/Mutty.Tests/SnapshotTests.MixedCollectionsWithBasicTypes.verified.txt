@@ -88,5 +88,32 @@ namespace Mutty.Tests
         /// Gets or sets the ImmutableCollection Mapping.
         /// </summary>
         public Dictionary<string, int> Mapping { get; set; }
+
+        /// <summary>
+        /// Sets <see cref="Numbers"/> and returns this wrapper so calls can be chained.
+        /// </summary>
+        public MutableMixedData WithNumbers(List<int> value)
+        {
+            Numbers = value;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets <see cref="Names"/> and returns this wrapper so calls can be chained.
+        /// </summary>
+        public MutableMixedData WithNames(List<string> value)
+        {
+            Names = value;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets <see cref="Mapping"/> and returns this wrapper so calls can be chained.
+        /// </summary>
+        public MutableMixedData WithMapping(Dictionary<string, int> value)
+        {
+            Mapping = value;
+            return this;
+        }
     }
 }

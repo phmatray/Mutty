@@ -81,5 +81,23 @@ namespace Mutty.Tests
         /// Gets or sets the ImmutableCollection NestedData.
         /// </summary>
         public List<Dictionary<string, int>> NestedData { get; set; }
+
+        /// <summary>
+        /// Sets <see cref="Name"/> and returns this wrapper so calls can be chained.
+        /// </summary>
+        public MutableComplexData WithName(string value)
+        {
+            Name = value;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets <see cref="NestedData"/> and returns this wrapper so calls can be chained.
+        /// </summary>
+        public MutableComplexData WithNestedData(List<Dictionary<string, int>> value)
+        {
+            NestedData = value;
+            return this;
+        }
     }
 }

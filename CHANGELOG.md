@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The `Mutable{Record}` → `{Record}` conversion is now an **explicit** operator instead of implicit. This prevents hidden allocations (e.g. `record == mutable` silently built a record). Update call sites to an explicit cast `(Record)mutable`, or — preferably — call `mutable.Build()` / `mutable.ToImmutable()`. The `{Record}` → `Mutable{Record}` direction stays implicit.
 
 ### Added
+- Chainable `With{Property}` fluent setters on generated wrappers, e.g. `student.Produce(m => m.WithName("Jane").WithAge(30))`.
+- Support for plain array (`T[]`) and read-only collection (`IReadOnlyList<T>` / `IReadOnlyCollection<T>`) properties: arrays are defensively copied; read-only collections are exposed as a mutable `List<T>`.
 - `ToImmutable()` instance method on generated wrappers as a discoverable alias for `Build()`.
 - `partial void OnBeforeBuild()` hook on generated wrappers, called at the start of `Build()`, as a validation/normalisation seam.
 - BenchmarkDotNet harness (`Mutty.Benchmarks`) measuring cold vs incremental generator runs.

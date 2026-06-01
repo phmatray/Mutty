@@ -62,6 +62,7 @@ public class MutableWrapperTemplate(RecordModel tokens) : IndentedCodeBuilder
             GenerateImplicitOperatorToMutable();
             GenerateExplicitOperatorToRecord();
             GenerateProperties();
+            GenerateWithMethods();
         });
     }
 
@@ -237,6 +238,46 @@ public class MutableWrapperTemplate(RecordModel tokens) : IndentedCodeBuilder
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+        }
+    }
+
+    private void GenerateWithMethods()
+    {
+        foreach (PropertyModel property in _properties)
+        {
+            EmptyLine();
+            Summary($"Sets <see cref=\"{property.Name}\"/> and returns this wrapper so calls can be chained.");
+            Line($"public {_mutableRecordName} With{property.Name}({GetMutablePropertyType(property)} value)");
+            Braces(() =>
+            {
+                Line($"{property.Name} = value;");
+                Line("return this;");
+            });
+        }
+    }
+
+    private string GetMutablePropertyType(PropertyModel property)
+    {
+        switch (property.PropertyType)
+        {
+            case PropertyType.Record:
+                {
+                    bool isNullable = property.Type.EndsWith("?", StringComparison.Ordinal);
+                    string mutableTypeName = property.RecordMutableTypeName!;
+                    return (isNullable) ? $"{mutableTypeName}?" : mutableTypeName;
+                }
+            case PropertyType.ImmutableCollection:
+                {
+                    string mutableType = ConvertImmutableToMutable(property.Type);
+                    string convertedTypeArgs = ConvertGenericTypeArguments(GetMutableItemType(property.Type));
+                    return $"{mutableType}<{convertedTypeArgs}>";
+                }
+            case PropertyType.ReadOnlyCollection:
+                return GetReadOnlyMutableType(property);
+            case PropertyType.Array:
+            case PropertyType.Other:
+            default:
+                return property.Type;
         }
     }
 

@@ -83,6 +83,24 @@ namespace Mutty.Tests
         /// Gets or sets the City.
         /// </summary>
         public string City { get; set; }
+
+        /// <summary>
+        /// Sets <see cref="Street"/> and returns this wrapper so calls can be chained.
+        /// </summary>
+        public MutableAddress WithStreet(string value)
+        {
+            Street = value;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets <see cref="City"/> and returns this wrapper so calls can be chained.
+        /// </summary>
+        public MutableAddress WithCity(string value)
+        {
+            City = value;
+            return this;
+        }
     }
 }
 ,
@@ -170,6 +188,24 @@ namespace Mutty.Tests
         /// Gets or sets the Record HomeAddress.
         /// </summary>
         public global::Mutty.Tests.MutableAddress HomeAddress { get; set; }
+
+        /// <summary>
+        /// Sets <see cref="Name"/> and returns this wrapper so calls can be chained.
+        /// </summary>
+        public MutablePerson WithName(string value)
+        {
+            Name = value;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets <see cref="HomeAddress"/> and returns this wrapper so calls can be chained.
+        /// </summary>
+        public MutablePerson WithHomeAddress(global::Mutty.Tests.MutableAddress value)
+        {
+            HomeAddress = value;
+            return this;
+        }
     }
 }
 

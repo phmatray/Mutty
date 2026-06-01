@@ -88,5 +88,32 @@ namespace Mutty.Tests
         /// Gets or sets the Email.
         /// </summary>
         public string? Email { get; set; }
+
+        /// <summary>
+        /// Sets <see cref="Name"/> and returns this wrapper so calls can be chained.
+        /// </summary>
+        public MutableUser WithName(string value)
+        {
+            Name = value;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets <see cref="MiddleName"/> and returns this wrapper so calls can be chained.
+        /// </summary>
+        public MutableUser WithMiddleName(string? value)
+        {
+            MiddleName = value;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets <see cref="Email"/> and returns this wrapper so calls can be chained.
+        /// </summary>
+        public MutableUser WithEmail(string? value)
+        {
+            Email = value;
+            return this;
+        }
     }
 }

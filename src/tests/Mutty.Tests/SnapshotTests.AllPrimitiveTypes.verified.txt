@@ -165,5 +165,131 @@ namespace Mutty.Tests
         /// Gets or sets the StringValue.
         /// </summary>
         public string StringValue { get; set; }
+
+        /// <summary>
+        /// Sets <see cref="BoolValue"/> and returns this wrapper so calls can be chained.
+        /// </summary>
+        public MutableAllTypes WithBoolValue(bool value)
+        {
+            BoolValue = value;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets <see cref="ByteValue"/> and returns this wrapper so calls can be chained.
+        /// </summary>
+        public MutableAllTypes WithByteValue(byte value)
+        {
+            ByteValue = value;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets <see cref="SByteValue"/> and returns this wrapper so calls can be chained.
+        /// </summary>
+        public MutableAllTypes WithSByteValue(sbyte value)
+        {
+            SByteValue = value;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets <see cref="CharValue"/> and returns this wrapper so calls can be chained.
+        /// </summary>
+        public MutableAllTypes WithCharValue(char value)
+        {
+            CharValue = value;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets <see cref="ShortValue"/> and returns this wrapper so calls can be chained.
+        /// </summary>
+        public MutableAllTypes WithShortValue(short value)
+        {
+            ShortValue = value;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets <see cref="UShortValue"/> and returns this wrapper so calls can be chained.
+        /// </summary>
+        public MutableAllTypes WithUShortValue(ushort value)
+        {
+            UShortValue = value;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets <see cref="IntValue"/> and returns this wrapper so calls can be chained.
+        /// </summary>
+        public MutableAllTypes WithIntValue(int value)
+        {
+            IntValue = value;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets <see cref="UIntValue"/> and returns this wrapper so calls can be chained.
+        /// </summary>
+        public MutableAllTypes WithUIntValue(uint value)
+        {
+            UIntValue = value;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets <see cref="LongValue"/> and returns this wrapper so calls can be chained.
+        /// </summary>
+        public MutableAllTypes WithLongValue(long value)
+        {
+            LongValue = value;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets <see cref="ULongValue"/> and returns this wrapper so calls can be chained.
+        /// </summary>
+        public MutableAllTypes WithULongValue(ulong value)
+        {
+            ULongValue = value;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets <see cref="FloatValue"/> and returns this wrapper so calls can be chained.
+        /// </summary>
+        public MutableAllTypes WithFloatValue(float value)
+        {
+            FloatValue = value;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets <see cref="DoubleValue"/> and returns this wrapper so calls can be chained.
+        /// </summary>
+        public MutableAllTypes WithDoubleValue(double value)
+        {
+            DoubleValue = value;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets <see cref="DecimalValue"/> and returns this wrapper so calls can be chained.
+        /// </summary>
+        public MutableAllTypes WithDecimalValue(decimal value)
+        {
+            DecimalValue = value;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets <see cref="StringValue"/> and returns this wrapper so calls can be chained.
+        /// </summary>
+        public MutableAllTypes WithStringValue(string value)
+        {
+            StringValue = value;
+            return this;
+        }
     }
 }

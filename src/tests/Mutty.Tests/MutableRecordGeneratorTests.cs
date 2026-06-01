@@ -203,6 +203,24 @@ public class MutableRecordGeneratorTests
                     /// Gets or sets the Age.
                     /// </summary>
                     public int Age { get; set; }
+
+                    /// <summary>
+                    /// Sets <see cref="Name"/> and returns this wrapper so calls can be chained.
+                    /// </summary>
+                    public MutableStudentDetails WithName(string value)
+                    {
+                        Name = value;
+                        return this;
+                    }
+
+                    /// <summary>
+                    /// Sets <see cref="Age"/> and returns this wrapper so calls can be chained.
+                    /// </summary>
+                    public MutableStudentDetails WithAge(int value)
+                    {
+                        Age = value;
+                        return this;
+                    }
                 }
             }
 

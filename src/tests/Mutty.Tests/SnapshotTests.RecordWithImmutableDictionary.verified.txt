@@ -81,5 +81,23 @@ namespace Mutty.Tests
         /// Gets or sets the ImmutableCollection Settings.
         /// </summary>
         public Dictionary<string, string> Settings { get; set; }
+
+        /// <summary>
+        /// Sets <see cref="Name"/> and returns this wrapper so calls can be chained.
+        /// </summary>
+        public MutableConfiguration WithName(string value)
+        {
+            Name = value;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets <see cref="Settings"/> and returns this wrapper so calls can be chained.
+        /// </summary>
+        public MutableConfiguration WithSettings(Dictionary<string, string> value)
+        {
+            Settings = value;
+            return this;
+        }
     }
 }

@@ -307,6 +307,37 @@ public class EndToEndCompilationTests : GeneratorTests
     }
 
     [Test]
+    public void FluentWithMethods_ChainInsideProduce()
+    {
+        string source =
+            """
+            using Mutty;
+
+            namespace Demo
+            {
+                [MutableGeneration]
+                public partial record Student(string Name, int Age);
+
+                public static class Usage
+                {
+                    public static Student Update(Student s) => s.Produce(m => m.WithName("Jane").WithAge(30));
+                }
+            }
+            """;
+
+        Assembly assembly = CompileToAssembly(source);
+
+        Type studentType = assembly.GetType("Demo.Student").ShouldNotBeNull();
+        object student = Activator.CreateInstance(studentType, "John", 20)!;
+
+        Type usage = assembly.GetType("Demo.Usage").ShouldNotBeNull();
+        object updated = usage.GetMethod("Update")!.Invoke(null, [student])!;
+
+        studentType.GetProperty("Name")!.GetValue(updated).ShouldBe("Jane");
+        studentType.GetProperty("Age")!.GetValue(updated).ShouldBe(30);
+    }
+
+    [Test]
     public void ArrayProperty_IsCopiedNotAliased()
     {
         string source = CreateInput("public partial record Tags(string[] Values);");

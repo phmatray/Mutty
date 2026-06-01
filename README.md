@@ -51,6 +51,7 @@ Immutable Record Mutation Made Easy
     - [x] Provides a `Produce` method to apply mutations to your immutable records using the generated mutable wrappers.
     - [x] Also includes `CreateDraft` and `FinishDraft` methods for more granular control...
     - [x] ...and `AsMutable` and `ToImmutable` extension methods for collections.
+- [x] **Fluent Mutation**: Each wrapper exposes chainable `With{Property}` setters, e.g. `student.Produce(m => m.WithName("Jane").WithAge(30))`.
 
 ## How Mutty Works
 

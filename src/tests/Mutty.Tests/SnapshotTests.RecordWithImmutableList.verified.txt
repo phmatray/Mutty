@@ -81,5 +81,23 @@ namespace Mutty.Tests
         /// Gets or sets the ImmutableCollection Members.
         /// </summary>
         public List<string> Members { get; set; }
+
+        /// <summary>
+        /// Sets <see cref="Name"/> and returns this wrapper so calls can be chained.
+        /// </summary>
+        public MutableTeam WithName(string value)
+        {
+            Name = value;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets <see cref="Members"/> and returns this wrapper so calls can be chained.
+        /// </summary>
+        public MutableTeam WithMembers(List<string> value)
+        {
+            Members = value;
+            return this;
+        }
     }
 }
