@@ -2,6 +2,12 @@
 
 Mutty includes Roslyn analyzers to help you use the library correctly and avoid common mistakes.
 
+| ID | Meaning | Severity |
+|---|---|---|
+| [MUTTY001](#mutty001-mutablegeneration-attribute-can-only-be-applied-to-records) | Applied to a non-record (class, struct, interface, enum). | Error |
+| [MUTTY002](#mutty002-generic-records-are-not-supported) | Applied to a generic record. | Error |
+| [MUTTY003](#mutty003-nested-records-are-not-supported) | Applied to a record nested inside another type. | Error |
+
 ## MUTTY001: MutableGeneration attribute can only be applied to records
 
 ### Description
@@ -136,3 +142,70 @@ Applying the `[MutableGeneration]` attribute to non-record types would not work 
 ### Suppression
 
 This analyzer should not be suppressed as it indicates a fundamental misuse of the library. If you believe you have a valid use case that triggers this analyzer incorrectly, please file an issue on the Mutty GitHub repository.
+
+## MUTTY002: Generic records are not supported
+
+### Description
+
+Mutty cannot generate a mutable wrapper for an open generic record (e.g. `record Box<T>`): the generated class, constructor, and conversion operators would be malformed. When `[MutableGeneration]` is applied to a generic record, the generator skips it and the analyzer reports this error.
+
+### Severity
+
+Error
+
+### Example
+
+```C#
+using Mutty;
+
+// Error MUTTY002: generic records are not supported
+[MutableGeneration]
+public record Box<T>(T Value);
+```
+
+### How to Fix
+
+Either remove the type parameter(s) and use a concrete record, or remove the `[MutableGeneration]` attribute:
+
+```C#
+// Concrete record — supported
+[MutableGeneration]
+public record IntBox(int Value);
+```
+
+## MUTTY003: Nested records are not supported
+
+### Description
+
+Mutty emits the mutable wrapper at namespace scope, so it cannot wrap a record declared *inside* another type. When `[MutableGeneration]` is applied to a nested record, the generator skips it and the analyzer reports this error.
+
+### Severity
+
+Error
+
+### Example
+
+```C#
+using Mutty;
+
+public class Outer
+{
+    // Error MUTTY003: records nested in another type are not supported
+    [MutableGeneration]
+    public record Item(int Value);
+}
+```
+
+### How to Fix
+
+Move the record to namespace (top-level) scope:
+
+```C#
+[MutableGeneration]
+public record Item(int Value);
+
+public class Outer
+{
+    // ...
+}
+```

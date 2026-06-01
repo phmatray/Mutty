@@ -36,7 +36,7 @@ In this example, each record in the object graph – `Student` and its related r
 
 > **Note:** The example above shows multiple related records to illustrate nested mutation. Mutty will generate similar wrappers for each annotated record in the chain. For simplicity, let’s focus on using the `Student` record’s wrapper in the following examples – the same principles apply to the other records.
 
-After building the project, you don’t need to manually find or include the generated classes; they are automatically available for use. For instance, you can now create a `MutableStudent` by casting or assigning a `Student` to `MutableStudent` (thanks to implicit conversion), or by using the helper methods described below.
+After building the project, you don’t need to manually find or include the generated classes; they are automatically available for use. For instance, you can create a `MutableStudent` by assigning a `Student` to it (the record-to-draft conversion is implicit), via `student.CreateDraft()`, or — most commonly — by using `Produce`, as described below. Converting a draft back to a record is explicit: call `Build()` / `ToImmutable()`.
 
 ## Deeply Nested Mutation Example
 

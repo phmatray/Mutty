@@ -18,199 +18,42 @@ Immutable Record Mutation Made Easy
 
 ---
 
+---
+
 ## 📝 Table of Contents
 
 <!-- TOC -->
 * [Mutty](#mutty)
   * [📝 Table of Contents](#-table-of-contents)
+  * [The Problem](#the-problem)
+  * [The Solution](#the-solution)
+  * [Quick Start](#quick-start)
   * [📌 Features](#-features)
-    * [Current Features](#current-features)
   * [How Mutty Works](#how-mutty-works)
-    * [Example Usage](#example-usage)
-    * [How to Use the Generated Code](#how-to-use-the-generated-code)
-      * [Deep Nesting Example](#deep-nesting-example)
-      * [Comparison with `with` Notation](#comparison-with-with-notation)
-    * [Ideal for Flux Architecture](#ideal-for-flux-architecture)
-    * [Installation](#installation)
-    * [Best Practices](#best-practices)
-    * [Contributing](#contributing)
-    * [License](#license)
+  * [Usage Patterns](#usage-patterns)
+    * [`Produce` — the recommended way](#produce--the-recommended-way)
+    * [Fluent `With` chaining](#fluent-with-chaining)
+    * [`CreateDraft` / `FinishDraft` — granular control](#createdraft--finishdraft--granular-control)
+    * [Validation with `OnBeforeBuild`](#validation-with-onbeforebuild)
+    * [Converting back to immutable](#converting-back-to-immutable)
+  * [What Gets Generated](#what-gets-generated)
+  * [Supported Property Types](#supported-property-types)
+  * [Diagnostics](#diagnostics)
+  * [Ideal for Flux / Redux Architectures](#ideal-for-flux--redux-architectures)
+  * [Installation & Compatibility](#installation--compatibility)
+  * [Best Practices](#best-practices)
+  * [Contributing](#contributing)
+  * [License](#license)
 <!-- TOC -->
 
 ---
 
-## 📌 Features
+## The Problem
 
-### Current Features
-
-- [x] **Automated Mutable Wrappers**: Automatically generates mutable wrapper classes for your immutable records using Roslyn's Incremental Source Generation.
-- [x] **Deep Nesting Support**: Easily handle complex nested structures without tedious and error-prone manual code.
-- [x] **Immutable to Mutable Conversion**: An implicit conversion creates a mutable draft from a record; converting back is an explicit cast (or call `Build()`/`ToImmutable()`) so the allocation is never hidden.
-- [x] **Ideal for Flux Architecture**: Works great with Flux architecture, allowing you to manage state changes in a predictable and immutable way.
-- [x] **Helper Methods**:
-    - [x] Provides a `Produce` method to apply mutations to your immutable records using the generated mutable wrappers.
-    - [x] Also includes `CreateDraft` and `FinishDraft` methods for more granular control...
-    - [x] ...and `AsMutable` and `ToImmutable` extension methods for collections.
-- [x] **Fluent Mutation**: Each wrapper exposes chainable `With{Property}` setters, e.g. `student.Produce(m => m.WithName("Jane").WithAge(30))`.
-
-## How Mutty Works
-
-Mutty uses a custom attribute `[MutableGeneration]` to mark immutable records for which you want to generate mutable wrappers.
-The Incremental Source Generator detects these records and generates corresponding mutable wrapper classes and extension methods.
-
-The basic idea is that with Mutty, you will apply all your changes to a temporary mutable wrapper, which acts as a proxy of the immutable record.
-Once all your mutations are completed, Mutty will produce the next immutable state based on the mutations to the mutable wrapper.
-This means that you can interact with your data by simply modifying it while keeping all the benefits of immutable data.
-
-![Mutty Overview](Writerside/images/mutty-overview.png)
-
-Using Mutty is like having a personal assistant. The assistant takes a letter (the current state) and gives you a copy (mutable wrapper) to jot changes onto.
-Once you are done, the assistant will take your draft and produce the real immutable, final letter for you (the next state).
-
-### Example Usage
-
-Suppose you have the following immutable records:
+C# records give you immutable data and a `with` expression to produce modified copies — which is wonderful, until your data is **nested**. Updating one deep value means rebuilding every record along the path by hand:
 
 ```csharp
-namespace Mutty.ConsoleApp;
-
-[MutableGeneration]
-public record Student(string Email, StudentDetails Details, ImmutableList<Enrollment> Enrollments);
-
-[MutableGeneration]
-public record StudentDetails(string Name, int Age);
-
-[MutableGeneration]
-public record Enrollment(Course Course, DateTime EnrollmentDate);
-
-[MutableGeneration]
-public record Course(string Title, string Description, ImmutableList<Module> Modules);
-
-[MutableGeneration]
-public record Module(string Name, ImmutableList<Lesson> Lessons);
-
-[MutableGeneration]
-public record Lesson(string Title, string Content);
-```
-
-> **Note**: For simplicity, this example focuses on the `Student` record, but Mutty also generates similar mutable wrappers for `StudentDetails`, `Enrollment`, `Course`, `Module`, and `Lesson`.
-
-When you add the `[MutableGeneration]` attribute to your records, Mutty will automatically generate the corresponding mutable wrapper classes:
-
-```csharp
-// <auto-generated />
-// This file is auto-generated by Mutty.
-
-using System.Collections.Immutable;
-
-namespace Mutty.ConsoleApp
-{
-    /// <summary>
-    /// The mutable wrapper for the <see cref="Student"/> record.
-    /// </summary>
-    public partial class MutableStudent
-    {
-        private Student _record;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MutableStudent"/> class.
-        /// </summary>
-        /// <param name="record">The record to wrap.</param>
-        public MutableStudent(Student record)
-        {
-            _record = record;
-
-            Email = _record.Email;
-            Details = _record.Details;
-            Enrollments = _record.Enrollments.AsMutable();
-        }
-
-        /// <summary>
-        /// Builds a new instance of the <see cref="Student"/> class.
-        /// </summary>
-        public Student Build()
-        {
-            return _record with
-            {
-                Email = this.Email,
-                Details = this.Details,
-                Enrollments = this.Enrollments.ToImmutable(),
-            };
-        }
-
-        /// <summary>
-        /// Performs an implicit conversion from <see cref="Student"/> to <see cref="MutableStudent"/>.
-        /// </summary>
-        public static implicit operator MutableStudent(Student record)
-        {
-            return new MutableStudent(record);
-        }
-
-        /// <summary>
-        /// Performs an explicit conversion from <see cref="MutableStudent"/> to <see cref="Student"/>.
-        /// </summary>
-        /// <remarks>Explicit because it allocates a new record; prefer <see cref="Build"/>.</remarks>
-        public static explicit operator Student(MutableStudent mutable)
-        {
-            return mutable.Build();
-        }
-
-        /// <summary>
-        /// Gets or sets the Email.
-        /// </summary>
-        public string Email { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Record Details.
-        /// </summary>
-        public MutableStudentDetails Details { get; set; }
-
-        /// <summary>
-        /// Gets or sets the ImmutableCollection Enrollments.
-        /// </summary>
-        public List<MutableEnrollment> Enrollments { get; set; }
-    }
-}
-```
-
-### How to Use the Generated Code
-
-Once the code is generated, you can use the mutable wrappers to modify your immutable records as needed.
-
-#### Deep Nesting Example
-
-Here's an example demonstrating how easy it is to handle deeply nested structures using Mutty:
-
-```csharp
-public sealed class ExampleImmutableArray : ExampleBase
-{
-    public override void Run()
-    {
-        DisplayHeader("ImmutableArray Example");
-
-        // Initialize original immutable objects
-        Student student = Factories.CreateJohnDoe();
-
-        // Use the Produce method to create an updated student object with mutations
-        Student updatedStudent = student.Produce(mutable =>
-        {
-            // Modify the title of the first lesson in the first module of the first course
-            mutable.Enrollments[0].Course.Modules[0].Lessons[0].Title = "=== NEW TITLE ===";
-        });
-
-        // Display the original and updated student objects
-        DisplayStudentTree(student, 4);
-        DisplayStudentTree(updatedStudent, 4);
-    }
-}
-```
-
-#### Comparison with `with` Notation
-
-Without Mutty, updating deeply nested structures using the `with` expression can become cumbersome and error-prone:
-
-```csharp
-// Using 'with' notation
+// Change one lesson title, six levels deep — with plain records:
 var updatedStudent = student with
 {
     Enrollments = student.Enrollments.SetItem(0, student.Enrollments[0] with
@@ -219,56 +62,255 @@ var updatedStudent = student with
         {
             Modules = student.Enrollments[0].Course.Modules.SetItem(0, student.Enrollments[0].Course.Modules[0] with
             {
-                Lessons = student.Enrollments[0].Course.Modules[0].Lessons.SetItem(0, student.Enrollments[0].Course.Modules[0].Lessons[0] with
-                {
-                    Title = "=== NEW TITLE ==="
-                })
+                Lessons = student.Enrollments[0].Course.Modules[0].Lessons.SetItem(0,
+                    student.Enrollments[0].Course.Modules[0].Lessons[0] with
+                    {
+                        Title = "=== NEW TITLE ==="
+                    })
             })
         }
     })
 };
 ```
 
-Using Mutty, the same operation is simpler and more intuitive:
+This is verbose, hard to read, and easy to get wrong — and it gets worse with every level of nesting and every collection in the path.
+
+## The Solution
+
+**Mutty** is a Roslyn incremental source generator. Annotate a record with `[MutableGeneration]` and it generates a *mutable wrapper* — a temporary, mutable proxy of your record. You make changes as if the data were mutable, and Mutty hands you back a brand-new immutable record. The same update becomes:
 
 ```csharp
-// Using Mutty
-Student updatedStudent = student.Produce(mutable =>
+// The same change, with Mutty:
+Student updatedStudent = student.Produce(draft =>
 {
-    mutable.Enrollments[0].Course.Modules[0].Lessons[0].Title = "=== NEW TITLE ===";
+    draft.Enrollments[0].Course.Modules[0].Lessons[0].Title = "=== NEW TITLE ===";
 });
 ```
 
-### Ideal for Flux Architecture
+`student` is never touched. `updatedStudent` is a fresh immutable record, with structural sharing for the parts that didn't change. This is the same idea as [Immer](https://immerjs.github.io/immer/) in the JavaScript world, brought to C# records with zero runtime dependencies — all the wrapper code is generated at compile time.
 
-Mutty is an excellent fit for state management patterns like Flux. With Mutty, you can maintain immutable state while easily applying updates through the mutable wrappers. This keeps your state management predictable and efficient, especially in complex applications with deeply nested state.
+## Quick Start
 
-### Installation
+```bash
+dotnet add package Mutty
+```
 
-To use Mutty in your project:
+```csharp
+using Mutty;
+using System.Collections.Immutable;
 
-1. **Add the Mutty package**:
-    - You can add it as a NuGet package (if it's available as a package).
+[MutableGeneration]
+public record Student(string Name, int Age, ImmutableList<string> Courses);
 
-2. **Annotate Your Records**:
-    - Simply annotate your records with `[MutableGeneration]` to indicate that Mutty should generate a mutable wrapper for them.
+// ...
 
-3. **Build Your Project**:
-    - The Incremental Source Generator will automatically detect the annotated records and generate the corresponding mutable wrappers and extension methods during the build process.
+var student = new Student("Ada", 30, ImmutableList.Create("Math"));
 
-### Best Practices
+Student updated = student.Produce(draft =>
+{
+    draft.Name = "Ada Lovelace";
+    draft.Age++;
+    draft.Courses.Add("Computing");   // draft.Courses is a mutable List<string>
+});
 
-- **Immutable by Default**: Use immutable records for your core data models to ensure thread safety and prevent unintended side effects.
-- **Mutate with Care**: Use the generated mutable wrappers when you need to make changes, but remember to always convert back to the immutable form before exposing the data.
-- **Convert Deliberately**: Creating a mutable draft from a record is implicit, but converting back is an explicit cast — prefer calling `Build()` (or its `ToImmutable()` alias) so the allocation is obvious at the call site.
+// student  -> unchanged
+// updated  -> Student { Name = "Ada Lovelace", Age = 31, Courses = [Math, Computing] }
+```
 
-### Contributing
+That's it — no base classes, no interfaces to implement, no reflection at runtime.
 
-If you want to contribute to Mutty or report issues:
+## 📌 Features
 
-- **GitHub Repository**: [Mutty on GitHub](https://github.com/phmatray/mutty)
-- **Issues**: Use the GitHub Issues tab to report bugs or request features.
+- **Automated mutable wrappers** — one `[MutableGeneration]` attribute generates a full `Mutable{Record}` wrapper via Roslyn incremental generation.
+- **Deep-nesting support** — nested `[MutableGeneration]` records are wrapped recursively, so you can edit any depth with plain property assignments.
+- **Collections made mutable** — `ImmutableArray`, `ImmutableList`, `ImmutableDictionary`, `ImmutableHashSet`, `ImmutableSortedSet`, `ImmutableSortedDictionary`, `ImmutableQueue`, `ImmutableStack`, plain arrays (`T[]`), and read-only collection interfaces are exposed as their mutable counterparts and converted back on build.
+- **Fluent mutation** — chainable `With{Property}` setters: `student.Produce(d => d.WithName("Ada").WithAge(31))`.
+- **Helper methods** — `Produce`, `CreateDraft`/`FinishDraft`, `AsMutable`/`ToImmutable` for collections.
+- **Validation hook** — implement `partial void OnBeforeBuild()` to validate or normalize state before a record is produced.
+- **Safe conversions** — an implicit conversion creates a draft; converting back is an explicit cast (or `Build()`), so allocations are never hidden.
+- **Helpful diagnostics** — clear errors (`MUTTY001`–`MUTTY003`) when the attribute is used on something that can't be wrapped.
+- **Fast & incremental** — a value-equatable pipeline means editing one record doesn't regenerate the others; broad toolchain support (Roslyn 4.8+).
 
-### License
+## How Mutty Works
+
+`[MutableGeneration]` marks the records you want wrappers for. At compile time the generator emits, per record:
+
+- a `Mutable{Record}` class with read/write properties,
+- a `Build()` method (and `ToImmutable()` alias) that produces the next immutable record via a `with` expression,
+- `With{Property}` fluent setters and conversion operators,
+- extension methods (`Produce`, `CreateDraft`, `FinishDraft`, `AsMutable`, `ToImmutable`).
+
+![Mutty Overview](Writerside/images/mutty-overview.png)
+
+Think of it like a personal assistant: you hand over a letter (the current state), the assistant gives you a working copy (the mutable draft) to scribble on, and when you're done it produces the clean, final letter (the next immutable state) — leaving your original untouched.
+
+## Usage Patterns
+
+### `Produce` — the recommended way
+
+`Produce` wraps the record, runs your recipe, and returns the rebuilt record in one call:
+
+```csharp
+Student updated = student.Produce(draft =>
+{
+    draft.Name = "Ada Lovelace";
+    draft.Details.Age = 31;            // nested record — just assign
+    draft.Courses.Add("Computing");    // collection — it's a mutable List<T>
+});
+```
+
+### Fluent `With` chaining
+
+Every wrapper exposes chainable `With{Property}` setters that return the wrapper:
+
+```csharp
+Student updated = student.Produce(d => d
+    .WithName("Ada Lovelace")
+    .WithAge(31));
+```
+
+### `CreateDraft` / `FinishDraft` — granular control
+
+When you need to hold the draft across several steps:
+
+```csharp
+MutableStudent draft = student.CreateDraft();
+draft.Name = "Ada Lovelace";
+draft.Age++;
+Student updated = draft.FinishDraft();   // same as draft.Build()
+```
+
+### Validation with `OnBeforeBuild`
+
+The wrapper is `partial`, so you can implement a hook that runs at the start of every `Build()`:
+
+```csharp
+public partial class MutableStudent
+{
+    partial void OnBeforeBuild()
+    {
+        if (Age < 0)
+            throw new InvalidOperationException("Age cannot be negative.");
+        Name = Name.Trim();
+    }
+}
+```
+
+### Converting back to immutable
+
+- `draft.Build()` — produces the next immutable record (runs `OnBeforeBuild` first).
+- `draft.ToImmutable()` — a more discoverable alias for `Build()`.
+- `(Student)draft` — an **explicit** cast (it allocates a new record, so it's never implicit).
+- The reverse — `Student` → `MutableStudent` — *is* implicit, because creating a draft is cheap and intentional.
+
+## What Gets Generated
+
+For a simple record:
+
+```csharp
+[MutableGeneration]
+public record Person(string Name, int Age);
+```
+
+Mutty generates (abridged):
+
+```csharp
+public partial class MutablePerson
+{
+    public MutablePerson(Person record) { /* copies properties from the record */ }
+
+    public string Name { get; set; }
+    public int Age { get; set; }
+
+    public Person Build()
+    {
+        OnBeforeBuild();
+        return _record with { Name = this.Name, Age = this.Age };
+    }
+
+    public Person ToImmutable() => Build();
+    partial void OnBeforeBuild();
+
+    public MutablePerson WithName(string value) { Name = value; return this; }
+    public MutablePerson WithAge(int value) { Age = value; return this; }
+
+    public static implicit operator MutablePerson(Person record) => new(record);
+    public static explicit operator Person(MutablePerson mutable) => mutable.Build();
+}
+
+public static class PersonExtensions
+{
+    public static Person Produce(this Person baseState, Action<MutablePerson> recipe) { /* ... */ }
+    public static MutablePerson CreateDraft(this Person baseState) => new(baseState);
+    public static Person FinishDraft(this MutablePerson draft) => draft.Build();
+    public static List<MutablePerson> AsMutable(this IEnumerable<Person> states) { /* ... */ }
+    public static ImmutableList<Person> ToImmutable(this IEnumerable<MutablePerson> states) { /* ... */ }
+}
+```
+
+## Supported Property Types
+
+| Property kind | Exposed on the wrapper as | Notes |
+|---|---|---|
+| Primitives, strings, enums, `DateTime`, `Guid`, … | the same type | plain get/set |
+| Nested `[MutableGeneration]` record | `Mutable{Record}` | wrapped recursively; namespace-qualified |
+| Record **not** annotated | the record type | kept by reference |
+| `ImmutableArray<T>` / `ImmutableList<T>` | `List<T>` | `default(ImmutableArray<T>)` is handled safely |
+| `ImmutableDictionary` / `ImmutableSortedDictionary` | `Dictionary` / `SortedDictionary` | |
+| `ImmutableHashSet` / `ImmutableSortedSet` | `HashSet` / `SortedSet` | |
+| `ImmutableQueue` / `ImmutableStack` | `Queue` / `Stack` | |
+| `T[]` | `T[]` | defensively copied, never aliased |
+| `IReadOnlyList<T>` / `IReadOnlyCollection<T>` | `List<T>` | |
+| Nullable variants of all the above | nullable equivalent | |
+
+Inherited record properties are included. Get-only / computed properties are skipped (they can't be set via `with`).
+
+## Diagnostics
+
+The bundled analyzer reports clear errors when `[MutableGeneration]` is used where a wrapper can't be generated:
+
+| ID | Meaning |
+|---|---|
+| `MUTTY001` | The attribute was applied to a non-record (class, struct, interface, enum). |
+| `MUTTY002` | The attribute was applied to a generic record (e.g. `record Box<T>`). |
+| `MUTTY003` | The attribute was applied to a record nested inside another type. |
+
+## Ideal for Flux / Redux Architectures
+
+Mutty is a natural fit for state-management patterns (Flux, Redux, MVU). Reducers can express updates as straightforward mutations of a draft while the store stays immutable, predictable, and cheap to compare — especially when state is deeply nested.
+
+```csharp
+AppState Reduce(AppState state, RenameUserAction action) =>
+    state.Produce(d => d.CurrentUser.Name = action.NewName);
+```
+
+## Installation & Compatibility
+
+```bash
+dotnet add package Mutty
+```
+
+1. **Annotate** your records with `[MutableGeneration]`.
+2. **Build** — the incremental generator detects the annotated records and emits the wrappers and extensions during compilation. Nothing ships at runtime; Mutty is a development-time analyzer/generator package.
+
+Mutty targets `netstandard2.0` and supports **Roslyn 4.8 and later** (Visual Studio 2022 17.8+, the .NET 8 SDK and newer), so it works across a broad range of toolchains.
+
+## Best Practices
+
+- **Immutable by default** — model your core data with immutable records; reach for a mutable draft only when you need to change something.
+- **Mutate the draft, expose the record** — keep mutations local to a `Produce` recipe and return the immutable result.
+- **Convert deliberately** — prefer `Build()` / `ToImmutable()` over the explicit cast; never rely on a hidden conversion.
+- **Validate in one place** — use `OnBeforeBuild` for invariants and normalization so every code path goes through the same checks.
+
+## Contributing
+
+Contributions and issues are welcome:
+
+- **Repository**: [Mutty on GitHub](https://github.com/phmatray/Mutty)
+- **Issues**: use the GitHub Issues tab to report bugs or request features.
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup and guidelines.
+
+## License
 
 Mutty is open-source software licensed under the [Apache License 2.0](LICENSE).

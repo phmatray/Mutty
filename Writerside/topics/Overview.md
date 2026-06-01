@@ -13,10 +13,14 @@ Mutty is a C# Incremental Source Generator that provides a convenient way to wor
 ## Features
 
 - **Automated Mutable Wrappers:** Mark your record types with a `[MutableGeneration]` attribute, and Mutty uses Roslyn’s incremental source generation to produce corresponding `Mutable<RecordName>` classes at compile-time. Each mutable class mirrors the original record’s structure and provides setters for each property.
-- **Deep Nesting Support:** Mutty handles complex, nested immutable structures without hassle. If your record contains other records or immutable collections, Mutty generates wrappers for those as well (provided they are also annotated), so you can mutate deeply nested data in one go.
-- **Implicit Conversion:** Mutty leverages C# implicit operators to allow seamless conversion between an immutable record and its mutable wrapper. You can assign a record to a `MutableRecord` variable (creating a draft copy) or assign a `MutableRecord` back to the record type (producing an updated immutable instance) without explicit casting.
-- **Immutable Collections Integration:** Provides extension methods like `AsMutable()` and `ToImmutable()` to bridge between immutable collection types (e.g. `ImmutableList<T>`) and standard .NET collections. This makes it easy to mutate lists of records: you get a `List<MutableT>` to work with, and convert it back to an `ImmutableList<T>` when done.
-- **Flux-Friendly Architecture:** Mutty is ideal for Flux/Redux-like state management. It enables an immutable state store with convenient mutable draft updates. You can apply changes in a reducer-style function using Mutty’s helpers, and still maintain predictability and immutability of state transitions.
+- **Deep Nesting Support:** Mutty handles complex, nested immutable structures without hassle. If your record contains other annotated records, Mutty generates wrappers for those as well, so you can mutate deeply nested data in one go. Inherited record properties are included too.
+- **Fluent Mutation:** Every wrapper exposes chainable `With<Property>` setters, e.g. `student.Produce(d => d.WithName("Ada").WithAge(31))`.
+- **Validation Hook:** Implement `partial void OnBeforeBuild()` to validate or normalize state before each immutable record is produced.
+- **Safe Conversions:** Creating a draft from a record is an *implicit* conversion, but converting a draft back is an *explicit* cast (or a call to `Build()` / `ToImmutable()`), so the allocation is never hidden — for example `record == mutable` no longer silently builds a record.
+- **Broad Collection Support:** `ImmutableArray`, `ImmutableList`, `ImmutableDictionary`/`SortedDictionary`, `ImmutableHashSet`/`SortedSet`, `ImmutableQueue`/`Stack`, plain arrays (`T[]`, defensively copied), and read-only collection interfaces are exposed as their mutable counterparts and converted back on build. Helpers `AsMutable()` / `ToImmutable()` bridge collections of records.
+- **Helpful Diagnostics:** A bundled analyzer reports clear errors (`MUTTY001`–`MUTTY003`) when the attribute is applied to something that cannot be wrapped. See [](Analyzers.md).
+- **Fast & Incremental:** A value-equatable generation pipeline means editing one record does not regenerate the others, and the package supports a broad toolchain (Roslyn 4.8+).
+- **Flux-Friendly Architecture:** Mutty is ideal for Flux/Redux-like state management. It enables an immutable state store with convenient mutable draft updates in reducer-style functions, while keeping state transitions predictable and immutable.
 
 ## How It Works (Summary)
 

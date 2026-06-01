@@ -3,9 +3,10 @@
 This section provides a detailed reference for the code elements that Mutty generates and the helper methods it provides. When you annotate a record with `[MutableGeneration]`, Mutty’s source generator creates several things:
 
 - A **mutable wrapper class** for the record (e.g. `MutableStudent` for a record `Student`).
-- Overloaded **implicit conversion operators** between the record and its mutable wrapper.
-- A **`Build` method** inside the mutable class that produces the immutable record.
-- Extension methods: **`Produce`**, **`CreateDraft`**, **`FinishDraft`** for creating and using drafts, and **`AsMutable`**, **`ToImmutable`** for working with immutable collections.
+- An **implicit operator** from the record to its wrapper (create a draft) and an **explicit operator** back (build the record).
+- A **`Build()` method** — and a **`ToImmutable()`** alias — that produces the immutable record, plus a **`partial void OnBeforeBuild()`** validation hook.
+- Chainable **`With<Property>`** fluent setters.
+- Extension methods: **`Produce`**, **`CreateDraft`**, **`FinishDraft`** for creating and using drafts, and **`AsMutable`**, **`ToImmutable`** for working with collections.
 
 Below we describe each of these in detail.
 
@@ -26,15 +27,17 @@ Key characteristics of a mutable wrapper class:
 
 - **Constructor:** The wrapper has a constructor that takes the original record as a parameter. This constructor initializes the mutable object by copying over all values from the record into the wrapper’s properties. For nested records and collections, it will initialize the mutable properties by converting the original nested data into their mutable forms (e.g. by calling the appropriate `AsMutable()` on an immutable list, or implicit conversion on a nested record). After construction, the mutable object is a deep copy (in mutable form) of the original record’s state.
 
-- **Build Method:** Each mutable class has a method `public <RecordType> Build()` which reconstructs the immutable record from the mutable state. Typically, `Build()` uses the original record and the C# `with` expression to create a new instance with updated properties. Internally, it will convert collections back to their immutable counterparts (using `ToImmutable()`) and use any nested mutable objects’ implicit conversion back to their immutable types. You normally do not call `Build()` yourself – it’s used behind the scenes by Mutty’s utilities – but you can if you ever need to manually finalize a draft.
+- **Build Method:** Each mutable class has a method `public <RecordType> Build()` which reconstructs the immutable record from the mutable state. `Build()` first calls the `OnBeforeBuild()` hook, then uses the original record and the C# `with` expression to create a new instance with updated properties. Internally it converts collections back to their immutable counterparts and calls each nested wrapper’s `Build()` explicitly. A `ToImmutable()` method is generated as a discoverable alias for `Build()`.
 
-- **Implicit Operators:** Mutty defines implicit conversion operators on the mutable class to simplify going back and forth:
-    - `public static implicit operator MutableStudent(Student record)` – This allows you to assign a `Student` directly to a `MutableStudent` variable or parameter. It simply calls the wrapper’s constructor internally (i.e., wraps the record in a new mutable object). This is why in the `Produce` method (or even in your own code) you can treat a `Student` as a `MutableStudent` without explicit casting.
-    - `public static implicit operator Student(MutableStudent mutable)` – This converts a mutable draft back to an immutable `Student`. It typically calls the `Build()` method to produce the new record. This operator means you can use a `MutableStudent` wherever a `Student` is expected, and the conversion will happen automatically.
+- **`With<Property>` Methods:** For every property, the wrapper generates a chainable setter that assigns the value and returns the wrapper, e.g. `public MutableStudent WithEmail(string value)`. These let you express updates fluently inside a recipe: `student.Produce(d => d.WithEmail("a@b.com").WithAge(31))`.
 
-Because these operators are implicit, using the Mutty API feels natural. For example, you can return a `MutableStudent` from a function that is declared to return a `Student`, and it will automatically convert to the immutable `Student` before returning.
+- **`OnBeforeBuild` Hook:** The wrapper declares `partial void OnBeforeBuild()`, called at the start of `Build()`. Implement it in your own partial class to validate invariants or normalize state in one place.
 
-- **Partial Class:** The generated class is declared `partial`, which means you can extend it by writing your own partial class with the same name. This is an advanced feature, but it allows you to add custom utility methods or validation logic to the mutable wrapper if needed. (Note that you shouldn’t override the generated behavior; rather, add new methods or properties. The `Build()` method is not virtual, so if you need to enforce invariants on building, you might call `Build()` inside your own method that checks conditions.)
+- **Conversion Operators:** Mutty defines two conversion operators:
+    - `public static implicit operator MutableStudent(Student record)` – **implicit**: assigning a `Student` to a `MutableStudent` creates a draft (it just calls the wrapper’s constructor). This is why you can treat a `Student` as a `MutableStudent` without an explicit cast.
+    - `public static explicit operator Student(MutableStudent mutable)` – **explicit**: converting a draft back to a record calls `Build()`, which allocates a new record. It is deliberately explicit so the allocation is never hidden (for instance, `record == mutable` does not silently build a record). Prefer calling `Build()` / `ToImmutable()` directly; use `(Student)mutable` only when a cast reads more clearly.
+
+- **Partial Class:** The generated class is declared `partial`, so you can extend it with your own partial class of the same name — most commonly to implement `OnBeforeBuild()` or add helper methods. Don’t try to override the generated members; add new ones.
 
 **Example:** If you have `record Student(string Email, ImmutableList<Enrollment> Enrollments)`, Mutty will generate a class `MutableStudent` with a property `public string Email { get; set; }` and `public List<MutableEnrollment> Enrollments { get; set; }`, among others, plus the conversion operators. This lets you manipulate email or the enrollments list freely on a `MutableStudent` instance. The same pattern applies for all other records.
 
@@ -116,7 +119,7 @@ Mutty generates **collection helper methods** to handle converting between immut
 
 These methods make it easy to round-trip collections when building or tearing down immutable structures. They are generally used internally by the generated code, but are exposed if you need them in your own utility code.
 
-**Note:** The `AsMutable`/`ToImmutable` naming is meant to align with common terminology. They handle only certain collection types (for example, `ImmutableList<T>` to `List<T>` and vice versa). If your records use other immutable collection types (like `ImmutableDictionary` or custom collections), Mutty may not automatically handle those unless it’s implemented to do so. In such cases, you might need to manually convert those in partial methods or avoid using those types with Mutty. For standard usage with lists (which is most common), these helpers cover the needs.
+**Note:** The `AsMutable`/`ToImmutable` extension methods bridge collections of *annotated records* (`ImmutableList<T>` ↔ `List<MutableT>`). The wrapper itself, however, handles a wide range of collection property types directly — `ImmutableArray`, `ImmutableList`, `ImmutableDictionary`/`SortedDictionary`, `ImmutableHashSet`/`SortedSet`, `ImmutableQueue`/`Stack`, plain arrays (`T[]`, defensively copied so they are never aliased), and `IReadOnlyList<T>`/`IReadOnlyCollection<T>` (exposed as `List<T>`). Each is converted to a mutable form on construction and back to the original immutable/array/read-only form in `Build()`.
 
 ## Putting It Together – Example
 

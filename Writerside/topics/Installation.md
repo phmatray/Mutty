@@ -3,7 +3,7 @@
 Installing **Mutty** into your .NET project is straightforward since it’s distributed as a NuGet package. Mutty targets .NET Standard 2.0 (as an analyzer), which is compatible with .NET 5, .NET 6, .NET 7, .NET 8, and later ([
 NuGet Gallery
 | Mutty
-](https://www.nuget.org/packages/Mutty)). You’ll need a C# 9 or higher compiler (for record types) – for example, Visual Studio 2022 or the .NET 6+ SDK – to use source generators.
+](https://www.nuget.org/packages/Mutty)). Mutty is a development-time analyzer/source-generator package, so nothing ships at runtime. It requires **Roslyn 4.8 or later** — for example Visual Studio 2022 17.8+ or the .NET 8 SDK and newer — which covers the C# record support Mutty depends on.
 
 Follow the steps below to add Mutty to your project:
 
