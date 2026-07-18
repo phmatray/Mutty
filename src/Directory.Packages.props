@@ -14,8 +14,8 @@
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.CodeFix.Testing.NUnit" Version="1.1.2" />
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.CodeRefactoring.Testing.NUnit" Version="1.1.2" />
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.14.0" />
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.7.0" />
-    <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="10.0.300" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.8.1" />
+    <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="10.0.301" />
     <PackageVersion Include="NUnit" Version="4.6.1" />
     <PackageVersion Include="NUnit.Analyzers" Version="4.14.0" PrivateAssets="all" />
     <PackageVersion Include="NUnit3TestAdapter" Version="6.2.0" />
@@ -23,7 +23,7 @@
     <PackageVersion Include="Roslynator.CodeAnalysis.Analyzers" Version="4.15.0" />
     <PackageVersion Include="Roslynator.Formatting.Analyzers" Version="4.15.0" />
     <PackageVersion Include="Spectre.Console" Version="0.57.2" />
-    <PackageVersion Include="Verify.NUnit" Version="31.22.0" />
+    <PackageVersion Include="Verify.NUnit" Version="31.25.0" />
     <PackageVersion Include="coverlet.collector" Version="8.0.1" />
     <PackageVersion Include="BenchmarkDotNet" Version="0.15.8" />
   </ItemGroup>
