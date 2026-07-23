@@ -1,3 +1,6 @@
+> [!IMPORTANT]
+> **This repository has moved.** The code now lives in **[Atypical-Consulting/blazor-state](https://github.com/Atypical-Consulting/blazor-state)** under [`utils/mutty`](https://github.com/Atypical-Consulting/blazor-state/tree/main/utils/mutty) — full git history preserved. This repository is archived (read-only).
+
 ![Mutty banner](.github/banner.png)
 
 # Mutty
